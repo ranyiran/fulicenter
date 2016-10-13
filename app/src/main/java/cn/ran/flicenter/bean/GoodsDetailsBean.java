@@ -1,12 +1,12 @@
 package cn.ran.flicenter.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Administrator on 2016/10/13.
  */
 public class GoodsDetailsBean {
-
     /**
      * id : 280
      * goodsId : 7677
@@ -43,18 +43,38 @@ public class GoodsDetailsBean {
     private long addTime;
     private String shareUrl;
     private boolean promote;
-    /**
-     * id : 9529
-     * goodsId : 0
-     * colorId : 7
-     * colorName : 白色
-     * colorCode : #ffffff
-     * colorImg :
-     * colorUrl : https://detail.tmall.com/item.htm?spm=a1z10.5-b.w4011-3609973698.66.6PtkVY&id=520971761592&rn=5ddf7aff64dbe1a24da0eaf7409e3389&abbucket=15&skuId=3104519239252
-     * albums : [{"pid":7677,"imgId":28296,"imgUrl":"201509/goods_img/7677_P_1442391216432.png","thumbUrl":"no_picture.gif"},{"pid":7677,"imgId":28297,"imgUrl":"201509/goods_img/7677_P_1442391216215.png","thumbUrl":"no_picture.gif"},{"pid":7677,"imgId":28298,"imgUrl":"201509/goods_img/7677_P_1442391216692.png","thumbUrl":"no_picture.gif"},{"pid":7677,"imgId":28299,"imgUrl":"201509/goods_img/7677_P_1442391216316.png","thumbUrl":"no_picture.gif"}]
-     */
+    private ArrayList<PropertiesBean> list;
 
-    private List<PropertiesBean> properties;
+    public GoodsDetailsBean() {
+    }
+
+    public GoodsDetailsBean(int id, int goodsId, int catId, String goodsName, String goodsEnglishName, String goodsBrief, String shopPrice, String currencyPrice, String promotePrice, String rankPrice, boolean isPromote, String goodsThumb, String goodsImg, long addTime, String shareUrl, boolean promote, ArrayList<PropertiesBean> list) {
+        this.id = id;
+        this.goodsId = goodsId;
+        this.catId = catId;
+        this.goodsName = goodsName;
+        this.goodsEnglishName = goodsEnglishName;
+        this.goodsBrief = goodsBrief;
+        this.shopPrice = shopPrice;
+        this.currencyPrice = currencyPrice;
+        this.promotePrice = promotePrice;
+        this.rankPrice = rankPrice;
+        this.isPromote = isPromote;
+        this.goodsThumb = goodsThumb;
+        this.goodsImg = goodsImg;
+        this.addTime = addTime;
+        this.shareUrl = shareUrl;
+        this.promote = promote;
+        this.list = list;
+    }
+
+    public ArrayList<PropertiesBean> getList() {
+        return list;
+    }
+
+    public void setList(ArrayList<PropertiesBean> list) {
+        this.list = list;
+    }
 
     public int getId() {
         return id;
@@ -184,132 +204,27 @@ public class GoodsDetailsBean {
         this.promote = promote;
     }
 
-    public List<PropertiesBean> getProperties() {
-        return properties;
+    @Override
+    public String toString() {
+        return "GoodsDetailsBean{" +
+                "id=" + id +
+                ", goodsId=" + goodsId +
+                ", catId=" + catId +
+                ", goodsName='" + goodsName + '\'' +
+                ", goodsEnglishName='" + goodsEnglishName + '\'' +
+                ", goodsBrief='" + goodsBrief + '\'' +
+                ", shopPrice='" + shopPrice + '\'' +
+                ", currencyPrice='" + currencyPrice + '\'' +
+                ", promotePrice='" + promotePrice + '\'' +
+                ", rankPrice='" + rankPrice + '\'' +
+                ", isPromote=" + isPromote +
+                ", goodsThumb='" + goodsThumb + '\'' +
+                ", goodsImg='" + goodsImg + '\'' +
+                ", addTime=" + addTime +
+                ", shareUrl='" + shareUrl + '\'' +
+                ", promote=" + promote +
+                ", list=" + list +
+                '}';
     }
 
-    public void setProperties(List<PropertiesBean> properties) {
-        this.properties = properties;
-    }
-
-    public static class PropertiesBean {
-        private int id;
-        private int goodsId;
-        private int colorId;
-        private String colorName;
-        private String colorCode;
-        private String colorImg;
-        private String colorUrl;
-        /**
-         * pid : 7677
-         * imgId : 28296
-         * imgUrl : 201509/goods_img/7677_P_1442391216432.png
-         * thumbUrl : no_picture.gif
-         */
-
-        private List<AlbumsBean> albums;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public int getGoodsId() {
-            return goodsId;
-        }
-
-        public void setGoodsId(int goodsId) {
-            this.goodsId = goodsId;
-        }
-
-        public int getColorId() {
-            return colorId;
-        }
-
-        public void setColorId(int colorId) {
-            this.colorId = colorId;
-        }
-
-        public String getColorName() {
-            return colorName;
-        }
-
-        public void setColorName(String colorName) {
-            this.colorName = colorName;
-        }
-
-        public String getColorCode() {
-            return colorCode;
-        }
-
-        public void setColorCode(String colorCode) {
-            this.colorCode = colorCode;
-        }
-
-        public String getColorImg() {
-            return colorImg;
-        }
-
-        public void setColorImg(String colorImg) {
-            this.colorImg = colorImg;
-        }
-
-        public String getColorUrl() {
-            return colorUrl;
-        }
-
-        public void setColorUrl(String colorUrl) {
-            this.colorUrl = colorUrl;
-        }
-
-        public List<AlbumsBean> getAlbums() {
-            return albums;
-        }
-
-        public void setAlbums(List<AlbumsBean> albums) {
-            this.albums = albums;
-        }
-
-        public static class AlbumsBean {
-            private int pid;
-            private int imgId;
-            private String imgUrl;
-            private String thumbUrl;
-
-            public int getPid() {
-                return pid;
-            }
-
-            public void setPid(int pid) {
-                this.pid = pid;
-            }
-
-            public int getImgId() {
-                return imgId;
-            }
-
-            public void setImgId(int imgId) {
-                this.imgId = imgId;
-            }
-
-            public String getImgUrl() {
-                return imgUrl;
-            }
-
-            public void setImgUrl(String imgUrl) {
-                this.imgUrl = imgUrl;
-            }
-
-            public String getThumbUrl() {
-                return thumbUrl;
-            }
-
-            public void setThumbUrl(String thumbUrl) {
-                this.thumbUrl = thumbUrl;
-            }
-        }
-    }
 }

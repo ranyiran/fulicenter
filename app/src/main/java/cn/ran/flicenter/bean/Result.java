@@ -38,4 +38,13 @@ public class Result {
     public void setRetData(Object retData) {
         this.retData = retData;
     }
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "retCode=" + retCode +
+                ", retMsg=" + retMsg +
+                ", retData=" + retData +
+                '}';
+    }
 }

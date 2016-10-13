@@ -70,4 +70,18 @@ public class PropertiesBean {
     public List<AlbumsBean> getAlbums(){
         return this.albums;
     }
+
+    @Override
+    public String toString() {
+        return "PropertiesBean{" +
+                "id=" + id +
+                ", goodsId=" + goodsId +
+                ", colorId=" + colorId +
+                ", colorName='" + colorName + '\'' +
+                ", colorCode='" + colorCode + '\'' +
+                ", colorImg='" + colorImg + '\'' +
+                ", colorUrl='" + colorUrl + '\'' +
+                ", albums=" + albums +
+                '}';
+    }
 }

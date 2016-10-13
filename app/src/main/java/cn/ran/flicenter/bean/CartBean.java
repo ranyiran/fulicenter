@@ -78,4 +78,17 @@ public class CartBean {
     public void setChecked(boolean checked) {
         this.checked = checked;
     }
+
+    @Override
+    public String toString() {
+        return "CartBean{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", goodsId=" + goodsId +
+                ", goods=" + goods +
+                ", count=" + count +
+                ", isChecked=" + isChecked +
+                ", checked=" + checked +
+                '}';
+    }
 }

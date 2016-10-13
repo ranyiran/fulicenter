@@ -58,4 +58,15 @@ public class BoutiqueBean {
     public void setImageurl(String imageurl) {
         this.imageurl = imageurl;
     }
+
+    @Override
+    public String toString() {
+        return "BoutiqueBean{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", name='" + name + '\'' +
+                ", imageurl='" + imageurl + '\'' +
+                '}';
+    }
 }
