@@ -36,4 +36,15 @@ public class AlbumsBean {
     public String getThumbUrl(){
         return this.thumbUrl;
     }
+
+    @Override
+    public String toString() {
+        return "AlbumsBean{" +
+                "pid=" + pid +
+                ", imgId=" + imgId +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", thumbUrl='" + thumbUrl + '\'' +
+                '}';
+    }
+
 }
