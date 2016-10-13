@@ -13,7 +13,13 @@ public class Result {
 
     private int retCode;
     private boolean retMsg;
-    private Object retData;
+    private UserAvatarBean retData;
+
+    public Result(int retCode, boolean retMsg, UserAvatarBean retData) {
+        this.retCode = retCode;
+        this.retMsg = retMsg;
+        this.retData = retData;
+    }
 
     public int getRetCode() {
         return retCode;
@@ -31,11 +37,11 @@ public class Result {
         this.retMsg = retMsg;
     }
 
-    public Object getRetData() {
+    public UserAvatarBean getRetData() {
         return retData;
     }
 
-    public void setRetData(Object retData) {
+    public void setRetData(UserAvatarBean retData) {
         this.retData = retData;
     }
 
