@@ -5,7 +5,10 @@ import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import cn.ran.flicenter.utils.MFGT;
+
 public class SplashActivity extends AppCompatActivity {
+
 
     private final long sleepTime = 2000;
 
@@ -38,7 +41,8 @@ public class SplashActivity extends AppCompatActivity {
                     }
 
                 }
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                MFGT.gotoMainActivity(SplashActivity.this);
+
 
             }
         }).start();
