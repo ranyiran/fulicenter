@@ -3,14 +3,93 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="cn.ran.flicenter.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+
+    <RadioGroup
+        android:id="@+id/radGroup"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rad_btn_newGoods"
+            style="@style/menu_item_style"
+            android:button="@null"
+            android:checked="true"
+            android:drawableTop="@drawable/selector_menu_item_new_good"
+            android:gravity="center_horizontal"
+            android:text="@string/new_goods"
+            android:textColor="" />
+
+        <RadioButton
+            android:id="@+id/rad_btn_boutique"
+            style="@style/menu_item_style"
+            android:button="@null"
+            android:checked="false"
+            android:drawableTop="@drawable/selector_menu_item_boutique"
+            android:gravity="center_horizontal"
+            android:text="@string/boutique"
+            android:textColor="#000000" />
+
+        <RadioButton
+            android:id="@+id/rad_btn_category"
+            style="@style/menu_item_style"
+            android:button="@null"
+            android:drawableTop="@drawable/selector_menu_item_category"
+            android:gravity="center_horizontal"
+            android:text="@string/category"
+            android:textColor="#000000" />
+
+        <RelativeLayout
+
+            android:id="@+id/radRelative"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal">
+
+            <RadioButton
+                android:id="@+id/rad_btn_cart"
+                style="@style/menu_item_style_cart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:checked="false"
+                android:drawableTop="@drawable/selector_menu_item_cart"
+                android:gravity="center_horizontal"
+                android:text="@string/cart"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/tvCartHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@id/rad_btn_cart"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/cart_hint"
+                android:text="10" />
+        </RelativeLayout>
+
+        <RadioButton
+            android:id="@+id/rad_btn_personal"
+            style="@style/menu_item_style"
+            android:button="@null"
+            android:drawableTop="@drawable/selector_menu_item_personal_center"
+            android:gravity="center_horizontal"
+            android:text="@string/personal"
+            android:textColor="#000000" />
+
+    </RadioGroup>
+
+    <View
+        android:id="@+id/vLine"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_above="@id/radGroup"
+        android:background="#D6DCDC" />
+
+
 </RelativeLayout>
