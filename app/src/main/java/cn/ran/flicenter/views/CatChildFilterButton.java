@@ -19,8 +19,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import cn.ran.flicenter.R;
-import cn.ucai.fulicenter.bean.Result;
-import cn.ucai.fulicenter.utils.ConvertUtils;
+import cn.ran.flicenter.bean.Result;
+import cn.ran.flicenter.utils.ConvertUtils;
 
 /**
  * 显示分类中当前所属小类的列表
