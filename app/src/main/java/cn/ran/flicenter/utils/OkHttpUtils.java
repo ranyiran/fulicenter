@@ -1,9 +1,7 @@
 package cn.ran.flicenter.utils;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-
 
 import com.google.gson.Gson;
 
@@ -12,16 +10,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.FileNameMap;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import cn.ran.flicenter.I;
-import okhttp3.Cache;
+import cn.ran.flicenter.bean.Result;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -62,97 +56,28 @@ public class OkHttpUtils<T> {
 
     private OnCompleteListener<T> mListener;
 
-    OkHttpClient.Builder mBuilder;
-
     /**
      * 构造器，mOkHttpClient必须单例，无论创建多少个OkHttpUtils的实例。
      * 都由mOkHttpClient一个对象处理所有的网络请求。
      */
-    public OkHttpUtils(Context context) {
+    public OkHttpUtils() {
         if (mOkHttpClient == null) {//线程安全的单例
             synchronized (OkHttpUtils.class) {
                 if (mOkHttpClient == null) {
-                    mBuilder = new OkHttpClient.Builder();
-                    //获取sd卡的缓存文件夹
-                    File cacheDir = context.getExternalCacheDir();
-                    mOkHttpClient = mBuilder
-                            .connectTimeout(10, TimeUnit.SECONDS)
-                            .writeTimeout(20, TimeUnit.SECONDS)
-                            .readTimeout(10, TimeUnit.SECONDS)
-                            .cache(new Cache(cacheDir, 10 * (1 << 20)))//设置缓存位置和缓存大小
-                            .build();
+                    mOkHttpClient = new OkHttpClient();
                 }
             }
         }
         initHandler();
     }
 
-    /**
-     * 设置与服务端连接的时限
-     *
-     * @param connectTime:连接的时限
-     * @return
-     */
-    public OkHttpUtils<T> connectTimeout(int connectTime) {
-        if (mBuilder == null) {
-            return this;
-        }
-        mBuilder.connectTimeout(connectTime, TimeUnit.SECONDS);
-        return this;
-    }
-
-    /**
-     * 设置写数据的时限
-     *
-     * @param writeTimeout：写数据的时限
-     * @return
-     */
-    public OkHttpUtils<T> writeTimeout(int writeTimeout) {
-        if (mBuilder == null) {
-            return this;
-        }
-        mBuilder.writeTimeout(writeTimeout, TimeUnit.SECONDS);
-        return this;
-    }
-
-    /**
-     * 设置读取数据的时限
-     *
-     * @param readTimeout：读取数据的时限
-     * @return
-     */
-    public OkHttpUtils<T> readTimeout(int readTimeout) {
-        if (mBuilder == null) {
-            return this;
-        }
-        mBuilder.readTimeout(readTimeout, TimeUnit.SECONDS);
-        return this;
-    }
-
-    /**
-     * 设置缓存
-     * 第一次请求会请求网络得到数据，第二次以及后面的请求则会从缓存中取出数据
-     *
-     * @param file:缓存的路径
-     * @param fileSize：缓存的容量
-     * @return
-     */
-    public OkHttpUtils<T> cache(File file, int fileSize) {
-        if (mBuilder == null) {
-            return this;
-        }
-        mBuilder.cache(new Cache(file, fileSize));
-        return this;
-    }
-
-
     private void initHandler() {
-      /*  mHandler = new Handler(FuLiCenterApplication.applicationContext.getMainLooper()) {
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case RESULT_ERROR:
-                        mListener.onError(msg.obj==null?msg.toString():msg.obj.toString());
+                        mListener.onError(msg.obj.toString());
                         break;
                     case RESULT_SUCCESS:
                         T result = (T) msg.obj;
@@ -160,7 +85,7 @@ public class OkHttpUtils<T> {
                         break;
                 }
             }
-        };*/
+        };
     }
 
     /**
@@ -186,24 +111,6 @@ public class OkHttpUtils<T> {
         return this;
     }
 
-    public OkHttpUtils<T> addFile2(File file) {
-        if (mUrl == null) {
-            return this;
-        }
-        RequestBody fileBody = RequestBody.create(MediaType.parse(guessMimeType(file.getName())), file);
-        mFileBody = new MultipartBody.Builder().addFormDataPart("filename", file.getName(), fileBody).build();
-        return this;
-    }
-
-    private String guessMimeType(String path) {
-        FileNameMap fileNameMap = URLConnection.getFileNameMap();
-        String contentTypeFor = fileNameMap.getContentTypeFor(path);
-        if (contentTypeFor == null) {
-            contentTypeFor = "application/octet-stream";
-        }
-        return contentTypeFor;
-    }
-
     /**
      * 设置为post的请求
      *
@@ -218,14 +125,6 @@ public class OkHttpUtils<T> {
 
     public OkHttpUtils<T> url(String url) {
         mUrl = new StringBuilder(url);
-        return this;
-    }
-
-    public OkHttpUtils<T> setRequestUrl(String request) {
-        //http://120.26.242.249:8080/SuperWeChatServerV2.0/register?m_user_name=aaaaaa&m_user_nick=aaaaaa&m_user_password=aaaaaa
-        mUrl = new StringBuilder(I.SERVER_ROOT);
-        mUrl.append(request);
-//        Log.e("okhttp","1 murl="+ mUrl.toString());
         return this;
     }
 
@@ -323,7 +222,6 @@ public class OkHttpUtils<T> {
             mListener = listener;
         }
         Request.Builder builder = new Request.Builder().url(mUrl.toString());
-        L.e("url=" + mUrl);
         if (mFormBodyBuilder != null) {
             RequestBody body = mFormBodyBuilder.build();
             builder.post(body);
@@ -355,19 +253,12 @@ public class OkHttpUtils<T> {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String json = response.body().string();
-                if (mClazz.equals(String.class)) {
-                    Message msg = Message.obtain();
-                    msg.what = RESULT_SUCCESS;
-                    msg.obj = json;
-                    mHandler.sendMessage(msg);
-                } else {
-                    Gson gson = new Gson();
-                    T value = gson.fromJson(json, mClazz);
-                    Message msg = Message.obtain();
-                    msg.what = RESULT_SUCCESS;
-                    msg.obj = value;
-                    mHandler.sendMessage(msg);
-                }
+                Gson gson = new Gson();
+                T value = gson.fromJson(json, mClazz);
+                Message msg = Message.obtain();
+                msg.what = RESULT_SUCCESS;
+                msg.obj = value;
+                mHandler.sendMessage(msg);
             }
         });
     }
@@ -433,19 +324,20 @@ public class OkHttpUtils<T> {
 
     /**
      * 专门针对Result类的json解析方法，不具有通用性，属性定制、专用的方法
+     *
      * @param result
      * @param clazz
      * @param <T>
      * @return
      */
-   /* public <T> T parseJson(Result result, Class<?> clazz) {
+    public <T> T parseJson(Result result, Class<?> clazz) {
         if (result.getRetCode() == 0) {
             String json = result.getRetData().toString();
             T t = parseJson(json, clazz);
             return t;
         }
         return null;
-    }*/
+    }
 
     /**
      * 下载文件，支持更新下载进度
@@ -493,8 +385,6 @@ public class OkHttpUtils<T> {
      */
     public static void release() {
         if (mOkHttpClient != null) {
-            //取消所有请求
-            mOkHttpClient.dispatcher().cancelAll();
             mOkHttpClient = null;
         }
     }
