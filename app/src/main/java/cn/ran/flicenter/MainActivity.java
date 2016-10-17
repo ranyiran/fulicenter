@@ -1,73 +1,92 @@
 package cn.ran.flicenter;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ran.flicenter.utils.L;
 
 public class MainActivity extends AppCompatActivity {
-    RadioButton mRadNewGoods, mRadBoutique, mRadCategory, mRadCart, mRadpersonal;
 
+    @Bind(R.id.mBtnNewGoods)
+    RadioButton mBtnNewGoods;
+    @Bind(R.id.mBtnBoutique)
+    RadioButton mBtnBoutique;
+    @Bind(R.id.mBtnCategory)
+    RadioButton mBtnCategory;
+    @Bind(R.id.mBtnCart)
+    RadioButton mBtnCart;
+    @Bind(R.id.tvCartHint)
+    TextView tvCartHint;
+    @Bind(R.id.radRelative)
+    RelativeLayout radRelative;
+    @Bind(R.id.mBtnPersonal)
+    RadioButton mBtnPersonal;
+    @Bind(R.id.radGroup)
+    LinearLayout radGroup;
+    @Bind(R.id.vLine)
+    View vLine;
 
-    boolean isChecked = true;
+    RadioButton[] rbs = {};
+    int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         L.i("MainActivity.onCreate");
-        initView();
+        onRating();
+
     }
 
-    private void initView() {
-        mRadNewGoods = (RadioButton) findViewById(R.id.rad_btn_newGoods);
-        mRadBoutique = (RadioButton) findViewById(R.id.rad_btn_boutique);
-        mRadCategory = (RadioButton) findViewById(R.id.rad_btn_category);
-        mRadCart = (RadioButton) findViewById(R.id.rad_btn_cart);
-        mRadpersonal = (RadioButton) findViewById(R.id.rad_btn_personal);
+    public void onRating() {
+        rbs = new RadioButton[5];
+        rbs[0] = mBtnNewGoods;
+        rbs[1] = mBtnBoutique;
+        rbs[2] = mBtnCategory;
+        rbs[3] = mBtnCart;
+        rbs[4] = mBtnPersonal;
+
+
     }
 
+    private void setRadioButtonStatus() {
+        for (int i = 0; i < rbs.length; i++) {
+            if (i == index) {
+                rbs[i].setChecked(true);
+            } else {
+                rbs[i].setChecked(false);
+            }
+        }
+    }
 
-    public void onCheckedChange(View view) {
-
+    @OnClick({R.id.mBtnNewGoods, R.id.mBtnBoutique, R.id.mBtnCategory, R.id.mBtnCart, R.id.mBtnPersonal})
+    public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.rad_btn_newGoods:
-                changeImageView((RadioButton) view);
+            case R.id.mBtnNewGoods:
+                index = 0;
                 break;
-            case R.id.rad_btn_boutique:
-                changeImageView((RadioButton) view);
+            case R.id.mBtnBoutique:
+                index = 1;
                 break;
-            case R.id.rad_btn_category:
-                changeImageView((RadioButton) view);
+            case R.id.mBtnCategory:
+                index = 2;
                 break;
-            case R.id.rad_btn_cart:
-                changeImageView((RadioButton) view);
+            case R.id.mBtnCart:
+                index = 3;
                 break;
-            case R.id.rad_btn_personal:
-                changeImageView((RadioButton) view);
+            case R.id.mBtnPersonal:
+                index = 4;
                 break;
         }
-    }
-
-    public void changeImageView(RadioButton radioButton) {
-        if (radioButton != mRadNewGoods) {
-            mRadNewGoods.setChecked(false);
-        }
-        if (radioButton != mRadBoutique) {
-            mRadBoutique.setChecked(false);
-        }
-        if (radioButton != mRadCart) {
-            mRadCart.setChecked(false);
-        }
-        if (radioButton != mRadCategory) {
-            mRadCategory.setChecked(false);
-        }
-        if (radioButton != mRadpersonal) {
-            mRadpersonal.setChecked(false);
-        }
-
+        setRadioButtonStatus();
     }
 }

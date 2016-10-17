@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/rad_btn_newGoods"
+            android:id="@+id/mBtnNewGoods"
             style="@style/menu_item_style"
             android:button="@null"
             android:checked="true"
@@ -24,7 +24,7 @@
             android:textColor="@color/main_button_text_color" />
 
         <RadioButton
-            android:id="@+id/rad_btn_boutique"
+            android:id="@+id/mBtnBoutique"
             style="@style/menu_item_style"
             android:button="@null"
             android:drawableTop="@drawable/selector_menu_item_boutique"
@@ -33,7 +33,7 @@
             android:textColor="@color/main_button_text_color" />
 
         <RadioButton
-            android:id="@+id/rad_btn_category"
+            android:id="@+id/mBtnCategory"
             style="@style/menu_item_style"
             android:button="@null"
             android:checked="false"
@@ -51,7 +51,7 @@
             android:gravity="center_horizontal">
 
             <RadioButton
-                android:id="@+id/rad_btn_cart"
+                android:id="@+id/mBtnCart"
                 style="@style/menu_item_style_cart"
                 android:layout_height="wrap_content"
                 android:button="@null"
@@ -64,16 +64,16 @@
                 android:id="@+id/tvCartHint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignRight="@id/rad_btn_cart"
+                android:layout_alignRight="@id/mBtnCart"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="4dp"
                 android:background="@drawable/cart_hint"
                 android:text="10"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="10dp"
                 android:textColor="@color/white" />
         </RelativeLayout>
 
         <RadioButton
-            android:id="@+id/rad_btn_personal"
+            android:id="@+id/mBtnPersonal"
             style="@style/menu_item_style"
             android:button="@null"
             android:drawableTop="@drawable/selector_menu_item_personal_center"
@@ -89,6 +89,14 @@
         android:layout_height="2dp"
         android:layout_above="@id/radGroup"
         android:background="#D6DCDC" />
+
+    <fragment
+        android:id="@+id/fragment_layout"
+        android:name="cn.ran.flicenter.fragment.NewGoodsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/vLine"
+        tools:layout="@layout/fragment_new_goods" />
 
 
 </RelativeLayout>
