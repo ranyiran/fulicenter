@@ -127,10 +127,8 @@ public class NewGoodsFragment_02 extends Fragment {
                         if (result != null && result.length > 0) {
                             mAdapter.setMore(result != null && result.length > 0);
                             ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
-                            if (!mAdapter.isMore()) {
                                 if (downloadStatus == I.ACTION_PULL_UP) {
                                     mAdapter.setTvFooter("没有更多数据");
-                                }
 
                             }
                             switch (downloadStatus) {
