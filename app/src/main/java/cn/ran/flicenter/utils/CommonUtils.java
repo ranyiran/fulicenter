@@ -2,9 +2,11 @@ package cn.ran.flicenter.utils;
 
 import android.widget.Toast;
 
+import cn.ran.flicenter.FuLiCenterApplication;
+
 
 public class CommonUtils {
-   /* public static void showLongToast(String msg){
+    public static void showLongToast(String msg){
         Toast.makeText(FuLiCenterApplication.getInstance(),msg,Toast.LENGTH_LONG).show();
     }
     public static void showShortToast(String msg){
@@ -15,5 +17,5 @@ public class CommonUtils {
     }
     public static void showShortToast(int rId){
         showShortToast(FuLiCenterApplication.getInstance().getString(rId));
-    }*/
+    }
 }

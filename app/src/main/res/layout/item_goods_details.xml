@@ -10,21 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/tab_bg"
+
         android:padding="5dp">
-
-        <ImageView
-            android:id="@+id/lv_details_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/back_nomal" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="商品详情"
-            android:textColor="@color/text_color_hint"
-            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/iv_details_share"
@@ -113,36 +100,50 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <TextView
-                android:id="@+id/detailsPrice"
+                android:id="@+id/detailsPriceShop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
                 android:layout_below="@+id/detailsEnglishName"
                 android:layout_centerVertical="true"
                 android:text="￥120"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/item_good_price" />
 
+            <TextView
+                android:id="@+id/detailsPriceCurrent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/detailsPriceShop"
+                android:layout_centerVertical="true"
+                android:text="￥120"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/item_good_price" />
 
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_below="@+id/layoutDetailsName"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/detailsViewPager"
+            <cn.ran.flicenter.views.SlideAutoLoopView
+                android:id="@+id/detailsSlideAutoLoopView"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"></android.support.v4.view.ViewPager>
+                android:layout_height="200dp"
+                android:background="@color/good_detail_bg_white">
+
+            </cn.ran.flicenter.views.SlideAutoLoopView>
 
             <cn.ran.flicenter.views.FlowIndicator
                 android:id="@+id/detailsFlowIndicator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/detailsViewPager"
+                android:layout_below="@+id/detailsSlideAutoLoopView"
                 android:gravity="center"
                 app:count="4"
                 app:focus="-1"
@@ -151,13 +152,11 @@
                 app:r="10dp"
                 app:space="5dp" />
 
-            <TextView
+            <WebView
                 android:id="@+id/detailsGoods"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/detailsFlowIndicator"
-                android:text="商品详情"
-                android:textSize="20sp" />
+                android:layout_below="@+id/detailsFlowIndicator" />
         </RelativeLayout>
     </RelativeLayout>
 

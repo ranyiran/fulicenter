@@ -174,9 +174,9 @@ public class SlideAutoLoopView extends ViewPager {
 //            }else{
 //                iv.setImageBitmap(bitmap);
 //            }
-         /*   ImageLoader.downloadImg(context,iv,imgUrl,true);
-            container.addView(iv);*/
-            return null;
+            ImageLoader.downloadImg(context,iv,imgUrl,true);
+            container.addView(iv);
+            return true;
         }
         
         @Override

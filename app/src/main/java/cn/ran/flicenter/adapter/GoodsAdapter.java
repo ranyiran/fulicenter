@@ -17,10 +17,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ran.flicenter.GoodsDetailsActivity;
 import cn.ran.flicenter.I;
+import cn.ran.flicenter.MainActivity;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.bean.NewGoodsBean;
 import cn.ran.flicenter.utils.ImageLoader;
 import cn.ran.flicenter.utils.L;
+import cn.ran.flicenter.utils.MFGT;
 
 /**
  * Created by Administrator on 2016/10/17.
@@ -138,8 +140,10 @@ public class GoodsAdapter extends RecyclerView.Adapter {
         @OnClick(R.id.layout_goods)
         public void onGoodsItemClick() {
             int goodsId = (int) lvLayoutGoods.getTag();
-            mContext.startActivity(new Intent(mContext, GoodsDetailsActivity.class)
-                    .putExtra(I.GoodsDetails.KEY_GOODS_ID, goodsId));
+//            mContext.startActivity(new Intent(mContext, GoodsDetailsActivity.class)
+//                    .putExtra(I.GoodsDetails.KEY_GOODS_ID, goodsId));
+            MFGT.gotoGoodsDetailsActivity(mContext, goodsId);
+
         }
     }
 
