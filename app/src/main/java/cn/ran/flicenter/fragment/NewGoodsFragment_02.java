@@ -26,6 +26,7 @@ import cn.ran.flicenter.utils.ConvertUtils;
 import cn.ran.flicenter.utils.ImageLoader;
 import cn.ran.flicenter.utils.L;
 import cn.ran.flicenter.utils.OkHttpUtils;
+import cn.ran.flicenter.views.SpaceItemDecoration;
 
 /**
  * Created by Administrator on 2016/10/17.
@@ -172,7 +173,7 @@ public class NewGoodsFragment_02 extends Fragment {
                 getResources().getColor(R.color.google_red),
                 getResources().getColor(R.color.google_yellow)
         );
-
+        newGoodsRecycler.addItemDecoration(new SpaceItemDecoration(12));
 
     }
 

@@ -17,7 +17,7 @@ public class GoodsDetailsBean implements Serializable {
     private String rankPrice;
     private String goodsThumb;
     private String goodsImg;
-    private long addTime;
+    private String addTime;
     private String shareUrl;
     private boolean isPromote;
     private PropertiesBean[] properties;
@@ -118,11 +118,11 @@ public class GoodsDetailsBean implements Serializable {
         this.goodsImg = goodsImg;
     }
 
-    public long getAddTime() {
+    public String getAddTime() {
         return addTime;
     }
 
-    public void setAddTime(long addTime) {
+    public void setAddTime(String addTime) {
         this.addTime = addTime;
     }
 

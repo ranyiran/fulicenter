@@ -7,17 +7,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ran.flicenter.GoodsDetailsActivity;
 import cn.ran.flicenter.I;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.bean.NewGoodsBean;
 import cn.ran.flicenter.utils.ImageLoader;
+import cn.ran.flicenter.utils.L;
 
 /**
  * Created by Administrator on 2016/10/17.
@@ -83,7 +86,9 @@ public class GoodsAdapter extends RecyclerView.Adapter {
             NewGoodsBean goodsBean = mList.get(position);
             goods.lvGoodsIntroduce.setText(goodsBean.getGoodsName());
             goods.lvGoodsPrice.setText(goodsBean.getShopPrice());
-            ImageLoader.downloadImg(mContext, goods.lvGoodsImage, goodsBean.getGoodsThumb() , true);
+            ImageLoader.downloadImg(mContext, goods.lvGoodsImage, goodsBean.getGoodsThumb(), true);
+            goods.lvLayoutGoods.setTag(goodsBean.getGoodsId());
+            L.i("goodsBean:" + goodsBean.getGoodsId());
 
         }
     }
@@ -121,16 +126,20 @@ public class GoodsAdapter extends RecyclerView.Adapter {
         TextView lvGoodsIntroduce;
         @Bind(R.id.lv_goods_price)
         TextView lvGoodsPrice;
+        @Bind(R.id.layout_goods)
+        LinearLayout lvLayoutGoods;
 
 
         public GoodsViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                }
-            });
+        }
+
+        @OnClick(R.id.layout_goods)
+        public void onGoodsItemClick() {
+            int goodsId = (int) lvLayoutGoods.getTag();
+            mContext.startActivity(new Intent(mContext, GoodsDetailsActivity.class)
+                    .putExtra(I.GoodsDetails.KEY_GOODS_ID, goodsId));
         }
     }
 
