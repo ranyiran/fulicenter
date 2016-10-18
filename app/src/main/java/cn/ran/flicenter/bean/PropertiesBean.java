@@ -1,74 +1,81 @@
 package cn.ran.flicenter.bean;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.Arrays;
 
-/**
- * Created by Administrator on 2016/10/13.
- */
-public class PropertiesBean {
+public class PropertiesBean implements Serializable {
+
     private int id;
-
     private int goodsId;
-
     private int colorId;
-
     private String colorName;
-
     private String colorCode;
-
     private String colorImg;
-
     private String colorUrl;
+    private AlbumsBean[] albums;
 
-    private List<AlbumsBean> albums ;
+    public int getId() {
+        return id;
+    }
 
-    public void setId(int id){
+    public void setId(int id) {
         this.id = id;
     }
-    public int getId(){
-        return this.id;
+
+    public int getGoodsId() {
+        return goodsId;
     }
-    public void setGoodsId(int goodsId){
+
+    public void setGoodsId(int goodsId) {
         this.goodsId = goodsId;
     }
-    public int getGoodsId(){
-        return this.goodsId;
+
+    public int getColorId() {
+        return colorId;
     }
-    public void setColorId(int colorId){
+
+    public void setColorId(int colorId) {
         this.colorId = colorId;
     }
-    public int getColorId(){
-        return this.colorId;
+
+    public String getColorName() {
+        return colorName;
     }
-    public void setColorName(String colorName){
+
+    public void setColorName(String colorName) {
         this.colorName = colorName;
     }
-    public String getColorName(){
-        return this.colorName;
+
+    public String getColorCode() {
+        return colorCode;
     }
-    public void setColorCode(String colorCode){
+
+    public void setColorCode(String colorCode) {
         this.colorCode = colorCode;
     }
-    public String getColorCode(){
-        return this.colorCode;
+
+    public String getColorImg() {
+        return colorImg;
     }
-    public void setColorImg(String colorImg){
+
+    public void setColorImg(String colorImg) {
         this.colorImg = colorImg;
     }
-    public String getColorImg(){
-        return this.colorImg;
+
+    public String getColorUrl() {
+        return colorUrl;
     }
-    public void setColorUrl(String colorUrl){
+
+    public void setColorUrl(String colorUrl) {
         this.colorUrl = colorUrl;
     }
-    public String getColorUrl(){
-        return this.colorUrl;
+
+    public AlbumsBean[] getAlbums() {
+        return albums;
     }
-    public void setAlbums(List<AlbumsBean> albums){
+
+    public void setAlbums(AlbumsBean[] albums) {
         this.albums = albums;
-    }
-    public List<AlbumsBean> getAlbums(){
-        return this.albums;
     }
 
     @Override
@@ -81,7 +88,7 @@ public class PropertiesBean {
                 ", colorCode='" + colorCode + '\'' +
                 ", colorImg='" + colorImg + '\'' +
                 ", colorUrl='" + colorUrl + '\'' +
-                ", albums=" + albums +
+                ", albums=" + Arrays.toString(albums) +
                 '}';
     }
 }

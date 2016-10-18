@@ -1,15 +1,14 @@
 package cn.ran.flicenter.bean;
 
-/**
- * Created by Administrator on 2016/10/13.
- */
-public class CateGoryChildBean {
+import java.io.Serializable;
+
+public class CategoryChildBean implements Serializable {
 
     /**
-     * id : 345
+     * id : 348
      * parentId : 344
-     * name : 热门
-     * imageUrl : cat_image/256_1.png
+     * name : 败姐推荐
+     * imageUrl : cat_image/256_4.png
      */
 
     private int id;
@@ -51,7 +50,7 @@ public class CateGoryChildBean {
 
     @Override
     public String toString() {
-        return "CateGoryChildBean{" +
+        return "CategoryChildBean{" +
                 "id=" + id +
                 ", parentId=" + parentId +
                 ", name='" + name + '\'' +

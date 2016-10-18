@@ -1,13 +1,10 @@
 package cn.ran.flicenter.bean;
 
-/**
- * Created by Administrator on 2016/10/13.
- */
 public class MessageBean {
 
     /**
      * success : true
-     * msg : 收藏成功
+     * msg : 添加收藏成功
      */
 
     private boolean success;

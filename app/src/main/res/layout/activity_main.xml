@@ -29,7 +29,7 @@
             android:button="@null"
             android:drawableTop="@drawable/selector_menu_item_boutique"
             android:gravity="center_horizontal"
-            android:text="@string/category"
+            android:text="@string/boutique"
             android:textColor="@color/main_button_text_color" />
 
         <RadioButton
@@ -39,7 +39,7 @@
             android:checked="false"
             android:drawableTop="@drawable/selector_menu_item_category"
             android:gravity="center_horizontal"
-            android:text="@string/new_goods"
+            android:text="@string/category"
             android:textColor="@color/main_button_text_color" />
 
 
@@ -90,12 +90,12 @@
         android:layout_above="@id/radGroup"
         android:background="#D6DCDC" />
 
-    <fragment
+    <LinearLayout
         android:id="@+id/fragment_layout"
-        android:name="cn.ran.flicenter.fragment.NewGoodsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/vLine"
+        android:orientation="vertical"
         tools:layout="@layout/fragment_new_goods" />
 
 

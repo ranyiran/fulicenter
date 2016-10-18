@@ -64,7 +64,7 @@ public class NewGoodsFragment_02 extends Fragment {
         });
         newGoodsRecycler.setLayoutManager(glm);
         //自动修复，排版行数
-        newGoodsRecycler.setHasFixedSize(true);
+        // newGoodsRecycler.setHasFixedSize(true);
         newGoodsRecycler.setAdapter(mAdapter);
         initView();
         initData(I.ACTION_DOWNLOAD, mPageId);
@@ -89,6 +89,7 @@ public class NewGoodsFragment_02 extends Fragment {
                 if (lastIndex >= mAdapter.getItemCount() - 1 && newState == RecyclerView.SCROLL_STATE_IDLE &&
                         mAdapter.isMore()) {
                     mPageId++;
+                    L.i(mPageId + "");
                     initData(I.ACTION_PULL_UP, mPageId);
                 }
                 if (newState != RecyclerView.SCROLL_STATE_DRAGGING) {
@@ -101,7 +102,7 @@ public class NewGoodsFragment_02 extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                lastIndex = glm.findLastVisibleItemPosition();
+                lastIndex = glm.findFirstVisibleItemPosition();
             }
         });
     }
@@ -125,15 +126,12 @@ public class NewGoodsFragment_02 extends Fragment {
                     public void onSuccess(NewGoodsBean[] result) {
                         L.i(result.toString());
                         if (result != null && result.length > 0) {
-                            mAdapter.setMore(result != null && result.length > 0);
+                            mAdapter.setMore(true);
                             ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
-                                if (downloadStatus == I.ACTION_PULL_UP) {
-                                    mAdapter.setTvFooter("没有更多数据");
 
-                            }
                             switch (downloadStatus) {
                                 case I.ACTION_DOWNLOAD:
-                                    mAdapter.addNewGoods(list);
+                                    mAdapter.initNewGoods(list);
                                     mAdapter.setTvFooter("加载更多数据");
                                     break;
                                 case I.ACTION_PULL_DOWN:
@@ -151,10 +149,16 @@ public class NewGoodsFragment_02 extends Fragment {
                             }
                             L.i(list.toString());
                         }
+                        if (downloadStatus == I.ACTION_PULL_UP) {
+                            mAdapter.setTvFooter("没有更多数据");
+
+                        }
                     }
 
                     @Override
                     public void onError(String error) {
+                        newGoodsSwipeRefresh.setRefreshing(false);
+
                     }
                 }
 

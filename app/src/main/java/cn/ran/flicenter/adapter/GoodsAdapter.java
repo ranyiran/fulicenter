@@ -1,23 +1,23 @@
 package cn.ran.flicenter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.ran.flicenter.GoodsDetailsActivity;
 import cn.ran.flicenter.I;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.bean.NewGoodsBean;
 import cn.ran.flicenter.utils.ImageLoader;
-import cn.ran.flicenter.utils.L;
 
 /**
  * Created by Administrator on 2016/10/17.
@@ -44,11 +44,13 @@ public class GoodsAdapter extends RecyclerView.Adapter {
 
     public void setMore(boolean more) {
         isMore = more;
+        notifyDataSetChanged();
     }
 
     public GoodsAdapter(Context mContext, ArrayList<NewGoodsBean> mList) {
         this.mContext = mContext;
         this.mList = mList;
+        mList.addAll(mList);
     }
 
     @Override
@@ -75,14 +77,13 @@ public class GoodsAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (getItemViewType(position) == I.TYPE_FOOTER) {
             FooterViewHolder footer = (FooterViewHolder) holder;
-            footer.tvFooter.setText(this.getTvFooter());
+            footer.tvFooter.setText(getTvFooter());
         } else {
             GoodsViewHolder goods = (GoodsViewHolder) holder;
             NewGoodsBean goodsBean = mList.get(position);
             goods.lvGoodsIntroduce.setText(goodsBean.getGoodsName());
             goods.lvGoodsPrice.setText(goodsBean.getShopPrice());
-            ImageLoader.downloadImg(mContext, goods.lvGoodsImage, goodsBean.getGoodsThumb()
-            );
+            ImageLoader.downloadImg(mContext, goods.lvGoodsImage, goodsBean.getGoodsThumb() , true);
 
         }
     }
@@ -128,13 +129,13 @@ public class GoodsAdapter extends RecyclerView.Adapter {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, "被点击", Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
 
     public void initNewGoods(ArrayList<NewGoodsBean> mList) {
+
         this.mList.clear();
         this.mList.addAll(mList);
         notifyDataSetChanged();
