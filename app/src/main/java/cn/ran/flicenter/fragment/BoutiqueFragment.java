@@ -20,7 +20,6 @@ import cn.ran.flicenter.R;
 import cn.ran.flicenter.activity.MainActivity;
 import cn.ran.flicenter.adapter.BoutiqueAdapter;
 import cn.ran.flicenter.bean.BoutiqueBean;
-import cn.ran.flicenter.bean.NewGoodsBean;
 import cn.ran.flicenter.net.NetDao;
 import cn.ran.flicenter.utils.CommonUtils;
 import cn.ran.flicenter.utils.ConvertUtils;
@@ -32,7 +31,7 @@ import cn.ran.flicenter.views.SpaceItemDecoration;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BoutiqueFragment extends Fragment {
+public class BoutiqueFragment extends BaseFragment {
 
 
     @Bind(R.id.new_goods_tv_refresh)
@@ -45,6 +44,7 @@ public class BoutiqueFragment extends Fragment {
     MainActivity mContext;
     ArrayList<BoutiqueBean> mList;
     LinearLayoutManager mManager;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,13 +56,33 @@ public class BoutiqueFragment extends Fragment {
         mManager = new LinearLayoutManager(mContext);
         newGoodsRecycler.setLayoutManager(mManager);
         newGoodsRecycler.setAdapter(mBtqAdapter);
-        initData(I.ACTION_DOWNLOAD);
-        initView();
+        downloadBoutique(I.ACTION_DOWNLOAD);
+//        initView();
+//        initData();
+//        setListener();
+        super.onCreateView(inflater, container, savedInstanceState);
         return view;
     }
 
+    @Override
+    protected void setListener() {
+        setOnPullDownListener();
+    }
 
-    private void initView() {
+    private void setOnPullDownListener() {
+        newGoodsSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                newGoodsSwipeRefresh.setEnabled(true);
+                newGoodsSwipeRefresh.setRefreshing(true);
+                newGoodsTvRefresh.setVisibility(View.VISIBLE);
+                downloadBoutique(I.ACTION_PULL_DOWN);
+            }
+        });
+    }
+
+    @Override
+    protected void initView() {
         newGoodsSwipeRefresh.setColorSchemeColors(
                 getResources().getColor(R.color.google_blue),
                 getResources().getColor(R.color.google_green),
@@ -73,7 +93,13 @@ public class BoutiqueFragment extends Fragment {
 
     }
 
-    private void initData(final int actionDownload) {
+
+    @Override
+    protected void initData() {
+        downloadBoutique(I.ACTION_DOWNLOAD);
+    }
+
+    protected void downloadBoutique(final int actionDownload) {
         NetDao.downloadBouTiQue(mContext, new OkHttpUtils.OnCompleteListener<BoutiqueBean[]>() {
             @Override
             public void onSuccess(BoutiqueBean[] result) {
@@ -92,10 +118,6 @@ public class BoutiqueFragment extends Fragment {
                             newGoodsTvRefresh.setVisibility(View.GONE);
                             ImageLoader.release();
                             break;
-                        case I.ACTION_PULL_UP:
-                            mBtqAdapter.addBouTiQue(list);
-                            break;
-
 
                     }
                     L.i(list.toString());

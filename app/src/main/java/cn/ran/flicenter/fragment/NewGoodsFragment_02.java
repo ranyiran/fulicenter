@@ -2,7 +2,6 @@ package cn.ran.flicenter.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,7 +30,7 @@ import cn.ran.flicenter.views.SpaceItemDecoration;
 /**
  * Created by Administrator on 2016/10/17.
  */
-public class NewGoodsFragment_02 extends Fragment {
+public class NewGoodsFragment_02 extends BaseFragment {
     @Bind(R.id.new_goods_tv_refresh)
     TextView newGoodsTvRefresh;
     @Bind(R.id.new_goods_recycler)
@@ -64,17 +63,17 @@ public class NewGoodsFragment_02 extends Fragment {
             }
         });
         newGoodsRecycler.setLayoutManager(glm);
-        //自动修复，排版行数
-        // newGoodsRecycler.setHasFixedSize(true);
         newGoodsRecycler.setAdapter(mAdapter);
-        initData(I.ACTION_DOWNLOAD, mPageId);
+        super.onCreateView(inflater, container, savedInstanceState);
+       /* initData(I.ACTION_DOWNLOAD, mPageId);
         initView();
-        setListener();
+        setListener();*/
         return layout;
 
     }
 
-    private void setListener() {
+    @Override
+    protected void setListener() {
         setOnPullDownListener();
         setOnPullUpListener();
     }
@@ -91,7 +90,7 @@ public class NewGoodsFragment_02 extends Fragment {
                         mAdapter.isMore()) {
                     mPageId++;
                     L.i(mPageId + "");
-                    initData(I.ACTION_PULL_UP, mPageId);
+                    downloadNewGoods(I.ACTION_PULL_UP, mPageId);
                 }
                 if (newState != RecyclerView.SCROLL_STATE_DRAGGING) {
                     mAdapter.notifyDataSetChanged();
@@ -116,12 +115,17 @@ public class NewGoodsFragment_02 extends Fragment {
                 newGoodsSwipeRefresh.setRefreshing(true);
                 newGoodsTvRefresh.setVisibility(View.VISIBLE);
                 mPageId = 1;
-                initData(I.ACTION_PULL_DOWN, mPageId);
+                downloadNewGoods(I.ACTION_PULL_DOWN, mPageId);
             }
         });
     }
 
-    private void initData(final int downloadStatus, int mPageId) {
+    @Override
+    protected void initData() {
+        downloadNewGoods(I.ACTION_DOWNLOAD, mPageId);
+    }
+
+    private void downloadNewGoods(final int downloadStatus, int mPageId) {
         NetDao.downloadNewGoods(mContext, mPageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
                     @Override
                     public void onSuccess(NewGoodsBean[] result) {
@@ -166,7 +170,8 @@ public class NewGoodsFragment_02 extends Fragment {
         );
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         newGoodsSwipeRefresh.setColorSchemeColors(
                 getResources().getColor(R.color.google_blue),
                 getResources().getColor(R.color.google_green),
