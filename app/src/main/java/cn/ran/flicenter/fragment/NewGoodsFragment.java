@@ -1,3 +1,4 @@
+/*
 package cn.ran.flicenter.fragment;
 
 
@@ -24,9 +25,11 @@ import cn.ran.flicenter.utils.ImageLoader;
 import cn.ran.flicenter.utils.L;
 import cn.ran.flicenter.utils.OkHttpUtils;
 
+*/
 /**
  * A simple {@link Fragment} subclass.
- */
+ *//*
+
 public class NewGoodsFragment extends Fragment {
     SwipeRefreshLayout mSwipeRefreshLayout;
     RecyclerView mLvContext;
@@ -115,6 +118,7 @@ public class NewGoodsFragment extends Fragment {
     }
 
     private void downloadNewGoods(final int downloadStatus, int mPageIdDefault) {
+        //NewGoodsBean[],mPageIdDefault,
         final OkHttpUtils<NewGoodsBean[]> utils = new OkHttpUtils<NewGoodsBean[]>();
         utils.url(I.SERVER_ROOT + I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)
                 .addParam(I.GoodsDetails.KEY_CAT_ID, I.CAT_ID + "")
@@ -165,3 +169,4 @@ public class NewGoodsFragment extends Fragment {
 
 
 }
+*/

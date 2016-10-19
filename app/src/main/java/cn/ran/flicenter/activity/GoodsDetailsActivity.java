@@ -1,19 +1,22 @@
-package cn.ran.flicenter;
+package cn.ran.flicenter.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import cn.ran.flicenter.I;
+import cn.ran.flicenter.R;
 import cn.ran.flicenter.bean.AlbumsBean;
 import cn.ran.flicenter.bean.GoodsDetailsBean;
 import cn.ran.flicenter.net.NetDao;
 import cn.ran.flicenter.utils.CommonUtils;
 import cn.ran.flicenter.utils.L;
+import cn.ran.flicenter.utils.MFGT;
 import cn.ran.flicenter.utils.OkHttpUtils;
 import cn.ran.flicenter.views.FlowIndicator;
 import cn.ran.flicenter.views.SlideAutoLoopView;
@@ -42,12 +45,15 @@ public class GoodsDetailsActivity extends AppCompatActivity {
     WebView detailsGoods;
     @Bind(R.id.detailsFlowIndicator)
     FlowIndicator detailsFlowIndicator;
+    @Bind(R.id.lv_details_back)
+    ImageView lvDetailsBack;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_goods_details);
         ButterKnife.bind(this);
+
         goodsId = getIntent().getIntExtra(I.GoodsDetails.KEY_GOODS_ID, 0);
         if (goodsId == 0) {
             finish();
@@ -76,6 +82,11 @@ public class GoodsDetailsActivity extends AppCompatActivity {
                 CommonUtils.showLongToast(error + "");
             }
         });
+    }
+
+    @OnClick(R.id.lv_details_back)
+    public void onBackClick() {
+        MFGT.finish(this);
     }
 
     private void showGoodDetails(GoodsDetailsBean details) {
@@ -107,4 +118,9 @@ public class GoodsDetailsActivity extends AppCompatActivity {
         return urls;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        MFGT.finish(this);
+    }
 }

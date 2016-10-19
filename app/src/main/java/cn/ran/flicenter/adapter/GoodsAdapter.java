@@ -1,7 +1,6 @@
 package cn.ran.flicenter.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +14,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.ran.flicenter.GoodsDetailsActivity;
 import cn.ran.flicenter.I;
-import cn.ran.flicenter.MainActivity;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.bean.NewGoodsBean;
 import cn.ran.flicenter.utils.ImageLoader;
@@ -110,7 +107,7 @@ public class GoodsAdapter extends RecyclerView.Adapter {
     }
 
 
-    class FooterViewHolder extends RecyclerView.ViewHolder {
+    static class FooterViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.tvFooter)
         TextView tvFooter;
 
@@ -158,6 +155,7 @@ public class GoodsAdapter extends RecyclerView.Adapter {
         this.mList.addAll(mList);
         notifyDataSetChanged();
     }
+
 
 
 }

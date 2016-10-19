@@ -1,10 +1,9 @@
-package cn.ran.flicenter;
+package cn.ran.flicenter.activity;
 
-import android.content.Intent;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import cn.ran.flicenter.R;
 import cn.ran.flicenter.utils.MFGT;
 
 public class SplashActivity extends AppCompatActivity {

@@ -3,6 +3,7 @@ package cn.ran.flicenter.net;
 import android.content.Context;
 
 import cn.ran.flicenter.I;
+import cn.ran.flicenter.bean.BoutiqueBean;
 import cn.ran.flicenter.bean.GoodsDetailsBean;
 import cn.ran.flicenter.bean.NewGoodsBean;
 import cn.ran.flicenter.utils.OkHttpUtils;
@@ -29,5 +30,12 @@ public class NetDao {
                 .targetClass(GoodsDetailsBean.class)
                 .execute(listener);
 
+    }
+
+    public static void downloadBouTiQue(Context context, OkHttpUtils.OnCompleteListener<BoutiqueBean[]> listener) {
+        OkHttpUtils utils = new OkHttpUtils(context);
+        utils.setRequestUrl(I.REQUEST_FIND_BOUTIQUES)
+                .targetClass(BoutiqueBean[].class)
+                .execute(listener);
     }
 }

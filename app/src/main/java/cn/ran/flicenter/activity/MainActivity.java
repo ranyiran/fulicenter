@@ -1,4 +1,4 @@
-package cn.ran.flicenter;
+package cn.ran.flicenter.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +15,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.ran.flicenter.R;
 import cn.ran.flicenter.fragment.BoutiqueFragment;
 import cn.ran.flicenter.fragment.NewGoodsFragment_02;
 import cn.ran.flicenter.utils.L;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment[] mFragment;
 
     int index;
+    int currentIndex;
 
     // NewGoodsFragment goodsFragment;
     BoutiqueFragment boutiqueFragment;
@@ -63,11 +65,16 @@ public class MainActivity extends AppCompatActivity {
     private void initFragment() {
         mFragment = new Fragment[5];
         goodsFragment2 = new NewGoodsFragment_02();
+        boutiqueFragment = new BoutiqueFragment();
+        mFragment[0] = goodsFragment2;
+        mFragment[1] = boutiqueFragment;
 
         getSupportFragmentManager()
                 .beginTransaction()
+                .add(R.id.fragment_layout, boutiqueFragment)
                 .add(R.id.fragment_layout, goodsFragment2)
                 .show(goodsFragment2)
+                .hide(boutiqueFragment)
                 .commit();
 
     }
@@ -96,19 +103,11 @@ public class MainActivity extends AppCompatActivity {
     @OnClick({R.id.mBtnNewGoods, R.id.mBtnBoutique, R.id.mBtnCategory, R.id.mBtnCart, R.id.mBtnPersonal})
 
     public void onCheckedChange(View view) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         switch (view.getId()) {
             case R.id.mBtnNewGoods:
-                goodsFragment2 = new NewGoodsFragment_02();
-                transaction.replace(R.id.fragment_layout, goodsFragment2);
-                // goodsFragment = new NewGoodsFragment();
-                //   transaction.replace(R.id.fragment_layout, goodsFragment);
                 index = 0;
-                L.i("1");
                 break;
             case R.id.mBtnBoutique:
-                boutiqueFragment = new BoutiqueFragment();
-                transaction.replace(R.id.fragment_layout, boutiqueFragment);
                 index = 1;
 
                 break;
@@ -125,7 +124,20 @@ public class MainActivity extends AppCompatActivity {
                 L.i("5");
                 break;
         }
-        transaction.commit();
         setRadioButtonStatus();
+        setFragment();
+    }
+
+    private void setFragment() {
+        if (index != currentIndex) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.hide(mFragment[currentIndex]);
+            if (!mFragment[index].isAdded()) {
+                ft.add(R.id.fragment_layout, mFragment[index]);
+            }
+            ft.show(mFragment[index]).commit();
+        }
+        setRadioButtonStatus();
+        currentIndex = index;
     }
 }

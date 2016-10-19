@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/boutiqueImageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_weight="0"
+        android:src="@drawable/nopic" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="9"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/boutiqueTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="不一样的新妆，不一样的美丽"
+            android:textColor="@color/list_item_title"
+            android:textSize="20sp" />
+
+
+        <TextView
+            android:id="@+id/boutiqueName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="拯救头发，美丽新妆"
+            android:textColor="@color/list_item_name"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/boutiqueDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="快速增长修护预防脱发洗发水让头发健康快速生长更美丽"
+            android:textColor="@color/list_item_des"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
