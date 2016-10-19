@@ -24,7 +24,7 @@ import cn.ran.flicenter.views.SlideAutoLoopView;
 /**
  * Created by Administrator on 2016/10/17.
  */
-public class GoodsDetailsActivity extends AppCompatActivity {
+public class GoodsDetailsActivity extends BaseActivity {
 
 
     @Bind(R.id.detailsEnglishName)
@@ -50,20 +50,28 @@ public class GoodsDetailsActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.item_goods_details);
         ButterKnife.bind(this);
 
         goodsId = getIntent().getIntExtra(I.GoodsDetails.KEY_GOODS_ID, 0);
         if (goodsId == 0) {
             finish();
-
         }
-        initData();
+        super.onCreate(savedInstanceState);
     }
 
+    @Override
+    protected void initView() {
+        super.initView();
+    }
 
-    private void initData() {
+    @Override
+    protected void setListener() {
+        super.setListener();
+    }
+
+    @Override
+    protected void initData() {
         NetDao.downloadGoodsDetail(mContext, goodsId, new OkHttpUtils.OnCompleteListener<GoodsDetailsBean>() {
             @Override
             public void onSuccess(GoodsDetailsBean result) {
@@ -103,6 +111,7 @@ public class GoodsDetailsActivity extends AppCompatActivity {
             return details.getProperties()[0].getAlbums().length;
         }
         return 0;
+
     }
 
     private String[] getAlbumImgUrl(GoodsDetailsBean details) {
@@ -121,6 +130,5 @@ public class GoodsDetailsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        MFGT.finish(this);
     }
 }

@@ -2,10 +2,8 @@ package cn.ran.flicenter.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -57,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         L.i("MainActivity.onCreate");
-        onRating();
+        initData();
         initFragment();
 
     }
@@ -79,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void onRating() {
+    public void initData() {
         rbs = new RadioButton[5];
         rbs[0] = mBtnNewGoods;
         rbs[1] = mBtnBoutique;

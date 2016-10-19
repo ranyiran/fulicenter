@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import cn.ran.flicenter.activity.BouTiQueActivity;
 import cn.ran.flicenter.activity.GoodsDetailsActivity;
 import cn.ran.flicenter.I;
 import cn.ran.flicenter.activity.MainActivity;
 import cn.ran.flicenter.R;
+import cn.ran.flicenter.bean.BoutiqueBean;
 
 
 public class MFGT {
@@ -39,5 +41,12 @@ public class MFGT {
     public static void startActivity(Context context, Intent intent) {
         context.startActivity(intent);
         ((Activity) context).overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
+
+    public static void gotoBouTiQueActivity(Context context, int catId) {
+        Intent intent = new Intent();
+        intent.setClass(context, BouTiQueActivity.class);
+        intent.putExtra(I.Boutique.ID, catId);
+        startActivity(context, intent);
     }
 }

@@ -1,7 +1,9 @@
-package cn.ran.flicenter;
+package cn.ran.flicenter.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import cn.ran.flicenter.R;
 
 public class LoginActivity extends AppCompatActivity {
 
