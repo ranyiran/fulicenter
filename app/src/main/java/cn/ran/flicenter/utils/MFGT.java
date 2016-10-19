@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import cn.ran.flicenter.GoodsDetailsActivity;
+import cn.ran.flicenter.activity.GoodsDetailsActivity;
 import cn.ran.flicenter.I;
-import cn.ran.flicenter.MainActivity;
+import cn.ran.flicenter.activity.MainActivity;
 import cn.ran.flicenter.R;
 
 

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.ran.flicenter.I;
-import cn.ran.flicenter.MainActivity;
+import cn.ran.flicenter.activity.MainActivity;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.adapter.GoodsAdapter;
 import cn.ran.flicenter.bean.NewGoodsBean;
@@ -67,8 +67,8 @@ public class NewGoodsFragment_02 extends Fragment {
         //自动修复，排版行数
         // newGoodsRecycler.setHasFixedSize(true);
         newGoodsRecycler.setAdapter(mAdapter);
-        initView();
         initData(I.ACTION_DOWNLOAD, mPageId);
+        initView();
         setListener();
         return layout;
 
