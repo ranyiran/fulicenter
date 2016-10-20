@@ -7,6 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <include layout="@layout/common_head_title" />
     </RelativeLayout>
 
@@ -24,15 +25,17 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tvPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:clickable="true"
                 android:gravity="right"
                 android:text="价格"
                 android:textSize="15sp" />
 
             <ImageView
-
+                android:id="@+id/imPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -46,14 +49,17 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tvTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:clickable="true"
                 android:gravity="center_horizontal"
                 android:text="上架时间"
                 android:textSize="15sp" />
 
             <ImageView
+                android:id="@+id/imTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

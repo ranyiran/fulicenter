@@ -1,6 +1,7 @@
 package cn.ran.flicenter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,6 +34,19 @@ public class GoodsAdapter extends RecyclerView.Adapter {
     RecyclerView parent;
     boolean isMore;
     String tvFooter;
+
+    int sortBy = I.SORT_BY_PRICE_DESC;
+
+    public int getSortBy() {
+        return sortBy;
+    }
+
+    public void setSortBy(int sortBy) {
+        this.sortBy = sortBy;
+        sortBy();
+        
+        notifyDataSetChanged();
+    }
 
     public String getTvFooter() {
         return tvFooter;
@@ -156,5 +172,35 @@ public class GoodsAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
+    private void sortBy() {
+        Collections.sort(mList, new Comparator<NewGoodsBean>() {
+            @Override
+            public int compare(NewGoodsBean lhs, NewGoodsBean rhs) {
+                int result = 0;
+                switch (sortBy) {
+                    case I.SORT_BY_ADDTIME_ASC:
+                        result = (int) (Long.valueOf(lhs.getAddTime()) - Long.valueOf(rhs.getAddTime()));
+                        break;
+                    case I.SORT_BY_ADDTIME_DESC:
+                        result = (int) (Long.valueOf(rhs.getAddTime()) - Long.valueOf(lhs.getAddTime()));
+                        break;
+                    case I.SORT_BY_PRICE_ASC:
+                        result = getPrice(lhs.getCurrencyPrice()) - getPrice(rhs.getCurrencyPrice());
+                        break;
+                    case I.SORT_BY_PRICE_DESC:
+                        result = getPrice(rhs.getCurrencyPrice()) - getPrice(lhs.getCurrencyPrice());
+
+                        break;
+
+                }
+                return result;
+            }
+
+            private int getPrice(String price) {
+                price = price.substring(price.indexOf("￥") + 1);
+                return Integer.valueOf(price);
+            }
+        });
+    }
 
 }

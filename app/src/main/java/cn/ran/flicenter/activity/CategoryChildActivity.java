@@ -8,12 +8,14 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ran.flicenter.I;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.adapter.GoodsAdapter;
@@ -45,10 +47,25 @@ public class CategoryChildActivity extends AppCompatActivity {
     int mNewState;
     int tag;
 
+    boolean addTimeAsc = false;
+    boolean priceAsc = true;
+
+    int sortBy = I.SORT_BY_ADDTIME_DESC;
+
+
+    @Bind(R.id.tvPrice)
+    TextView tvPrice;
+    @Bind(R.id.tvTime)
+    TextView tvTime;
+    @Bind(R.id.imPrice)
+    ImageView imPrice;
+    @Bind(R.id.imTime)
+    ImageView imTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.Activity_category_sort);
+        setContentView(R.layout.activity_category_sort);
         ButterKnife.bind(this);
         mContext = this;
         mList = new ArrayList<NewGoodsBean>();
@@ -173,5 +190,34 @@ public class CategoryChildActivity extends AppCompatActivity {
 
     private void initData(int download, int actionDownload, int mPageId) {
         downloadNewGoods(I.ACTION_DOWNLOAD, tag, mPageId);
+    }
+
+    @OnClick({R.id.tvPrice, R.id.tvTime})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tvPrice:
+                if (priceAsc) {
+                    sortBy = I.SORT_BY_PRICE_ASC;
+                    imPrice.setImageResource(R.drawable.arrow_order_up);
+
+                } else {
+                    sortBy = I.SORT_BY_PRICE_DESC;
+                    imPrice.setImageResource(R.drawable.arrow_order_down);
+                }
+                priceAsc = !priceAsc;
+                break;
+            case R.id.tvTime:
+                if (addTimeAsc) {
+                    sortBy = I.SORT_BY_ADDTIME_ASC;
+                    imTime.setImageResource(R.drawable.arrow_order_up);
+                } else {
+                    sortBy = I.SORT_BY_ADDTIME_DESC;
+                    imTime.setImageResource(R.drawable.arrow_order_down);
+                }
+                addTimeAsc = !addTimeAsc;
+                break;
+        }
+        mAdapter.setSortBy(sortBy);
+
     }
 }
