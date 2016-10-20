@@ -30,6 +30,16 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
     private String footerString;
     boolean isMore;
 
+    String tvTitle;
+
+    public String getTvTitle() {
+        return tvTitle;
+    }
+
+    public void setTvTitle(String tvTitle) {
+        this.tvTitle = tvTitle;
+    }
+
     public boolean isMore() {
         return isMore;
     }
@@ -62,8 +72,10 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
         ImageLoader.downloadImg(mContext, ((BoutiqueViewHolder) holder).boutiqueImageView, boutiqueBean.getImageurl());
         ((BoutiqueViewHolder) holder).boutiqueDescription.setText(boutiqueBean.getDescription());
         ((BoutiqueViewHolder) holder).boutiqueName.setText(boutiqueBean.getName());
+        String title = boutiqueBean.getTitle();
+        setTvTitle(title);
         ((BoutiqueViewHolder) holder).boutiqueTitle.setText(boutiqueBean.getTitle());
-        ((BoutiqueViewHolder) holder).boutiqueLayout.setTag(boutiqueBean.getId());
+        ((BoutiqueViewHolder) holder).boutiqueLayout.setTag(boutiqueBean);
 
     }
 
@@ -92,7 +104,7 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
 
         @OnClick(R.id.boutiqueLayout)
         public void onBoutiqueClick() {
-            int tag = (int) boutiqueLayout.getTag();
+            BoutiqueBean tag = (BoutiqueBean) boutiqueLayout.getTag();
             MFGT.gotoBouTiQueActivity(mContext, tag);
         }
 

@@ -19,6 +19,7 @@ import butterknife.OnClick;
 import cn.ran.flicenter.I;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.adapter.BouTiQueChildAdapter;
+import cn.ran.flicenter.bean.BoutiqueBean;
 import cn.ran.flicenter.bean.GoodsDetailsBean;
 import cn.ran.flicenter.net.NetDao;
 import cn.ran.flicenter.utils.CommonUtils;
@@ -41,9 +42,8 @@ public class BouTiQueActivity extends AppCompatActivity {
     SwipeRefreshLayout boutiqueSwipeRefresh;
     @Bind(R.id.tvTitle)
     TextView tvTitle;
-    int catId;
+    BoutiqueBean boutiqueBean;
     int mPageId = 1;
-
     BouTiQueChildAdapter mBtqAdapter;
     ArrayList<GoodsDetailsBean> mList;
     GridLayoutManager mManager;
@@ -55,9 +55,9 @@ public class BouTiQueActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bout_ti_que);
         ButterKnife.bind(this);
         Intent intent = getIntent();
-        catId = intent.getIntExtra(I.Boutique.ID, 0);
-        L.i("接收" + catId);
-        if (catId == 0) {
+        boutiqueBean = (BoutiqueBean) intent.getSerializableExtra(I.Boutique.ID);
+        L.i("接收" + boutiqueBean);
+        if (boutiqueBean == null) {
             finish();
         }
         initView();
@@ -91,6 +91,7 @@ public class BouTiQueActivity extends AppCompatActivity {
                 initData(I.ACTION_PULL_DOWN);
             }
         });
+
     }
 
     private void initView() {
@@ -112,11 +113,12 @@ public class BouTiQueActivity extends AppCompatActivity {
                 getResources().getColor(R.color.google_yellow)
         );
         boutiqueRecycler.addItemDecoration(new SpaceItemDecoration(12));
-
+        tvTitle.setText(boutiqueBean.getTitle());
     }
 
     private void initData(final int actionDownload) {
-        NetDao.downloadBouTiQueChild(this, catId, mPageId, new OkHttpUtils.OnCompleteListener<GoodsDetailsBean[]>() {
+        int id = boutiqueBean.getId();
+        NetDao.downloadBouTiQueChild(this, id, mPageId, new OkHttpUtils.OnCompleteListener<GoodsDetailsBean[]>() {
             @Override
             public void onSuccess(GoodsDetailsBean[] result) {
                 if (result != null && result.length > 0) {

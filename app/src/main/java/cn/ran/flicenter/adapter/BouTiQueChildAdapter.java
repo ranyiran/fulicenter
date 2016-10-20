@@ -35,7 +35,6 @@ public class BouTiQueChildAdapter extends RecyclerView.Adapter {
     String tvFooter;
 
 
-
     public String getTvFooter() {
         return tvFooter;
     }

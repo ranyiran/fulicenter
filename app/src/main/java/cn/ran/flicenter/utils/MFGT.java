@@ -43,10 +43,10 @@ public class MFGT {
         ((Activity) context).overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
-    public static void gotoBouTiQueActivity(Context context, int catId) {
+    public static void gotoBouTiQueActivity(Context context, BoutiqueBean bean) {
         Intent intent = new Intent();
         intent.setClass(context, BouTiQueActivity.class);
-        intent.putExtra(I.Boutique.ID, catId);
+        intent.putExtra(I.Boutique.ID, bean);
         startActivity(context, intent);
     }
 }
