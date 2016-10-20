@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import cn.ran.flicenter.R;
 import cn.ran.flicenter.bean.CategoryChildBean;
 import cn.ran.flicenter.bean.CategoryGroupBean;
 import cn.ran.flicenter.utils.ImageLoader;
+import cn.ran.flicenter.utils.MFGT;
 
 /**
  * Created by Administrator on 2016/10/20.
@@ -95,7 +97,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View view, ViewGroup parent) {
-        ChildViewHolder holder;
+        final ChildViewHolder holder;
         if (view == null) {
             view = View.inflate(mContext, R.layout.item_category_child, null);
             holder = new ChildViewHolder(view);
@@ -105,10 +107,16 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
             holder = (ChildViewHolder) view.getTag();
         }
 
-        CategoryChildBean childBean = getChild(groupPosition, childPosition);
+        final CategoryChildBean childBean = getChild(groupPosition, childPosition);
         if (childBean != null) {
             ImageLoader.downloadImg(mContext, holder.cateChildImage, childBean.getImageUrl());
             holder.cateChildTitle.setText(childBean.getName());
+            holder.layoutCateChild.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MFGT.gotoCategoryActivity(mContext, childBean.getId());
+                }
+            });
         }
         return view;
     }
@@ -149,6 +157,8 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         ImageView cateChildImage;
         @Bind(R.id.cateChildTitle)
         TextView cateChildTitle;
+        @Bind(R.id.layoutCateChild)
+        LinearLayout layoutCateChild;
 
         ChildViewHolder(View view) {
             ButterKnife.bind(this, view);

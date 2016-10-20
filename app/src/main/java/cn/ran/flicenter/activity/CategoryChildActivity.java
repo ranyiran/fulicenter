@@ -1,14 +1,13 @@
-package cn.ran.flicenter.fragment;
+package cn.ran.flicenter.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.ran.flicenter.I;
-import cn.ran.flicenter.activity.MainActivity;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.adapter.GoodsAdapter;
 import cn.ran.flicenter.bean.NewGoodsBean;
@@ -27,10 +25,9 @@ import cn.ran.flicenter.utils.L;
 import cn.ran.flicenter.utils.OkHttpUtils;
 import cn.ran.flicenter.views.SpaceItemDecoration;
 
-/**
- * Created by Administrator on 2016/10/17.
- */
-public class NewGoodsFragment_02 extends BaseFragment {
+public class CategoryChildActivity extends AppCompatActivity {
+
+
     @Bind(R.id.new_goods_tv_refresh)
     TextView newGoodsTvRefresh;
     @Bind(R.id.new_goods_recycler)
@@ -39,20 +36,21 @@ public class NewGoodsFragment_02 extends BaseFragment {
     SwipeRefreshLayout newGoodsSwipeRefresh;
 
     GoodsAdapter mAdapter;
-    MainActivity mContext;
+    CategoryChildActivity mContext;
     ArrayList<NewGoodsBean> mList;
     GridLayoutManager glm;
 
+
     int mPageId = 1;
     int mNewState;
+    int tag;
 
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_new_goods, container, false);
-        ButterKnife.bind(this, layout);
-        mContext = (MainActivity) getContext();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.Activity_category_sort);
+        ButterKnife.bind(this);
+        mContext = this;
         mList = new ArrayList<NewGoodsBean>();
         mAdapter = new GoodsAdapter(mContext, mList);
         glm = new GridLayoutManager(mContext, I.COLUM_NUM, LinearLayoutManager.VERTICAL, false);
@@ -64,16 +62,14 @@ public class NewGoodsFragment_02 extends BaseFragment {
         });
         newGoodsRecycler.setLayoutManager(glm);
         newGoodsRecycler.setAdapter(mAdapter);
-        super.onCreateView(inflater, container, savedInstanceState);
-       /* initData(I.ACTION_DOWNLOAD, mPageId);
+        Intent intent = getIntent();
+        tag = intent.getIntExtra(I.CategoryChild.CAT_ID, 0);
+        initData(I.ACTION_DOWNLOAD, tag, mPageId);
         initView();
-        setListener();*/
-        return layout;
-
+        setListener();
     }
 
-    @Override
-    protected void setListener() {
+    private void setListener() {
         setOnPullDownListener();
         setOnPullUpListener();
     }
@@ -90,7 +86,7 @@ public class NewGoodsFragment_02 extends BaseFragment {
                         mAdapter.isMore()) {
                     mPageId++;
                     L.i(mPageId + "");
-                    downloadNewGoods(I.ACTION_PULL_UP, mPageId);
+                    downloadNewGoods(I.ACTION_PULL_UP, tag, mPageId);
                 }
                 if (newState != RecyclerView.SCROLL_STATE_DRAGGING) {
                     mAdapter.notifyDataSetChanged();
@@ -107,33 +103,14 @@ public class NewGoodsFragment_02 extends BaseFragment {
         });
     }
 
-    private void setOnPullDownListener() {
-        newGoodsSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                newGoodsSwipeRefresh.setEnabled(true);
-                newGoodsSwipeRefresh.setRefreshing(true);
-                newGoodsTvRefresh.setVisibility(View.VISIBLE);
-                mPageId = 1;
-                downloadNewGoods(I.ACTION_PULL_DOWN, mPageId);
-            }
-        });
-    }
-
-    @Override
-    protected void initData() {
-        downloadNewGoods(I.ACTION_DOWNLOAD, mPageId);
-    }
-
-    private void downloadNewGoods(final int downloadStatus, int mPageId) {
-        NetDao.downloadNewGoods(mContext, mPageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
+    private void downloadNewGoods(final int downloadStatus, int tag, int mPageId) {
+        NetDao.downloadCategoryChild(mContext, tag, mPageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
                     @Override
                     public void onSuccess(NewGoodsBean[] result) {
                         L.i(result.toString());
                         if (result != null && result.length > 0) {
                             mAdapter.setMore(true);
                             ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
-
                             switch (downloadStatus) {
                                 case I.ACTION_DOWNLOAD:
                                     mAdapter.initNewGoods(list);
@@ -170,8 +147,20 @@ public class NewGoodsFragment_02 extends BaseFragment {
         );
     }
 
-    @Override
-    protected void initView() {
+    private void setOnPullDownListener() {
+        newGoodsSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                newGoodsSwipeRefresh.setEnabled(true);
+                newGoodsSwipeRefresh.setRefreshing(true);
+                newGoodsTvRefresh.setVisibility(View.VISIBLE);
+                mPageId = 1;
+                downloadNewGoods(I.ACTION_PULL_DOWN, tag, mPageId);
+            }
+        });
+    }
+
+    private void initView() {
         newGoodsSwipeRefresh.setColorSchemeColors(
                 getResources().getColor(R.color.google_blue),
                 getResources().getColor(R.color.google_green),
@@ -182,9 +171,7 @@ public class NewGoodsFragment_02 extends BaseFragment {
 
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
+    private void initData(int download, int actionDownload, int mPageId) {
+        downloadNewGoods(I.ACTION_DOWNLOAD, tag, mPageId);
     }
 }

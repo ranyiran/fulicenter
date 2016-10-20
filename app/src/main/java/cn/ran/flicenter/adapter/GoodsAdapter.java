@@ -51,7 +51,7 @@ public class GoodsAdapter extends RecyclerView.Adapter {
 
     public GoodsAdapter(Context mContext, ArrayList<NewGoodsBean> mList) {
         this.mContext = mContext;
-        this.mList = mList;
+        this.mList = new ArrayList<>();
         mList.addAll(mList);
     }
 
@@ -155,7 +155,6 @@ public class GoodsAdapter extends RecyclerView.Adapter {
         this.mList.addAll(mList);
         notifyDataSetChanged();
     }
-
 
 
 }
