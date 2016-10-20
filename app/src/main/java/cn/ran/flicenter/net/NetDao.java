@@ -4,6 +4,8 @@ import android.content.Context;
 
 import cn.ran.flicenter.I;
 import cn.ran.flicenter.bean.BoutiqueBean;
+import cn.ran.flicenter.bean.CategoryChildBean;
+import cn.ran.flicenter.bean.CategoryGroupBean;
 import cn.ran.flicenter.bean.GoodsDetailsBean;
 import cn.ran.flicenter.bean.NewGoodsBean;
 import cn.ran.flicenter.utils.OkHttpUtils;
@@ -12,6 +14,22 @@ import cn.ran.flicenter.utils.OkHttpUtils;
  * Created by Administrator on 2016/10/17.
  */
 public class NetDao {
+
+    public static void downloadCateGroup(Context mContext, OkHttpUtils.OnCompleteListener<CategoryGroupBean[]> listener) {
+        OkHttpUtils utils = new OkHttpUtils(mContext);
+        utils.setRequestUrl(I.REQUEST_FIND_CATEGORY_GROUP)
+                .targetClass(CategoryGroupBean[].class)
+                .execute(listener);
+    }
+
+    public static void downloadCateChild(Context mContext, int parentId, OkHttpUtils.OnCompleteListener<CategoryChildBean[]> listener) {
+        OkHttpUtils utils = new OkHttpUtils(mContext);
+        utils.setRequestUrl(I.REQUEST_FIND_CATEGORY_CHILDREN)
+                .addParam(I.CategoryChild.PARENT_ID, String.valueOf(parentId))
+                .targetClass(CategoryChildBean[].class)
+                .execute(listener);
+    }
+
     public static void downloadNewGoods(Context mContext, int pageId, OkHttpUtils.OnCompleteListener<NewGoodsBean[]> listener) {
         OkHttpUtils utils = new OkHttpUtils(mContext);
         utils.setRequestUrl(I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)

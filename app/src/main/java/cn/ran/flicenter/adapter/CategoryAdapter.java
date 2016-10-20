@@ -57,7 +57,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
 
     @Override
     public long getGroupId(int groupPosition) {
-        return 0;
+        return groupPosition;
     }
 
     @Override
@@ -117,6 +117,19 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return false;
     }
+
+    public void initData(ArrayList<CategoryGroupBean>
+                                 mGroupList, ArrayList<ArrayList<CategoryChildBean>> mChildList) {
+        if (mGroupList != null) {
+            this.mGroupList.clear();
+        }
+        this.mGroupList.addAll(mGroupList);
+        if (mChildList != null) {
+            this.mChildList.clear();
+        }
+        this.mChildList.addAll(mChildList);
+    }
+
 
     static class GroupViewHolder {
         @Bind(R.id.cateGroupImage)

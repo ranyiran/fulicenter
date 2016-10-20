@@ -15,7 +15,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.fragment.BoutiqueFragment;
-import cn.ran.flicenter.fragment.NewGoodsFragment_02;
+import cn.ran.flicenter.fragment.CategoryFragment;
+import cn.ran.flicenter.fragment.NewGoodsFragment;
 import cn.ran.flicenter.utils.L;
 
 public class MainActivity extends AppCompatActivity {
@@ -47,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
     // NewGoodsFragment goodsFragment;
     BoutiqueFragment boutiqueFragment;
-    NewGoodsFragment_02 goodsFragment2;
+    NewGoodsFragment goodsFragment;
+    CategoryFragment categoryFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,16 +64,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void initFragment() {
         mFragment = new Fragment[5];
-        goodsFragment2 = new NewGoodsFragment_02();
+        goodsFragment = new NewGoodsFragment();
         boutiqueFragment = new BoutiqueFragment();
-        mFragment[0] = goodsFragment2;
+        categoryFragment = new CategoryFragment();
+        mFragment[0] = goodsFragment;
         mFragment[1] = boutiqueFragment;
+        mFragment[2] = categoryFragment;
 
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_layout, boutiqueFragment)
-                .add(R.id.fragment_layout, goodsFragment2)
-                .show(goodsFragment2)
+                .add(R.id.fragment_layout, goodsFragment)
+                .add(R.id.fragment_layout, categoryFragment)
+                .show(goodsFragment)
                 .hide(boutiqueFragment)
                 .commit();
 
@@ -107,19 +112,15 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.mBtnBoutique:
                 index = 1;
-
                 break;
             case R.id.mBtnCategory:
                 index = 2;
-                L.i("3");
                 break;
             case R.id.mBtnCart:
                 index = 3;
-                L.i("4");
                 break;
             case R.id.mBtnPersonal:
                 index = 4;
-                L.i("5");
                 break;
         }
         setRadioButtonStatus();
