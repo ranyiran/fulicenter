@@ -65,4 +65,13 @@ public class MFGT {
         startActivity(context, intent);
     }
 
+    public static void gotoLoginActivity(Activity mContext, Class<LoginActivity> loginActivityClass) {
+        Intent intent = new Intent(mContext, LoginActivity.class);
+        mContext.startActivity(intent);
+        mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
+
+    public static void Register2Login() {
+        
+    }
 }

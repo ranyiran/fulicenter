@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.fragment_layout, myFragment)
                 .show(goodsFragment)
                 .hide(boutiqueFragment)
+                .hide(categoryFragment)
                 .commit();
 
     }
@@ -128,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.mBtnPersonal:
                 if (FuLiCenterApplication.userName == null) {
-                    MFGT.startActivity(this, LoginActivity.class);
+                    MFGT.gotoLoginActivity(this, LoginActivity.class);
                 }
                 index = 4;
                 break;

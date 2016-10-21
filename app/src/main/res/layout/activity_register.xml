@@ -60,11 +60,11 @@
                 android:src="@drawable/icon_account" />
 
             <EditText
-                android:id="@+id/etRegReUserName"
+                android:id="@+id/etUserNick"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
-                android:hint="再次输入用户名" />
+                android:hint="昵称" />
         </LinearLayout>
 
         <View
@@ -89,7 +89,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
-                android:hint="密码" />
+                android:hint="密码"
+                android:inputType="textPassword" />
         </LinearLayout>
 
         <View
@@ -114,6 +115,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
+                android:inputType="textPassword"
                 android:hint="再次输入密码" />
         </LinearLayout>
 

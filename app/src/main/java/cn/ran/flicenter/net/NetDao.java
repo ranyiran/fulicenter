@@ -9,6 +9,7 @@ import cn.ran.flicenter.bean.CategoryGroupBean;
 import cn.ran.flicenter.bean.GoodsDetailsBean;
 import cn.ran.flicenter.bean.NewGoodsBean;
 import cn.ran.flicenter.bean.Result;
+import cn.ran.flicenter.utils.MD5;
 import cn.ran.flicenter.utils.OkHttpUtils;
 
 /**
@@ -17,14 +18,14 @@ import cn.ran.flicenter.utils.OkHttpUtils;
 public class NetDao {
 
     public static void downloadCateGroup(Context mContext, OkHttpUtils.OnCompleteListener<CategoryGroupBean[]> listener) {
-        OkHttpUtils utils = new OkHttpUtils(mContext);
+        OkHttpUtils<CategoryGroupBean[]> utils = new OkHttpUtils<>(mContext);
         utils.setRequestUrl(I.REQUEST_FIND_CATEGORY_GROUP)
                 .targetClass(CategoryGroupBean[].class)
                 .execute(listener);
     }
 
     public static void downloadCateChild(Context mContext, int parentId, OkHttpUtils.OnCompleteListener<CategoryChildBean[]> listener) {
-        OkHttpUtils utils = new OkHttpUtils(mContext);
+        OkHttpUtils<CategoryChildBean[]> utils = new OkHttpUtils<>(mContext);
         utils.setRequestUrl(I.REQUEST_FIND_CATEGORY_CHILDREN)
                 .addParam(I.CategoryChild.PARENT_ID, String.valueOf(parentId))
                 .targetClass(CategoryChildBean[].class)
@@ -32,7 +33,7 @@ public class NetDao {
     }
 
     public static void downloadNewGoods(Context mContext, int pageId, OkHttpUtils.OnCompleteListener<NewGoodsBean[]> listener) {
-        OkHttpUtils utils = new OkHttpUtils(mContext);
+        OkHttpUtils<NewGoodsBean[]> utils = new OkHttpUtils<>(mContext);
         utils.setRequestUrl(I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)
                 .addParam(I.NewAndBoutiqueGoods.CAT_ID, String.valueOf(I.CAT_ID))
                 .addParam(I.PAGE_ID, String.valueOf(pageId))
@@ -43,7 +44,7 @@ public class NetDao {
     }
 
     public static void downloadGoodsDetail(Context context, int goodsId, OkHttpUtils.OnCompleteListener<GoodsDetailsBean> listener) {
-        OkHttpUtils utils = new OkHttpUtils(context);
+        OkHttpUtils<GoodsDetailsBean> utils = new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_FIND_GOOD_DETAILS)
                 .addParam(I.GoodsDetails.KEY_GOODS_ID, String.valueOf(goodsId))
                 .targetClass(GoodsDetailsBean.class)
@@ -52,14 +53,14 @@ public class NetDao {
     }
 
     public static void downloadBouTiQue(Context context, OkHttpUtils.OnCompleteListener<BoutiqueBean[]> listener) {
-        OkHttpUtils utils = new OkHttpUtils(context);
+        OkHttpUtils<BoutiqueBean[]> utils = new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_FIND_BOUTIQUES)
                 .targetClass(BoutiqueBean[].class)
                 .execute(listener);
     }
 
     public static void downloadBouTiQueChild(Context mContext, int catId, int pageId, OkHttpUtils.OnCompleteListener<GoodsDetailsBean[]> listener) {
-        OkHttpUtils utils = new OkHttpUtils(mContext);
+        OkHttpUtils<GoodsDetailsBean[]> utils = new OkHttpUtils<>(mContext);
         utils.setRequestUrl(I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)
                 .addParam(I.NewAndBoutiqueGoods.CAT_ID, String.valueOf(catId))
                 .addParam(I.PAGE_ID, String.valueOf(pageId))
@@ -70,7 +71,7 @@ public class NetDao {
     }
 
     public static void downloadCategoryChild(Context mContext, int catId, int pageId, OkHttpUtils.OnCompleteListener<NewGoodsBean[]> listener) {
-        OkHttpUtils utils = new OkHttpUtils(mContext);
+        OkHttpUtils<NewGoodsBean[]> utils = new OkHttpUtils<>(mContext);
         utils.setRequestUrl(I.REQUEST_FIND_GOODS_DETAILS)
                 .addParam(I.NewAndBoutiqueGoods.CAT_ID, String.valueOf(catId))
                 .addParam(I.PAGE_ID, String.valueOf(pageId))
@@ -81,11 +82,23 @@ public class NetDao {
     }
 
     public static void loginSet(Context mContext, String userName, String passWord, OkHttpUtils.OnCompleteListener<Result> listener) {
-        OkHttpUtils utils = new OkHttpUtils(mContext);
+        OkHttpUtils<Result> utils = new OkHttpUtils<>(mContext);
         utils.setRequestUrl(I.REQUEST_LOGIN)
                 .addParam(I.User.USER_NAME, userName)
-                .addParam(I.User.PASSWORD, passWord)
+                .addParam(I.User.PASSWORD, MD5.getMessageDigest(passWord))
                 .targetClass(Result.class)
                 .execute(listener);
     }
+
+    public static void register(Context mContext, String username, String usernick, String password, OkHttpUtils.OnCompleteListener<Result> listener) {
+        OkHttpUtils<Result> utils = new OkHttpUtils<>(mContext);
+        utils.setRequestUrl(I.REQUEST_REGISTER)
+                .addParam(I.User.USER_NAME, username)
+                .addParam(I.User.NICK, usernick)
+                .addParam(I.User.PASSWORD, MD5.getMessageDigest(password))
+                .targetClass(Result.class)
+                .post()
+                .execute(listener);
+    }
+
 }
