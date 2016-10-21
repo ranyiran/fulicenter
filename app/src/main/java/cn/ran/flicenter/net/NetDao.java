@@ -8,6 +8,7 @@ import cn.ran.flicenter.bean.CategoryChildBean;
 import cn.ran.flicenter.bean.CategoryGroupBean;
 import cn.ran.flicenter.bean.GoodsDetailsBean;
 import cn.ran.flicenter.bean.NewGoodsBean;
+import cn.ran.flicenter.bean.Result;
 import cn.ran.flicenter.utils.OkHttpUtils;
 
 /**
@@ -77,5 +78,14 @@ public class NetDao {
                 .targetClass(NewGoodsBean[].class)
                 .execute(listener);
 
+    }
+
+    public static void loginSet(Context mContext, String userName, String passWord, OkHttpUtils.OnCompleteListener<Result> listener) {
+        OkHttpUtils utils = new OkHttpUtils(mContext);
+        utils.setRequestUrl(I.REQUEST_LOGIN)
+                .addParam(I.User.USER_NAME, userName)
+                .addParam(I.User.PASSWORD, passWord)
+                .targetClass(Result.class)
+                .execute(listener);
     }
 }

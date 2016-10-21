@@ -34,10 +34,37 @@
                 android:src="@drawable/icon_account" />
 
             <EditText
-                android:id="@+id/etLoginUserName"
+                android:id="@+id/etRegUserName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@null" />
+                android:background="@null"
+                android:hint="用户名" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/btn_gray_normal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_account" />
+
+            <EditText
+                android:id="@+id/etRegReUserName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="再次输入用户名" />
         </LinearLayout>
 
         <View
@@ -58,20 +85,46 @@
                 android:src="@drawable/icon_pwd" />
 
             <EditText
-                android:id="@+id/etLoginPwd"
+                android:id="@+id/etRegPwd"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@null" />
+                android:background="@null"
+                android:hint="密码" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/btn_gray_normal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_pwd" />
+
+            <EditText
+                android:id="@+id/etRegRePwd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="再次输入密码" />
         </LinearLayout>
 
         <Button
-            android:id="@+id/btnLogin"
+            android:id="@+id/btnEmpty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:background="@drawable/btn_bg_orange"
-            android:text="立即登陆"
+            android:text="清空"
             android:textSize="20sp" />
 
         <Button
@@ -86,3 +139,4 @@
     </LinearLayout>
 
 </LinearLayout>
+

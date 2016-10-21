@@ -13,11 +13,14 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.ran.flicenter.FuLiCenterApplication;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.fragment.BoutiqueFragment;
 import cn.ran.flicenter.fragment.CategoryFragment;
+import cn.ran.flicenter.fragment.MyFragment;
 import cn.ran.flicenter.fragment.NewGoodsFragment;
 import cn.ran.flicenter.utils.L;
+import cn.ran.flicenter.utils.MFGT;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     BoutiqueFragment boutiqueFragment;
     NewGoodsFragment goodsFragment;
     CategoryFragment categoryFragment;
+    MyFragment myFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,15 +71,18 @@ public class MainActivity extends AppCompatActivity {
         goodsFragment = new NewGoodsFragment();
         boutiqueFragment = new BoutiqueFragment();
         categoryFragment = new CategoryFragment();
+        myFragment = new MyFragment();
         mFragment[0] = goodsFragment;
         mFragment[1] = boutiqueFragment;
         mFragment[2] = categoryFragment;
+        mFragment[4] = myFragment;
 
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_layout, boutiqueFragment)
                 .add(R.id.fragment_layout, goodsFragment)
                 .add(R.id.fragment_layout, categoryFragment)
+                .add(R.id.fragment_layout, myFragment)
                 .show(goodsFragment)
                 .hide(boutiqueFragment)
                 .commit();
@@ -120,6 +127,9 @@ public class MainActivity extends AppCompatActivity {
                 index = 3;
                 break;
             case R.id.mBtnPersonal:
+                if (FuLiCenterApplication.userName == null) {
+                    MFGT.startActivity(this, LoginActivity.class);
+                }
                 index = 4;
                 break;
         }

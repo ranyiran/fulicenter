@@ -20,7 +20,7 @@
             android:checked="true"
             android:drawableTop="@drawable/selector_menu_item_new_good"
             android:gravity="center_horizontal"
-            android:text="@string/new_goods"
+            android:text="新品"
             android:textColor="@color/main_button_text_color" />
 
         <RadioButton
@@ -29,7 +29,7 @@
             android:button="@null"
             android:drawableTop="@drawable/selector_menu_item_boutique"
             android:gravity="center_horizontal"
-            android:text="@string/boutique"
+            android:text="精选"
             android:textColor="@color/main_button_text_color" />
 
         <RadioButton
@@ -39,7 +39,7 @@
             android:checked="false"
             android:drawableTop="@drawable/selector_menu_item_category"
             android:gravity="center_horizontal"
-            android:text="@string/category"
+            android:text="分类"
             android:textColor="@color/main_button_text_color" />
 
 
@@ -57,7 +57,7 @@
                 android:button="@null"
                 android:drawableTop="@drawable/selector_menu_item_cart"
                 android:gravity="center_horizontal"
-                android:text="@string/cart"
+                android:text="购物车"
                 android:textColor="@color/main_button_text_color" />
 
             <TextView
@@ -78,7 +78,7 @@
             android:button="@null"
             android:drawableTop="@drawable/selector_menu_item_personal_center"
             android:gravity="center_horizontal"
-            android:text="@string/personal"
+            android:text="我"
             android:textColor="@color/main_button_text_color" />
 
     </LinearLayout>

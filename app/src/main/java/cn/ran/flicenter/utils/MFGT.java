@@ -4,13 +4,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import cn.ran.flicenter.activity.BouTiQueActivity;
 import cn.ran.flicenter.activity.CategoryChildActivity;
 import cn.ran.flicenter.activity.GoodsDetailsActivity;
 import cn.ran.flicenter.I;
+import cn.ran.flicenter.activity.LoginActivity;
 import cn.ran.flicenter.activity.MainActivity;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.bean.BoutiqueBean;
+import cn.ran.flicenter.bean.CategoryChildBean;
 
 
 public class MFGT {
@@ -51,10 +56,13 @@ public class MFGT {
         startActivity(context, intent);
     }
 
-    public static void gotoCategoryActivity(Context context, int catId) {
+    public static void gotoCategoryActivity(Context context, int catId, String groupName, ArrayList<CategoryChildBean> list) {
         Intent intent = new Intent();
         intent.setClass(context, CategoryChildActivity.class);
         intent.putExtra(I.CategoryChild.CAT_ID, catId);
+        intent.putExtra(I.CategoryGroup.NAME, groupName);
+        intent.putExtra(I.CategoryChild.ID, list);
         startActivity(context, intent);
     }
+
 }

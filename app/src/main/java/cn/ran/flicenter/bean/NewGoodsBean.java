@@ -211,4 +211,5 @@ public class NewGoodsBean implements Serializable {
                 ", addTime='" + addTime + '\'' +
                 '}';
     }
+
 }
