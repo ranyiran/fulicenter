@@ -19,12 +19,15 @@ import butterknife.OnClick;
 import cn.ran.flicenter.I;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.adapter.GoodsAdapter;
+import cn.ran.flicenter.bean.CategoryChildBean;
 import cn.ran.flicenter.bean.NewGoodsBean;
 import cn.ran.flicenter.net.NetDao;
 import cn.ran.flicenter.utils.ConvertUtils;
 import cn.ran.flicenter.utils.ImageLoader;
 import cn.ran.flicenter.utils.L;
+import cn.ran.flicenter.utils.MFGT;
 import cn.ran.flicenter.utils.OkHttpUtils;
+import cn.ran.flicenter.views.CatChildFilterButton;
 import cn.ran.flicenter.views.SpaceItemDecoration;
 
 public class CategoryChildActivity extends AppCompatActivity {
@@ -52,6 +55,9 @@ public class CategoryChildActivity extends AppCompatActivity {
 
     int sortBy = I.SORT_BY_ADDTIME_DESC;
 
+    String stringExtra;
+    ArrayList<CategoryChildBean> mChildList;
+
 
     @Bind(R.id.tvPrice)
     TextView tvPrice;
@@ -61,6 +67,10 @@ public class CategoryChildActivity extends AppCompatActivity {
     ImageView imPrice;
     @Bind(R.id.imTime)
     ImageView imTime;
+    @Bind(R.id.btnCatChildFilter)
+    CatChildFilterButton btnCatChildFilter;
+    @Bind(R.id.lv_details_back)
+    ImageView lvDetailsBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +91,8 @@ public class CategoryChildActivity extends AppCompatActivity {
         newGoodsRecycler.setAdapter(mAdapter);
         Intent intent = getIntent();
         tag = intent.getIntExtra(I.CategoryChild.CAT_ID, 0);
+        stringExtra = intent.getStringExtra(I.CategoryGroup.NAME);
+        mChildList = (ArrayList<CategoryChildBean>) intent.getSerializableExtra(I.CategoryChild.ID);
         initData(I.ACTION_DOWNLOAD, tag, mPageId);
         initView();
         setListener();
@@ -185,11 +197,12 @@ public class CategoryChildActivity extends AppCompatActivity {
                 getResources().getColor(R.color.google_yellow)
         );
         newGoodsRecycler.addItemDecoration(new SpaceItemDecoration(12));
-
+        btnCatChildFilter.setText(stringExtra);
     }
 
     private void initData(int download, int actionDownload, int mPageId) {
         downloadNewGoods(I.ACTION_DOWNLOAD, tag, mPageId);
+        btnCatChildFilter.setOnCatFilterClickListener(stringExtra, mChildList);
     }
 
     @OnClick({R.id.tvPrice, R.id.tvTime})
@@ -219,5 +232,10 @@ public class CategoryChildActivity extends AppCompatActivity {
         }
         mAdapter.setSortBy(sortBy);
 
+    }
+
+    @OnClick(R.id.lv_details_back)
+    public void onClick() {
+        MFGT.finish(this);
     }
 }
