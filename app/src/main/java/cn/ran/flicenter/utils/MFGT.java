@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import cn.ran.flicenter.activity.BouTiQueActivity;
@@ -14,6 +13,7 @@ import cn.ran.flicenter.I;
 import cn.ran.flicenter.activity.LoginActivity;
 import cn.ran.flicenter.activity.MainActivity;
 import cn.ran.flicenter.R;
+import cn.ran.flicenter.activity.RegisterActivity;
 import cn.ran.flicenter.bean.BoutiqueBean;
 import cn.ran.flicenter.bean.CategoryChildBean;
 
@@ -72,6 +72,19 @@ public class MFGT {
     }
 
     public static void Register2Login() {
-        
+
+    }
+
+    public static void gotoRegister(Activity mContext) {
+        Intent intent = new Intent();
+        intent.setClass(mContext, RegisterActivity.class);
+        startActivityForResult(mContext, intent, I.REQUEST_CODE_REGISTER);
+
+    }
+
+    public static void startActivityForResult(Activity mContext, Intent intent, int requestCode) {
+        mContext.startActivityForResult(intent, requestCode);
+        mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
     }
 }

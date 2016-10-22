@@ -137,6 +137,7 @@ public class RegisterActivity extends AppCompatActivity {
                 } else {
                     if (result.isRetMsg()) {
                         CommonUtils.showLongToast(R.string.register_success);
+                        setResult(RESULT_OK, new Intent().putExtra(I.User.USER_NAME, userName));
                         MFGT.finish((Activity) mContext);
                     } else {
                         CommonUtils.showLongToast(R.string.register_fail_exists);

@@ -1,9 +1,10 @@
 package cn.ran.flicenter.activity;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,11 +17,11 @@ import com.google.gson.Gson;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.ran.flicenter.I;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.bean.Result;
 import cn.ran.flicenter.bean.UserAvatarBean;
 import cn.ran.flicenter.net.NetDao;
-import cn.ran.flicenter.utils.L;
 import cn.ran.flicenter.utils.MFGT;
 import cn.ran.flicenter.utils.OkHttpUtils;
 
@@ -40,35 +41,37 @@ public class LoginActivity extends AppCompatActivity {
     Button btnReg;
 
     String userName, password;
+    Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        mContext = this;
         ButterKnife.bind(this);
-        initView();
-        initData();
+        Intent intent = getIntent();
+        String toUserName = intent.getStringExtra("passusername");
+        etLoginUserName.setText(toUserName);
     }
 
-    private void initView() {
-        userName = etLoginUserName.getText().toString();
-        password = etLoginPwd.getText().toString();
-    }
 
     private void initData() {
-        onLogin(userName, password);
-
-    }
-
-
-    private void onLogin(String userName, String password) {
+        userName = etLoginUserName.getText().toString();
+        password = etLoginPwd.getText().toString();
         NetDao.loginSet(this, userName, password, new OkHttpUtils.OnCompleteListener<Result>() {
             @Override
             public void onSuccess(Result result) {
-                if (result.getRetCode() == 0 && result.isRetMsg() == true) {
+                if (result.getRetCode() == 0) {
                     String json = result.getRetData().toString();
                     Gson gson = new Gson();
                     UserAvatarBean user = gson.fromJson(json, UserAvatarBean.class);
+                    String userNick = user.getMuserNick();
+                    Toast.makeText(LoginActivity.this, "欢迎用户:" + userNick, Toast.LENGTH_SHORT).show();
+                    MFGT.gotoMainActivity((Activity) mContext);
+                } else if (result.getRetCode() == I.MSG_LOGIN_UNKNOW_USER) {
+                    Toast.makeText(LoginActivity.this, "用户不存在", Toast.LENGTH_SHORT).show();
+                } else if (result.getRetCode() == I.MSG_LOGIN_ERROR_PASSWORD) {
+                    Toast.makeText(LoginActivity.this, "账户密码错误", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -87,8 +90,23 @@ public class LoginActivity extends AppCompatActivity {
 
                 break;
             case R.id.btnReg:
-                MFGT.startActivity(this, RegisterActivity.class);
+                MFGT.gotoRegister(LoginActivity.this);
                 break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        MFGT.finish(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == I.REQUEST_CODE_REGISTER) {
+            String name = data.getStringExtra(I.User.USER_NAME);
+            etLoginUserName.setText(name);
+
         }
     }
 }

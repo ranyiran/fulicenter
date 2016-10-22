@@ -1,5 +1,6 @@
 package cn.ran.flicenter.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ran.flicenter.FuLiCenterApplication;
+import cn.ran.flicenter.I;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.fragment.BoutiqueFragment;
 import cn.ran.flicenter.fragment.CategoryFragment;
@@ -150,4 +152,5 @@ public class MainActivity extends AppCompatActivity {
         setRadioButtonStatus();
         currentIndex = index;
     }
+
 }
