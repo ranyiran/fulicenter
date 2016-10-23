@@ -1,17 +1,21 @@
 package cn.ran.flicenter.activity;
 
+import android.app.backup.FullBackupDataOutput;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.ran.flicenter.FuLiCenterApplication;
 import cn.ran.flicenter.I;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.bean.AlbumsBean;
+import cn.ran.flicenter.bean.CartResultBean;
 import cn.ran.flicenter.bean.GoodsDetailsBean;
 import cn.ran.flicenter.net.NetDao;
 import cn.ran.flicenter.utils.CommonUtils;
@@ -47,12 +51,20 @@ public class GoodsDetailsActivity extends BaseActivity {
     FlowIndicator detailsFlowIndicator;
     @Bind(R.id.lv_details_back)
     ImageView lvDetailsBack;
+    @Bind(R.id.iv_details_cart)
+    ImageView ivDetailsCart;
+    @Bind(R.id.iv_details_collect)
+    ImageView ivDetailsCollect;
+    @Bind(R.id.iv_details_share)
+    ImageView ivDetailsShare;
+
+    String userName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.item_goods_details);
         ButterKnife.bind(this);
-
+        userName = FuLiCenterApplication.userName;
         goodsId = getIntent().getIntExtra(I.GoodsDetails.KEY_GOODS_ID, 0);
         if (goodsId == 0) {
             finish();
@@ -130,5 +142,40 @@ public class GoodsDetailsActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    @OnClick({R.id.lv_details_back, R.id.iv_details_cart, R.id.iv_details_collect, R.id.iv_details_share})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.lv_details_back:
+                MFGT.finish(this);
+                break;
+            case R.id.iv_details_cart:
+                int count = 1;
+                initCartData(count);
+                break;
+            case R.id.iv_details_collect:
+                break;
+            case R.id.iv_details_share:
+                break;
+        }
+    }
+
+    private void initCartData(int count) {
+        NetDao.downloadCart(mContext, goodsId, userName, count, true, new OkHttpUtils.OnCompleteListener<CartResultBean>() {
+            @Override
+            public void onSuccess(CartResultBean result) {
+                if (result.getSuccess() == true) {
+                    CommonUtils.showShortToast(R.string.cart_sucess);
+                } else {
+                    CommonUtils.showShortToast(R.string.cart_error);
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
     }
 }

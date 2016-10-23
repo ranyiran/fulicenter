@@ -18,6 +18,7 @@ import cn.ran.flicenter.FuLiCenterApplication;
 import cn.ran.flicenter.I;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.fragment.BoutiqueFragment;
+import cn.ran.flicenter.fragment.CartFragment;
 import cn.ran.flicenter.fragment.CategoryFragment;
 import cn.ran.flicenter.fragment.MyFragment;
 import cn.ran.flicenter.fragment.NewGoodsFragment;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     NewGoodsFragment goodsFragment;
     CategoryFragment categoryFragment;
     MyFragment myFragment;
+    CartFragment cartFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +76,11 @@ public class MainActivity extends AppCompatActivity {
         boutiqueFragment = new BoutiqueFragment();
         categoryFragment = new CategoryFragment();
         myFragment = new MyFragment();
+        cartFragment = new CartFragment();
         mFragment[0] = goodsFragment;
         mFragment[1] = boutiqueFragment;
         mFragment[2] = categoryFragment;
+        mFragment[3] = cartFragment;
         mFragment[4] = myFragment;
 
         getSupportFragmentManager()
@@ -84,10 +88,12 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.fragment_layout, boutiqueFragment)
                 .add(R.id.fragment_layout, goodsFragment)
                 .add(R.id.fragment_layout, categoryFragment)
+                .add(R.id.fragment_layout, cartFragment)
                 .add(R.id.fragment_layout, myFragment)
                 .show(goodsFragment)
                 .hide(boutiqueFragment)
                 .hide(categoryFragment)
+                .hide(cartFragment)
                 .commit();
 
     }

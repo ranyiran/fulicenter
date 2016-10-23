@@ -4,6 +4,8 @@ import android.content.Context;
 
 import cn.ran.flicenter.I;
 import cn.ran.flicenter.bean.BoutiqueBean;
+import cn.ran.flicenter.bean.CartBean;
+import cn.ran.flicenter.bean.CartResultBean;
 import cn.ran.flicenter.bean.CategoryChildBean;
 import cn.ran.flicenter.bean.CategoryGroupBean;
 import cn.ran.flicenter.bean.GoodsDetailsBean;
@@ -99,6 +101,19 @@ public class NetDao {
                 .targetClass(Result.class)
                 .post()
                 .execute(listener);
+    }
+
+    public static void downloadCart(Context mContext, int goodsId, String userName, int count, boolean isChecked
+            , OkHttpUtils.OnCompleteListener<CartResultBean> listener) {
+        OkHttpUtils utils = new OkHttpUtils(mContext);
+        utils.setRequestUrl(I.REQUEST_ADD_CART)
+                .addParam(I.Cart.GOODS_ID, String.valueOf(goodsId))
+                .addParam(I.Cart.USER_NAME, userName)
+                .addParam(I.Cart.COUNT, String.valueOf(count))
+                .targetClass(CartResultBean.class)
+                .addParam(I.Cart.IS_CHECKED, String.valueOf(isChecked))
+                .execute(listener);
+
     }
 
 }

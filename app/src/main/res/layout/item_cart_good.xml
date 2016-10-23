@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+    <CheckBox
+        android:layout_margin="3dp"
+        android:id="@+id/chkGoods"
+        android:clickable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:button="@mipmap/checkbox_normal" />
+
+    <ImageView
+        android:layout_margin="3dp"
+        android:id="@+id/imGoodsImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_toRightOf="@+id/chkGoods"
+        android:src="@drawable/category_child" />
+
+    <TextView
+        android:layout_margin="3dp"
+        android:id="@+id/tvGoodsName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/imGoodsImage"
+        android:text="商品名称"
+        android:textColor="@color/item_good_price"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:layout_margin="3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvGoodsName"
+        android:layout_toRightOf="@+id/imGoodsImage">
+
+        <ImageView
+            android:id="@+id/imAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@mipmap/add_cart" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="(1)"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" />
+
+        <ImageView
+            android:id="@+id/imDel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@mipmap/del_cart" />
+
+    </LinearLayout>
+
+    <TextView
+        android:textSize="22sp"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="￥457"
+        android:textColor="@color/good_detail_currency_price" />
+</RelativeLayout>

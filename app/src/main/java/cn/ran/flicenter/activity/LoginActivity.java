@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.ran.flicenter.FuLiCenterApplication;
 import cn.ran.flicenter.I;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.bean.Result;
@@ -66,6 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                     Gson gson = new Gson();
                     UserAvatarBean user = gson.fromJson(json, UserAvatarBean.class);
                     String userNick = user.getMuserNick();
+                    String userName = FuLiCenterApplication.userName;
                     Toast.makeText(LoginActivity.this, "欢迎用户:" + userNick, Toast.LENGTH_SHORT).show();
                     MFGT.gotoMainActivity((Activity) mContext);
                 } else if (result.getRetCode() == I.MSG_LOGIN_UNKNOW_USER) {
