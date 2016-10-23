@@ -1,9 +1,11 @@
 package cn.ran.flicenter.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2016/10/13.
  */
-public class UserAvatarBean {
+public class UserAvatarBean implements Serializable {
 
     /**
      * muserName : a952700
