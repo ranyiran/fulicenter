@@ -1,5 +1,6 @@
 package cn.ran.flicenter.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ran.flicenter.FuLiCenterApplication;
+import cn.ran.flicenter.I;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.fragment.BoutiqueFragment;
 import cn.ran.flicenter.fragment.CartFragment;
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
     int index;
     int currentIndex;
+
+    int status;
 
     // NewGoodsFragment goodsFragment;
     BoutiqueFragment boutiqueFragment;
@@ -159,4 +163,23 @@ public class MainActivity extends AppCompatActivity {
         currentIndex = index;
     }
 
+    @Override
+    protected void onResume() {
+        if (FuLiCenterApplication.getUser() != null) {
+            index = 4;
+        } else {
+            index = 0;
+        }
+        setFragment();
+        super.onResume();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == I.REQUEST_CODE_LOGIN && FuLiCenterApplication.getUser() != null) {
+            index = 4;
+        }
+    }
 }

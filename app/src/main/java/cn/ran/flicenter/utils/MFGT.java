@@ -6,13 +6,13 @@ import android.content.Intent;
 
 import java.util.ArrayList;
 
+import cn.ran.flicenter.I;
+import cn.ran.flicenter.R;
 import cn.ran.flicenter.activity.BouTiQueActivity;
 import cn.ran.flicenter.activity.CategoryChildActivity;
 import cn.ran.flicenter.activity.GoodsDetailsActivity;
-import cn.ran.flicenter.I;
 import cn.ran.flicenter.activity.LoginActivity;
 import cn.ran.flicenter.activity.MainActivity;
-import cn.ran.flicenter.R;
 import cn.ran.flicenter.activity.RegisterActivity;
 import cn.ran.flicenter.bean.BoutiqueBean;
 import cn.ran.flicenter.bean.CategoryChildBean;
@@ -87,4 +87,18 @@ public class MFGT {
         mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
     }
+
+    public static void gotoMainForResult(Activity mContext) {
+        Intent intent = new Intent();
+        intent.setClass(mContext, MainActivity.class);
+        startActivityForResult(mContext, intent, I.REQUEST_CODE_LOGIN);
+
+    }
+    public static void gotoMainForResultSplash(Activity mContext) {
+        Intent intent = new Intent();
+        intent.setClass(mContext, MainActivity.class);
+        startActivityForResult(mContext, intent, 103);
+
+    }
+
 }

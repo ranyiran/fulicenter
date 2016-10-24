@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (isSuccess) {
                         FuLiCenterApplication.setUser(user);
                         SharePreferencesUtils.getInstance(mContext).saveUser(user.getMuserName());
-                        MFGT.gotoMainActivity((Activity) mContext);
+                        MFGT.gotoMainForResult((Activity) mContext);
                         Toast.makeText(LoginActivity.this, "欢迎用户:" + userNick, Toast.LENGTH_SHORT).show();
                     } else {
                         CommonUtils.showLongToast(R.string.user_database_error);

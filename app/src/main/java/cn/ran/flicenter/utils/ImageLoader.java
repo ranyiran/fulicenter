@@ -15,6 +15,7 @@ import java.net.URLEncoder;
 
 import cn.ran.flicenter.I;
 import cn.ran.flicenter.R;
+import cn.ran.flicenter.bean.UserAvatarBean;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -30,53 +31,26 @@ public class ImageLoader {
     private static final int DOWNLOAD_ERROR = 1;
 
     private static OkHttpClient mOkHttpClient;
-    /**
-     * mHandler不能单例，否则一个mHandler不能准确地处理多个mBean
-     */
-    private Handler mHandler;
     private static LruCache<String, Bitmap> mCaches;
+    private static String mTag;
     ImageBean mBean;
 
     /**
      * RecyclerView、listView、GridView等容器
      */
     ViewGroup mParentLayout;
-    private static String mTag;
-    /**
-     * 缺省图片
-     */
-    private int mDefaultPicId;
     /**
      * ListView、RecyclerView是否在拖拽中，true：拖拽中
      */
     boolean mIsDragging;
-
-    public interface OnImageLoadListener {
-        void onSuccess(String url, Bitmap bitmap);
-
-        void onError(String error);
-    }
-
-    private class ImageBean {
-        String url;
-        int width;
-        int height;
-        Bitmap bitmap;
-        OnImageLoadListener listener;
-        String saveFileName;
-        String error;
-        ImageView imageView;
-    }
-
     /**
-     * 创建ImageLoader对象
-     *
-     * @param baseUrl:服务端根地址
-     * @return
+     * mHandler不能单例，否则一个mHandler不能准确地处理多个mBean
      */
-    public static ImageLoader build(String baseUrl) {
-        return new ImageLoader(baseUrl);
-    }
+    private Handler mHandler;
+    /**
+     * 缺省图片
+     */
+    private int mDefaultPicId;
 
     private ImageLoader(String baseUrl) {
         mBean = new ImageBean();
@@ -93,6 +67,68 @@ public class ImageLoader {
         if (mCaches == null) {
             initCaches();
         }
+    }
+
+    /**
+     * 创建ImageLoader对象
+     *
+     * @param baseUrl:服务端根地址
+     * @return
+     */
+    public static ImageLoader build(String baseUrl) {
+        return new ImageLoader(baseUrl);
+    }
+
+    /**
+     * 释放ImageLoader类的静态对象
+     */
+    public static void release() {
+        if (mOkHttpClient != null) {
+            mOkHttpClient = null;
+            mCaches = null;
+        }
+    }
+
+    public static void downloadImg(Context context, ImageView imageView, String thumb) {
+        setImage(I.DOWNLOAD_IMG_URL + thumb, context, imageView, true);
+    }
+
+    public static void downloadImg(Context context, ImageView imageView, String thumb, boolean isDragging) {
+        setImage(I.DOWNLOAD_IMG_URL + thumb, context, imageView, isDragging);
+    }
+
+    public static void setImage(String url, Context context, ImageView imageView, boolean isDragging) {
+        ImageLoader.build(url)
+                .defaultPicture(R.drawable.nopic)
+                .imageView(imageView)
+                .setDragging(isDragging)
+                .showImage(context);
+    }
+
+    /*
+        http://101.251.196.90:8000/FuLiCenterServerV2.0/
+        downloadAvatar?name_or_hxid=a952700&avatarType=user_avatar&m_avatar_suffix=.jpg&width=200&height=200
+http://101.251.196.90:8000/FuLiCenterServerV2.0/downloadAvatar?name_or_hxid=a952700&avatarType=user_avatar&m_avatar_suffix=.jpg&width=200&height=200
+http://101.251.196.90:8000/FuLiCenterServerV2.0/downloadAvatar?name_or_hxid=a952700&avatarType=user_avatar&m_avatar_suffix=.jpg&width=200&height=200
+         */
+    public static String getAvatarUrl(UserAvatarBean user) {
+        if (user != null) {
+            String url = I.DOWNLOAD_AVATAR_URL + I.NAME_OR_HXID + "="
+
+                    + user.getMuserName() + I.AND + I.AVATAR_TYPE + "=" + user.getMavatarPath() + I.AND + I.AVATAR_SUFFIX
+                    + "=" + user.getMavatarSuffix() + I.AND + "width=200&height=200";
+            L.i("url======" + url);
+            return url;
+
+        }
+        return null;
+    }
+
+    public static void setAvatar(String url, Context mContext, ImageView imageView) {
+        ImageLoader.build(url)
+                .defaultPicture(R.drawable.contactlogo)
+                .imageView(imageView)
+                .showImage(mContext);
     }
 
     private void initCaches() {
@@ -352,29 +388,21 @@ public class ImageLoader {
         }
     }
 
-    /**
-     * 释放ImageLoader类的静态对象
-     */
-    public static void release() {
-        if (mOkHttpClient != null) {
-            mOkHttpClient = null;
-            mCaches = null;
-        }
+    public interface OnImageLoadListener {
+        void onSuccess(String url, Bitmap bitmap);
+
+        void onError(String error);
     }
 
-    public static void downloadImg(Context context, ImageView imageView, String thumb) {
-        setImage(I.DOWNLOAD_IMG_URL + thumb, context, imageView, true);
+    private class ImageBean {
+        String url;
+        int width;
+        int height;
+        Bitmap bitmap;
+        OnImageLoadListener listener;
+        String saveFileName;
+        String error;
+        ImageView imageView;
     }
 
-    public static void downloadImg(Context context, ImageView imageView, String thumb, boolean isDragging) {
-        setImage(I.DOWNLOAD_IMG_URL + thumb, context, imageView, isDragging);
-    }
-
-    public static void setImage(String url, Context context, ImageView imageView, boolean isDragging) {
-        ImageLoader.build(url)
-                .defaultPicture(R.drawable.nopic)
-                .imageView(imageView)
-                .setDragging(isDragging)
-                .showImage(context);
-    }
 }
