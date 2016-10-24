@@ -1,6 +1,7 @@
 package cn.ran.flicenter.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -22,9 +21,14 @@ import cn.ran.flicenter.I;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.bean.Result;
 import cn.ran.flicenter.bean.UserAvatarBean;
+import cn.ran.flicenter.dao.SharePreferencesUtils;
+import cn.ran.flicenter.dao.UserDao;
 import cn.ran.flicenter.net.NetDao;
+import cn.ran.flicenter.utils.CommonUtils;
+import cn.ran.flicenter.utils.L;
 import cn.ran.flicenter.utils.MFGT;
 import cn.ran.flicenter.utils.OkHttpUtils;
+import cn.ran.flicenter.utils.ResultUtils;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -57,29 +61,42 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void initData() {
+        final ProgressDialog bd = new ProgressDialog(mContext);
+        bd.setMessage(getResources().getString(R.string.login));
+        bd.show();
         userName = etLoginUserName.getText().toString();
         password = etLoginPwd.getText().toString();
-        NetDao.loginSet(this, userName, password, new OkHttpUtils.OnCompleteListener<Result>() {
+        NetDao.loginSet(this, userName, password, new OkHttpUtils.OnCompleteListener<String>() {
             @Override
-            public void onSuccess(Result result) {
-                if (result.getRetCode() == 0) {
-                    String json = result.getRetData().toString();
-                    Gson gson = new Gson();
-                    UserAvatarBean user = gson.fromJson(json, UserAvatarBean.class);
+            public void onSuccess(String s) {
+                Result result = ResultUtils.getResultFromJson(s, UserAvatarBean.class);
+                if (result.isRetMsg()) {
+                    UserAvatarBean user = (UserAvatarBean) result.getRetData();
                     String userNick = user.getMuserNick();
-                    String userName = FuLiCenterApplication.userName;
-                    Toast.makeText(LoginActivity.this, "欢迎用户:" + userNick, Toast.LENGTH_SHORT).show();
-                    MFGT.gotoMainActivity((Activity) mContext);
+                    UserDao dao = new UserDao(mContext);
+                    L.i("UserAvatarBean = " + user.toString());
+                    boolean isSuccess = dao.saveUser(user);
+                    L.e("isS" + isSuccess);
+                    if (isSuccess) {
+                        FuLiCenterApplication.setUser(user);
+                        SharePreferencesUtils.getInstance(mContext).saveUser(user.getMuserName());
+                        MFGT.gotoMainActivity((Activity) mContext);
+                        Toast.makeText(LoginActivity.this, "欢迎用户:" + userNick, Toast.LENGTH_SHORT).show();
+                    } else {
+                        CommonUtils.showLongToast(R.string.user_database_error);
+                    }
+
                 } else if (result.getRetCode() == I.MSG_LOGIN_UNKNOW_USER) {
                     Toast.makeText(LoginActivity.this, "用户不存在", Toast.LENGTH_SHORT).show();
                 } else if (result.getRetCode() == I.MSG_LOGIN_ERROR_PASSWORD) {
                     Toast.makeText(LoginActivity.this, "账户密码错误", Toast.LENGTH_SHORT).show();
                 }
+                bd.dismiss();
             }
 
             @Override
             public void onError(String error) {
-
+                bd.dismiss();
             }
         });
     }

@@ -1,6 +1,5 @@
 package cn.ran.flicenter.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -15,13 +14,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ran.flicenter.FuLiCenterApplication;
-import cn.ran.flicenter.I;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.fragment.BoutiqueFragment;
 import cn.ran.flicenter.fragment.CartFragment;
 import cn.ran.flicenter.fragment.CategoryFragment;
-import cn.ran.flicenter.fragment.MyFragment;
 import cn.ran.flicenter.fragment.NewGoodsFragment;
+import cn.ran.flicenter.fragment.PersonFragment;
 import cn.ran.flicenter.utils.L;
 import cn.ran.flicenter.utils.MFGT;
 
@@ -56,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     BoutiqueFragment boutiqueFragment;
     NewGoodsFragment goodsFragment;
     CategoryFragment categoryFragment;
-    MyFragment myFragment;
+    PersonFragment personFragment;
     CartFragment cartFragment;
 
     @Override
@@ -75,13 +73,13 @@ public class MainActivity extends AppCompatActivity {
         goodsFragment = new NewGoodsFragment();
         boutiqueFragment = new BoutiqueFragment();
         categoryFragment = new CategoryFragment();
-        myFragment = new MyFragment();
+        personFragment = new PersonFragment();
         cartFragment = new CartFragment();
         mFragment[0] = goodsFragment;
         mFragment[1] = boutiqueFragment;
         mFragment[2] = categoryFragment;
         mFragment[3] = cartFragment;
-        mFragment[4] = myFragment;
+        mFragment[4] = personFragment;
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -89,11 +87,11 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.fragment_layout, goodsFragment)
                 .add(R.id.fragment_layout, categoryFragment)
                 .add(R.id.fragment_layout, cartFragment)
-                .add(R.id.fragment_layout, myFragment)
-                .show(goodsFragment)
+                .add(R.id.fragment_layout, personFragment)
                 .hide(boutiqueFragment)
                 .hide(categoryFragment)
                 .hide(cartFragment)
+                .show(goodsFragment)
                 .commit();
 
     }
@@ -136,10 +134,12 @@ public class MainActivity extends AppCompatActivity {
                 index = 3;
                 break;
             case R.id.mBtnPersonal:
-                if (FuLiCenterApplication.userName == null) {
+                if (FuLiCenterApplication.getUser() == null) {
                     MFGT.gotoLoginActivity(this, LoginActivity.class);
+                } else {
+                    index = 4;
                 }
-                index = 4;
+
                 break;
         }
         setRadioButtonStatus();

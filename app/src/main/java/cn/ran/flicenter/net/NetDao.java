@@ -4,7 +4,6 @@ import android.content.Context;
 
 import cn.ran.flicenter.I;
 import cn.ran.flicenter.bean.BoutiqueBean;
-import cn.ran.flicenter.bean.CartBean;
 import cn.ran.flicenter.bean.CartResultBean;
 import cn.ran.flicenter.bean.CategoryChildBean;
 import cn.ran.flicenter.bean.CategoryGroupBean;
@@ -83,12 +82,12 @@ public class NetDao {
 
     }
 
-    public static void loginSet(Context mContext, String userName, String passWord, OkHttpUtils.OnCompleteListener<Result> listener) {
-        OkHttpUtils<Result> utils = new OkHttpUtils<>(mContext);
+    public static void loginSet(Context mContext, String userName, String passWord, OkHttpUtils.OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils = new OkHttpUtils<>(mContext);
         utils.setRequestUrl(I.REQUEST_LOGIN)
                 .addParam(I.User.USER_NAME, userName)
                 .addParam(I.User.PASSWORD, MD5.getMessageDigest(passWord))
-                .targetClass(Result.class)
+                .targetClass(String.class)
                 .execute(listener);
     }
 
