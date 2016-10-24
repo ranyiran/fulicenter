@@ -57,10 +57,11 @@ public class SplashActivity extends AppCompatActivity {
                     L.i("user=" + user.toString());
                     if (user != null) {
                         FuLiCenterApplication.setUser(user);
-
                     }
+
                 }
                 MFGT.gotoMainActivity(SplashActivity.this);
+
 
             }
         }).start();

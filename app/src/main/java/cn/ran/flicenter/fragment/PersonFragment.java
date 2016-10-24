@@ -16,6 +16,7 @@ import cn.ran.flicenter.FuLiCenterApplication;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.activity.LoginActivity;
 import cn.ran.flicenter.activity.MainActivity;
+import cn.ran.flicenter.activity.SettingActivity;
 import cn.ran.flicenter.bean.UserAvatarBean;
 import cn.ran.flicenter.utils.ImageLoader;
 import cn.ran.flicenter.utils.MFGT;
@@ -70,6 +71,6 @@ public class PersonFragment extends Fragment {
 
     @OnClick(R.id.tvSetting)
     public void onClick() {
-
+        MFGT.startActivity(mContext, SettingActivity.class);
     }
 }

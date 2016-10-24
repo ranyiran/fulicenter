@@ -90,11 +90,11 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.fragment_layout, boutiqueFragment)
                 .add(R.id.fragment_layout, goodsFragment)
                 .add(R.id.fragment_layout, categoryFragment)
-                .add(R.id.fragment_layout, cartFragment)
-                .add(R.id.fragment_layout, personFragment)
+                //.add(R.id.fragment_layout, cartFragment)
+                //.add(R.id.fragment_layout, personFragment)
                 .hide(boutiqueFragment)
                 .hide(categoryFragment)
-                .hide(cartFragment)
+                //.hide(cartFragment)
                 .show(goodsFragment)
                 .commit();
 
@@ -146,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
 
                 break;
         }
-        setRadioButtonStatus();
         setFragment();
     }
 
@@ -165,13 +164,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        if (FuLiCenterApplication.getUser() != null) {
-            index = 4;
-        } else {
-            index = 0;
-        }
-        setFragment();
         super.onResume();
+        setFragment();
 
     }
 
@@ -182,4 +176,5 @@ public class MainActivity extends AppCompatActivity {
             index = 4;
         }
     }
+
 }
