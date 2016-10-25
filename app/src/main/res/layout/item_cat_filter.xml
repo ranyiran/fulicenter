@@ -12,10 +12,10 @@
         android:src="@drawable/category_child"/>
     <TextView
         android:id="@+id/tvCategoryChildName"
-        android:layout_toRightOf="@id/ivCategoryChildThumb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/ivCategoryChildThumb"
         android:text="鞋子"
         android:textColor="#fff"
         android:textSize="12sp" />
@@ -23,8 +23,8 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1.5dp"
-        android:layout_marginBottom="3dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="3dp"
         android:scaleType="fitXY"
         android:src="@drawable/divid_explist_group"/>
 

@@ -24,4 +24,8 @@
     <string name="cart_sucess">商品添加到购物车成功</string>
     <string name="cart_error">购物车添加失败</string>
     <string name="user_database_error">用户数据库异常</string>
+    <string name="update_avatar_ing">正在上传头像</string>
+    <string name="update_avatar_fail">上传头像失败</string>
+    <string name="update_avatar_error">上传头像错误</string>
+    <string name="update_avatar_sucess">上传头像成功</string>
 </resources>
