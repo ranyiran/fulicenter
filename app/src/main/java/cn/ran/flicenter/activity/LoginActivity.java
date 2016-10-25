@@ -1,6 +1,5 @@
 package cn.ran.flicenter.activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -52,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mContext = this;
+        mContext = LoginActivity.this;
         ButterKnife.bind(this);
         Intent intent = getIntent();
         String toUserName = intent.getStringExtra("passusername");
@@ -80,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (isSuccess) {
                         FuLiCenterApplication.setUser(user);
                         SharePreferencesUtils.getInstance(mContext).saveUser(user.getMuserName());
-                        MFGT.gotoMainForResult((Activity) mContext);
+                        MFGT.gotoMainActivity(LoginActivity.this);
                         Toast.makeText(LoginActivity.this, "欢迎用户:" + userNick, Toast.LENGTH_SHORT).show();
                     } else {
                         CommonUtils.showLongToast(R.string.user_database_error);
@@ -91,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (result.getRetCode() == I.MSG_LOGIN_ERROR_PASSWORD) {
                     Toast.makeText(LoginActivity.this, "账户密码错误", Toast.LENGTH_SHORT).show();
                 }
-                bd.dismiss();
+
             }
 
             @Override
@@ -99,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                 bd.dismiss();
             }
         });
+        bd.dismiss();
     }
 
     @OnClick({R.id.btnLogin, R.id.btnReg})
@@ -106,7 +106,6 @@ public class LoginActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.btnLogin:
                 initData();
-
                 break;
             case R.id.btnReg:
                 MFGT.gotoRegister(LoginActivity.this);
@@ -116,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        MFGT.finish(this);
+        MFGT.gotoMainActivity(this);
     }
 
     @Override
@@ -127,5 +126,10 @@ public class LoginActivity extends AppCompatActivity {
             etLoginUserName.setText(name);
 
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

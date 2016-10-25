@@ -14,7 +14,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ran.flicenter.FuLiCenterApplication;
 import cn.ran.flicenter.R;
-import cn.ran.flicenter.activity.LoginActivity;
 import cn.ran.flicenter.activity.MainActivity;
 import cn.ran.flicenter.activity.SettingActivity;
 import cn.ran.flicenter.bean.UserAvatarBean;
@@ -54,13 +53,24 @@ public class PersonFragment extends Fragment {
     private void initData() {
         UserAvatarBean user = FuLiCenterApplication.getUser();
         if (user == null) {
-            MFGT.gotoLoginActivity(mContext, LoginActivity.class);
+            MFGT.gotoLoginActivity(mContext);
             return;
         } else {
             ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), mContext, ivAvatar);
             tvUserName.setText(user.getMuserNick());
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        UserAvatarBean user = FuLiCenterApplication.getUser();
+        if (user == null) {
+            initData();
+        } else {
+            initData();
+        }
     }
 
     @Override

@@ -2,6 +2,8 @@ package cn.ran.flicenter.net;
 
 import android.content.Context;
 
+import java.io.File;
+
 import cn.ran.flicenter.I;
 import cn.ran.flicenter.bean.BoutiqueBean;
 import cn.ran.flicenter.bean.CartResultBean;
@@ -113,6 +115,27 @@ public class NetDao {
                 .addParam(I.Cart.IS_CHECKED, String.valueOf(isChecked))
                 .execute(listener);
 
+    }
+
+    public static void updateUserNick(Context mContext, String userName, String userNick, OkHttpUtils.OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils = new OkHttpUtils<>(mContext);
+        utils.setRequestUrl(I.REQUEST_UPDATE_USER_NICK)
+                .addParam(I.User.USER_NAME, userName)
+                .addParam(I.User.NICK, userNick)
+                .targetClass(String.class)
+                .execute(listener);
+
+    }
+
+    public static void updateAvatar(Context mContext, String userName, File file, OkHttpUtils.OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils = new OkHttpUtils<>(mContext);
+        utils.setRequestUrl(I.REQUEST_UPDATE_AVATAR)
+                .addParam(I.NAME_OR_HXID, userName)
+                .addParam(I.AVATAR_TYPE, I.AVATAR_TYPE_USER_PATH)
+                .addFile2(file)
+                .targetClass(String.class)
+                .post()
+                .execute(listener);
     }
 
 }

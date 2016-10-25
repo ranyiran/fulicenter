@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -87,12 +88,12 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.fragment_layout, boutiqueFragment)
+                //  .add(R.id.fragment_layout, boutiqueFragment)
                 .add(R.id.fragment_layout, goodsFragment)
-                .add(R.id.fragment_layout, categoryFragment)
+                // .add(R.id.fragment_layout, categoryFragment)
                 //.add(R.id.fragment_layout, cartFragment)
                 //.add(R.id.fragment_layout, personFragment)
-                .hide(boutiqueFragment)
+                //   .hide(boutiqueFragment)
                 .hide(categoryFragment)
                 //.hide(cartFragment)
                 .show(goodsFragment)
@@ -139,13 +140,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.mBtnPersonal:
                 if (FuLiCenterApplication.getUser() == null) {
-                    MFGT.gotoLoginActivity(this, LoginActivity.class);
+                    MFGT.gotoLoginActivity(this);
                 } else {
                     index = 4;
                 }
 
                 break;
         }
+        setRadioButtonStatus();
         setFragment();
     }
 
@@ -164,9 +166,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        super.onResume();
-        setFragment();
+        L.i("这是onResume" + index);
 
+
+        if (FuLiCenterApplication.getUser() != null && index == 4) {
+            index = 4;
+            setFragment();
+            Log.i("index", index + "");
+        } else {
+            index = 0;
+            setFragment();
+        }
+
+        super.onResume();
     }
 
     @Override
@@ -174,7 +186,21 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == I.REQUEST_CODE_LOGIN && FuLiCenterApplication.getUser() != null) {
             index = 4;
+        } else {
+            index = 0;
         }
+
     }
 
+    @Override
+    public void onBackPressed() {
+        index = 0;
+        setFragment();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
 }
