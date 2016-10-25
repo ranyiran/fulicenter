@@ -14,6 +14,7 @@ import cn.ran.flicenter.activity.GoodsDetailsActivity;
 import cn.ran.flicenter.activity.LoginActivity;
 import cn.ran.flicenter.activity.MainActivity;
 import cn.ran.flicenter.activity.RegisterActivity;
+import cn.ran.flicenter.activity.UpdateNickActivity;
 import cn.ran.flicenter.bean.BoutiqueBean;
 import cn.ran.flicenter.bean.CategoryChildBean;
 
@@ -25,6 +26,10 @@ public class MFGT {
     }
 
     public static void gotoMainActivity(Activity context) {
+        startActivity(context, MainActivity.class);
+    }
+
+    public static void backtoMainActivity(Activity context) {
         startActivity(context, MainActivity.class);
     }
 
@@ -65,9 +70,10 @@ public class MFGT {
         startActivity(context, intent);
     }
 
-    public static void gotoLoginActivity(Activity mContext, Class<LoginActivity> loginActivityClass) {
+    public static void gotoLoginActivity(Activity mContext) {
         Intent intent = new Intent(mContext, LoginActivity.class);
         mContext.startActivity(intent);
+        startActivityForResult(mContext, intent, I.REQUEST_CODE_LOGIN);
         mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
@@ -94,10 +100,18 @@ public class MFGT {
         startActivityForResult(mContext, intent, I.REQUEST_CODE_LOGIN);
 
     }
-    public static void gotoMainForResultSplash(Activity mContext) {
+
+    public static void gotoMainResult(Activity mContext) {
         Intent intent = new Intent();
-        intent.setClass(mContext, MainActivity.class);
-        startActivityForResult(mContext, intent, 103);
+        mContext.setResult(I.REQUEST_CODE_LOGIN, intent);
+        finish(mContext);
+        mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
+    }
+
+    public static void gotoUpdateNick(Activity mContext) {
+        startActivityForResult(mContext, new Intent(mContext, UpdateNickActivity.class
+        ), I.REQUEST_CODE_NICK);
 
     }
 
