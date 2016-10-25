@@ -37,5 +37,6 @@ public class SharePreferencesUtils {
 
     public void removeUser() {
         mEditor.remove(SHAR_KEY_NAME);
+        mEditor.commit();
     }
 }

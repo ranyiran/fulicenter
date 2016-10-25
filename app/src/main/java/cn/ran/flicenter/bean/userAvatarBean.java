@@ -2,6 +2,8 @@ package cn.ran.flicenter.bean;
 
 import java.io.Serializable;
 
+import cn.ran.flicenter.I;
+
 /**
  * Created by Administrator on 2016/10/13.
  */
@@ -58,7 +60,7 @@ public class UserAvatarBean implements Serializable {
     }
 
     public String getMavatarSuffix() {
-        return mavatarSuffix;
+        return mavatarSuffix != null ? mavatarSuffix : I.AVATAR_SUFFIX_JPG;
     }
 
     public void setMavatarSuffix(String mavatarSuffix) {

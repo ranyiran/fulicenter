@@ -30,6 +30,7 @@ public interface I {
 
     int REQUEST_CODE_REGISTER = 101;
     int REQUEST_CODE_LOGIN = 102;
+    int REQUEST_CODE_NICK = 104;
     /**
      * BeeColud APP ID
      */
@@ -324,6 +325,7 @@ public interface I {
      */
     String DOWNLOAD_AVATAR_URL = I.SERVER_ROOT + REQUEST_DOWNLOAD_AVATAR
             + I.QUESTION;
+
     interface Goods {
         String KEY_RESULT = "result";
         String RESPONSE_SUCCESS = "success";
@@ -338,6 +340,7 @@ public interface I {
         String HINT_DOWNLOADING = "加载中...";
         String HINT_DOWNLOAD_FAILURE = "加载数据失败";
     }
+
     interface Boutique extends Goods {
         String ID = "id";
         String CAT_ID = "catId";
@@ -346,12 +349,14 @@ public interface I {
         String NAME = "name";
         String IMAGE_URL = "imageurl";
     }
+
     interface NewGoods extends Goods {
         String KEY_THUMB_URL = "thumb";
         String HINT_DOWNLOAD_TITLE = "加载新品列表";
         String HINT_DOWNLOADING = "加载中...";
         String HINT_DOWNLOAD_FAILURE = "加载数据失败";
     }
+
     interface GoodsDetails extends Goods {
         String HINT_DOWNLOAD_TITLE = "加载商品详细信息";
         String KEY_CAT_ID = "cat_id";
@@ -364,6 +369,7 @@ public interface I {
         String KEY_PROPERTIES = "properties";
         String KEY_ALBUMS = "albums";
     }
+
     interface Category extends Goods {
         String HINT_DOWNLOAD_TITLE = "加载分类列表";
         String KEY_ID = "id";
@@ -387,6 +393,7 @@ public interface I {
 
         int COLOR_DEFAULT = -1;// 排序默认值
     }
+
     interface NewAndBoutiqueGoods {
         String CAT_ID = "cat_id";
         /**
@@ -406,15 +413,18 @@ public interface I {
          */
         String COLOR_URL = "color_url";
     }
+
     interface CategoryGroup {
         String ID = "id";
         String NAME = "name";
         String IMAGE_URL = "imageurl";
     }
+
     interface CategoryChild extends CategoryGroup {
         String PARENT_ID = "parent_id";
         String CAT_ID = "catId";
     }
+
     interface CategoryGood {
         String TABLE_NAME = "tb_category_good";
         String ID = "id";
@@ -485,6 +495,7 @@ public interface I {
         String COLOR_IMG = "colorimg";
         String COLOR_URL = "colorurl";
     }
+
     interface Album {
         String TABLE_NAME = "tb_album";
         String ID = "id";
@@ -494,6 +505,7 @@ public interface I {
         String THUMB_URL = "thumb_url";
         String IMG_DESC = "img_desc";
     }
+
     interface Cart {
         String ID = "id";
         String GOODS_ID = "goods_id";
@@ -508,6 +520,7 @@ public interface I {
          */
         String IS_CHECKED = "isChecked";
     }
+
     interface Collect {
         /**
          * 商品id
@@ -527,6 +540,7 @@ public interface I {
         String GOODS_IMG = "goodsImg";
         String ADD_TIME = "addTime";
     }
+
     interface User {
         String TABLE_NAME = "t_superwechat_user";
         String USER_ID = "m_user_id";//主键
@@ -544,6 +558,7 @@ public interface I {
         String CU_ID = "m_contact_cid";//好友id
         String CU_NAME = "m_contact_cname";//好友账号
     }
+
     interface Avatar {
         String TABLE_NAME = "t_superwechat_avatar";
         String AVATAR_ID = "m_avatar_id";//主键
