@@ -174,7 +174,12 @@ public class CollectActivity extends AppCompatActivity {
                 getResources().getColor(R.color.google_yellow)
         );
         newGoodsRecycler.addItemDecoration(new SpaceItemDecoration(12));
-
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        downloadData(I.ACTION_DOWNLOAD, mPageId);
+        initData();
+    }
 }

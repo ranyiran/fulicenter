@@ -1,12 +1,10 @@
 package cn.ran.flicenter.activity;
 
-import android.app.backup.FullBackupDataOutput;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -17,6 +15,8 @@ import cn.ran.flicenter.R;
 import cn.ran.flicenter.bean.AlbumsBean;
 import cn.ran.flicenter.bean.CartResultBean;
 import cn.ran.flicenter.bean.GoodsDetailsBean;
+import cn.ran.flicenter.bean.MessageBean;
+import cn.ran.flicenter.bean.UserAvatarBean;
 import cn.ran.flicenter.net.NetDao;
 import cn.ran.flicenter.utils.CommonUtils;
 import cn.ran.flicenter.utils.L;
@@ -49,8 +49,6 @@ public class GoodsDetailsActivity extends BaseActivity {
     WebView detailsGoods;
     @Bind(R.id.detailsFlowIndicator)
     FlowIndicator detailsFlowIndicator;
-    @Bind(R.id.lv_details_back)
-    ImageView lvDetailsBack;
     @Bind(R.id.iv_details_cart)
     ImageView ivDetailsCart;
     @Bind(R.id.iv_details_collect)
@@ -59,6 +57,11 @@ public class GoodsDetailsActivity extends BaseActivity {
     ImageView ivDetailsShare;
 
     String userName;
+    UserAvatarBean user;
+
+    boolean isCollect = true;
+    @Bind(R.id.lv_details_back)
+    ImageView lvDetailsBack;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,6 +78,29 @@ public class GoodsDetailsActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
+        user = FuLiCenterApplication.getUser();
+        userName = user.getMuserName();
+        NetDao.downloadIsCollect(mContext, userName, goodsId, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+            @Override
+            public void onSuccess(MessageBean result) {
+                L.i("result" + result.toString());
+                if (result != null) {
+                    isCollect = result.isSuccess();
+                    if (isCollect) {
+                        ivDetailsCollect.setImageResource(R.mipmap.bg_collect_out);
+                    } else {
+                        ivDetailsCollect.setImageResource(R.mipmap.bg_collect_in);
+                    }
+                } else {
+                    CommonUtils.showLongToast("收藏失败");
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
     }
 
     @Override
@@ -155,6 +181,45 @@ public class GoodsDetailsActivity extends BaseActivity {
                 initCartData(count);
                 break;
             case R.id.iv_details_collect:
+                user = FuLiCenterApplication.getUser();
+                userName = user.getMuserName();
+                if (!isCollect) {
+                    NetDao.addCollect(mContext, userName, goodsId, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                        @Override
+                        public void onSuccess(MessageBean result) {
+                            if (result != null) {
+                                if (result.isSuccess()) {
+                                    CommonUtils.showLongToast("收藏成功");
+                                    ivDetailsCollect.setImageResource(R.mipmap.bg_collect_out);
+                                    isCollect = !isCollect;
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(String error) {
+
+                        }
+                    });
+                } else {
+                    NetDao.deleteCollect(mContext, userName, goodsId, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                        @Override
+                        public void onSuccess(MessageBean result) {
+                            if (result != null) {
+                                if (result.isSuccess()) {
+                                    CommonUtils.showLongToast("取消收藏");
+                                    ivDetailsCollect.setImageResource(R.mipmap.bg_collect_in);
+                                    isCollect = !isCollect;
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(String error) {
+
+                        }
+                    });
+                }
                 break;
             case R.id.iv_details_share:
                 break;
@@ -178,4 +243,5 @@ public class GoodsDetailsActivity extends BaseActivity {
             }
         });
     }
+
 }

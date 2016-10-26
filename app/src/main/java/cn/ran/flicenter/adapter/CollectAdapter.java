@@ -186,6 +186,7 @@ public class CollectAdapter extends RecyclerView.Adapter {
                             if (result != null && result.isSuccess()) {
                                 mList.remove(goods);
                                 notifyDataSetChanged();
+                                CommonUtils.showLongToast("删除成功");
                             } else {
                                 CommonUtils.showLongToast(result != null ? result.getMsg() : mContext.getResources().getString(R.string.delete_collect_fail));
                             }
