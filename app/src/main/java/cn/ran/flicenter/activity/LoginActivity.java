@@ -108,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.btnLogin:
                 initData();
-                finish();
+                MFGT.finish(this);
                 break;
             case R.id.btnReg:
                 MFGT.gotoRegister(LoginActivity.this);
@@ -119,8 +119,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         MFGT.gotoMainActivity(this);
-        finish();
-
+        MFGT.finish(this);
     }
 
     @Override
