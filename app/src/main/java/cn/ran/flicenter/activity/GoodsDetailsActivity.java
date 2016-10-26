@@ -67,6 +67,7 @@ public class GoodsDetailsActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.item_goods_details);
         ButterKnife.bind(this);
+        mContext = this;
         userName = FuLiCenterApplication.userName;
         goodsId = getIntent().getIntExtra(I.GoodsDetails.KEY_GOODS_ID, 0);
         if (goodsId == 0) {
@@ -79,28 +80,29 @@ public class GoodsDetailsActivity extends BaseActivity {
     protected void initView() {
         super.initView();
         user = FuLiCenterApplication.getUser();
-        userName = user.getMuserName();
-        NetDao.downloadIsCollect(mContext, userName, goodsId, new OkHttpUtils.OnCompleteListener<MessageBean>() {
-            @Override
-            public void onSuccess(MessageBean result) {
-                L.i("result" + result.toString());
-                if (result != null) {
-                    isCollect = result.isSuccess();
-                    if (isCollect) {
-                        ivDetailsCollect.setImageResource(R.mipmap.bg_collect_out);
+        if (user != null) {
+            userName = user.getMuserName();
+            NetDao.downloadIsCollect(mContext, userName, goodsId, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                @Override
+                public void onSuccess(MessageBean result) {
+                    L.i("result" + result.toString());
+                    if (result != null) {
+                        isCollect = result.isSuccess();
+                        if (isCollect) {
+                            ivDetailsCollect.setImageResource(R.mipmap.bg_collect_out);
+                        } else {
+                            ivDetailsCollect.setImageResource(R.mipmap.bg_collect_in);
+                        }
                     } else {
-                        ivDetailsCollect.setImageResource(R.mipmap.bg_collect_in);
                     }
-                } else {
-                    CommonUtils.showLongToast("收藏失败");
                 }
-            }
 
-            @Override
-            public void onError(String error) {
+                @Override
+                public void onError(String error) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     @Override
@@ -182,43 +184,48 @@ public class GoodsDetailsActivity extends BaseActivity {
                 break;
             case R.id.iv_details_collect:
                 user = FuLiCenterApplication.getUser();
-                userName = user.getMuserName();
-                if (!isCollect) {
-                    NetDao.addCollect(mContext, userName, goodsId, new OkHttpUtils.OnCompleteListener<MessageBean>() {
-                        @Override
-                        public void onSuccess(MessageBean result) {
-                            if (result != null) {
-                                if (result.isSuccess()) {
-                                    CommonUtils.showLongToast("收藏成功");
-                                    ivDetailsCollect.setImageResource(R.mipmap.bg_collect_out);
-                                    isCollect = !isCollect;
+
+                if (user != null) {
+                    userName = user.getMuserName();
+                    if (!isCollect) {
+                        NetDao.addCollect(mContext, userName, goodsId, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                            @Override
+                            public void onSuccess(MessageBean result) {
+                                if (result != null) {
+                                    if (result.isSuccess()) {
+                                        CommonUtils.showLongToast("收藏成功");
+                                        ivDetailsCollect.setImageResource(R.mipmap.bg_collect_out);
+                                    }
                                 }
                             }
-                        }
 
-                        @Override
-                        public void onError(String error) {
+                            @Override
+                            public void onError(String error) {
 
-                        }
-                    });
+                            }
+                        });
+                    } else {
+                        NetDao.deleteCollect(mContext, userName, goodsId, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                            @Override
+                            public void onSuccess(MessageBean result) {
+                                if (result != null) {
+                                    if (result.isSuccess()) {
+                                        CommonUtils.showLongToast("取消收藏");
+                                        ivDetailsCollect.setImageResource(R.mipmap.bg_collect_in);
+
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+                        });
+                    }
                 } else {
-                    NetDao.deleteCollect(mContext, userName, goodsId, new OkHttpUtils.OnCompleteListener<MessageBean>() {
-                        @Override
-                        public void onSuccess(MessageBean result) {
-                            if (result != null) {
-                                if (result.isSuccess()) {
-                                    CommonUtils.showLongToast("取消收藏");
-                                    ivDetailsCollect.setImageResource(R.mipmap.bg_collect_in);
-                                    isCollect = !isCollect;
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onError(String error) {
-
-                        }
-                    });
+                    CommonUtils.showShortToast("未登录");
+                    MFGT.gotoLoginActivity(mContext);
                 }
                 break;
             case R.id.iv_details_share:
@@ -244,4 +251,8 @@ public class GoodsDetailsActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }

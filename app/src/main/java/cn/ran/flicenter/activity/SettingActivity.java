@@ -111,7 +111,6 @@ public class SettingActivity extends AppCompatActivity {
             case R.id.rvUpdateAvatar:
                 mOnSetAvatarListener = new OnSetAvatarListener(mContext, R.id.ryLayout,
                         user.getMuserName(), I.AVATAR_TYPE_USER_PATH);
-
                 break;
         }
     }
@@ -160,13 +159,17 @@ public class SettingActivity extends AppCompatActivity {
         if (resultCode != RESULT_OK) {
             return;
         }
-        mOnSetAvatarListener.setAvatar(requestCode, data, stAvatar);
+        if (data != null) {
+            mOnSetAvatarListener.setAvatar(requestCode, data, stAvatar);
+        }
+
         if (resultCode == RESULT_OK && requestCode == I.REQUEST_CODE_NICK) {
             CommonUtils.showLongToast("更新用户昵称成功");
             return;
         }
         if (requestCode == OnSetAvatarListener.REQUEST_CROP_PHOTO) {
             updateAvatar();
+            return;
         }
     }
 

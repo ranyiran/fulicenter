@@ -179,7 +179,7 @@ public class CollectActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        downloadData(I.ACTION_DOWNLOAD, mPageId);
         initData();
+        downloadData(I.ACTION_DOWNLOAD, mPageId);
     }
 }
