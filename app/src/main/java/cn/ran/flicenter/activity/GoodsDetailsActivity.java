@@ -1,8 +1,11 @@
 package cn.ran.flicenter.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -179,12 +182,22 @@ public class GoodsDetailsActivity extends BaseActivity {
                 MFGT.finish(this);
                 break;
             case R.id.iv_details_cart:
-                int count = 1;
-                initCartData(count);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                View layout = getLayoutInflater().inflate(R.layout.item_dialog, null);
+                final EditText et = (EditText) layout.findViewById(R.id.etCount);
+                builder.setTitle("输入添加的商品个数")
+                        .setView(layout)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String count = et.getText().toString();
+                                initCartData(Integer.valueOf(count));
+                            }
+                        }).setNegativeButton("取消", null).create().show();
+
                 break;
             case R.id.iv_details_collect:
                 user = FuLiCenterApplication.getUser();
-
                 if (user != null) {
                     userName = user.getMuserName();
                     if (!isCollect) {
