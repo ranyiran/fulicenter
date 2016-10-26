@@ -16,9 +16,14 @@ import cn.ran.flicenter.FuLiCenterApplication;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.activity.MainActivity;
 import cn.ran.flicenter.activity.SettingActivity;
+import cn.ran.flicenter.bean.Result;
 import cn.ran.flicenter.bean.UserAvatarBean;
+import cn.ran.flicenter.dao.UserDao;
+import cn.ran.flicenter.net.NetDao;
 import cn.ran.flicenter.utils.ImageLoader;
 import cn.ran.flicenter.utils.MFGT;
+import cn.ran.flicenter.utils.OkHttpUtils;
+import cn.ran.flicenter.utils.ResultUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +38,7 @@ public class PersonFragment extends Fragment {
     ImageView ivAvatar;
     @Bind(R.id.tvUserName)
     TextView tvUserName;
+    UserAvatarBean user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,11 +71,10 @@ public class PersonFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        UserAvatarBean user = FuLiCenterApplication.getUser();
-        if (user == null) {
+        user = FuLiCenterApplication.getUser();
+        if (user != null) {
             initData();
-        } else {
-            initData();
+            findUserByUserName();
         }
     }
 
@@ -82,5 +87,32 @@ public class PersonFragment extends Fragment {
     @OnClick(R.id.tvSetting)
     public void onClick() {
         MFGT.startActivity(mContext, SettingActivity.class);
+    }
+
+    public void findUserByUserName() {
+        NetDao.syncUser(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                Result result = ResultUtils.getResultFromJson(s, UserAvatarBean.class);
+                if (result != null) {
+                    UserAvatarBean u = (UserAvatarBean) result.getRetData();
+                    if (!user.equals(u)) {
+                        UserDao dao = new UserDao(mContext);
+                        boolean a = dao.saveUser(u);
+                        if (a) {
+                            FuLiCenterApplication.setUser(u);
+                            user = u;
+                            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), mContext, ivAvatar);
+                            tvUserName.setText(user.getMuserNick());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
     }
 }

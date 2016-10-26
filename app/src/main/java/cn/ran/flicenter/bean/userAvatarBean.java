@@ -95,4 +95,23 @@ public class UserAvatarBean implements Serializable {
                 ", mavatarLastUpdateTime='" + mavatarLastUpdateTime + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserAvatarBean that = (UserAvatarBean) o;
+
+        if (!muserName.equals(that.muserName)) return false;
+        return mavatarLastUpdateTime.equals(that.mavatarLastUpdateTime);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = muserName.hashCode();
+        result = 31 * result + mavatarLastUpdateTime.hashCode();
+        return result;
+    }
 }

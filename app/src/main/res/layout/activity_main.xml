@@ -90,6 +90,7 @@
         android:layout_above="@id/radGroup"
         android:background="#D6DCDC" />
 
+
     <LinearLayout
         android:id="@+id/fragment_layout"
         android:layout_width="match_parent"

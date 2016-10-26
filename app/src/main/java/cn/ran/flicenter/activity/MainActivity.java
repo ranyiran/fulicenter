@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     PersonFragment personFragment;
     CartFragment cartFragment;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -198,9 +199,12 @@ public class MainActivity extends AppCompatActivity {
         setFragment();
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
 
     }
+
+
 }
