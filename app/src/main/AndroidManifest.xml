@@ -27,7 +27,8 @@
         <activity android:name=".activity.CategoryChildActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.SettingActivity" />
-        <activity android:name=".activity.UpdateNickActivity"></activity>
+        <activity android:name=".activity.UpdateNickActivity" />
+        <activity android:name=".activity.CollectActivity"></activity>
     </application>
 
 </manifest>

@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (isSuccess) {
                         FuLiCenterApplication.setUser(user);
                         SharePreferencesUtils.getInstance(mContext).saveUser(user.getMuserName());
+                        setResult(I.REQUEST_CODE_LOGIN);
                         MFGT.gotoMainActivity(LoginActivity.this);
                         Toast.makeText(LoginActivity.this, "欢迎用户:" + userNick, Toast.LENGTH_SHORT).show();
                     } else {
@@ -90,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (result.getRetCode() == I.MSG_LOGIN_ERROR_PASSWORD) {
                     Toast.makeText(LoginActivity.this, "账户密码错误", Toast.LENGTH_SHORT).show();
                 }
+                finish();
 
             }
 
@@ -106,6 +108,7 @@ public class LoginActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.btnLogin:
                 initData();
+                finish();
                 break;
             case R.id.btnReg:
                 MFGT.gotoRegister(LoginActivity.this);
@@ -116,6 +119,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         MFGT.gotoMainActivity(this);
+        finish();
+
     }
 
     @Override

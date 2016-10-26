@@ -9,7 +9,9 @@ import cn.ran.flicenter.bean.BoutiqueBean;
 import cn.ran.flicenter.bean.CartResultBean;
 import cn.ran.flicenter.bean.CategoryChildBean;
 import cn.ran.flicenter.bean.CategoryGroupBean;
+import cn.ran.flicenter.bean.CollectBean;
 import cn.ran.flicenter.bean.GoodsDetailsBean;
+import cn.ran.flicenter.bean.MessageBean;
 import cn.ran.flicenter.bean.NewGoodsBean;
 import cn.ran.flicenter.bean.Result;
 import cn.ran.flicenter.utils.MD5;
@@ -106,7 +108,7 @@ public class NetDao {
 
     public static void downloadCart(Context mContext, int goodsId, String userName, int count, boolean isChecked
             , OkHttpUtils.OnCompleteListener<CartResultBean> listener) {
-        OkHttpUtils utils = new OkHttpUtils(mContext);
+        OkHttpUtils<CartResultBean> utils = new OkHttpUtils(mContext);
         utils.setRequestUrl(I.REQUEST_ADD_CART)
                 .addParam(I.Cart.GOODS_ID, String.valueOf(goodsId))
                 .addParam(I.Cart.USER_NAME, userName)
@@ -146,5 +148,30 @@ public class NetDao {
                 .execute(listener);
 
     }
+
+    public static void downLoadCollectCount(Context mContext, String userName, OkHttpUtils.OnCompleteListener<MessageBean> listener) {
+        OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(mContext);
+        utils.setRequestUrl(I.REQUEST_FIND_COLLECT_COUNT)
+                .addParam(I.Collect.USER_NAME, userName)
+                .targetClass(MessageBean.class)
+                .execute(listener);
+
+    }
+
+    public static void downLoadCollect(Context mContext, String userName, String pageId, OkHttpUtils.OnCompleteListener<CollectBean[]> listener) {
+        OkHttpUtils<CollectBean[]> utils = new OkHttpUtils<>(mContext);
+        utils.setRequestUrl(I.REQUEST_FIND_COLLECTS)
+                .addParam(I.Collect.USER_NAME, userName)
+                .addParam(I.PAGE_ID, String.valueOf(pageId))
+                .addParam(I.PAGE_SIZE, String.valueOf(I.PAGE_SIZE_DEFAULT))
+                .targetClass(CollectBean[].class)
+                .execute(listener);
+    }
+
+    public static void deleteCollect(Context mContext, String userName, int goodsId, OkHttpUtils.OnCompleteListener<MessageBean> listener) {
+
+
+    }
+
 
 }

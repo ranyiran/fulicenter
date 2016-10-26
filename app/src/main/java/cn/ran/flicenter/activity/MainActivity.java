@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -53,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     int index;
     int currentIndex;
 
-    int status;
 
     // NewGoodsFragment goodsFragment;
     BoutiqueFragment boutiqueFragment;
@@ -89,14 +87,15 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                //  .add(R.id.fragment_layout, boutiqueFragment)
+                .add(R.id.fragment_layout, boutiqueFragment)
                 .add(R.id.fragment_layout, goodsFragment)
-                // .add(R.id.fragment_layout, categoryFragment)
-                //.add(R.id.fragment_layout, cartFragment)
+                .add(R.id.fragment_layout, categoryFragment)
+                .add(R.id.fragment_layout, cartFragment)
                 //.add(R.id.fragment_layout, personFragment)
-                //   .hide(boutiqueFragment)
+                .hide(boutiqueFragment)
                 .hide(categoryFragment)
-                //.hide(cartFragment)
+                .hide(cartFragment)
+                //.hide(personFragment)
                 .show(goodsFragment)
                 .commit();
 
@@ -125,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick({R.id.mBtnNewGoods, R.id.mBtnBoutique, R.id.mBtnCategory, R.id.mBtnCart, R.id.mBtnPersonal})
 
-    public void onCheckedChange(View view) {
+    public void onCheckChange(View view) {
         switch (view.getId()) {
             case R.id.mBtnNewGoods:
                 index = 0;
@@ -142,13 +141,13 @@ public class MainActivity extends AppCompatActivity {
             case R.id.mBtnPersonal:
                 if (FuLiCenterApplication.getUser() == null) {
                     MFGT.gotoLoginActivity(this);
+                    finish();
                 } else {
                     index = 4;
                 }
-
                 break;
         }
-        setRadioButtonStatus();
+        // setRadioButtonStatus();
         setFragment();
     }
 
@@ -168,42 +167,45 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         L.i("这是onResume" + index);
-
-
+/*
         if (FuLiCenterApplication.getUser() != null && index == 4) {
             index = 4;
-            setFragment();
             Log.i("index", index + "");
         } else {
             index = 0;
-            setFragment();
-        }
-
+        }*/
         super.onResume();
+        setFragment();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        L.i("requestCode=" + requestCode);
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == I.REQUEST_CODE_LOGIN && FuLiCenterApplication.getUser() != null) {
+        if (resultCode == I.REQUEST_CODE_LOGIN && FuLiCenterApplication.getUser() != null) {
             index = 4;
         } else {
-            index = 0;
+            if (currentIndex == 4) {
+                index = 0;
+            } else {
+                index = currentIndex;
+            }
         }
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        index = 0;
         setFragment();
+
     }
+
+   /* @Override
+    public void onBackPressed() {
+      *//*  index = 0;
+        setFragment();
+        *//*
+    }*/
 
 
     @Override
     protected void onPause() {
         super.onPause();
-
     }
 
 

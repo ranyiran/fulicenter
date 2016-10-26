@@ -167,7 +167,6 @@ public class SettingActivity extends AppCompatActivity {
         }
         if (requestCode == OnSetAvatarListener.REQUEST_CROP_PHOTO) {
             updateAvatar();
-
         }
     }
 

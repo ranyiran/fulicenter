@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -14,13 +15,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ran.flicenter.FuLiCenterApplication;
 import cn.ran.flicenter.R;
+import cn.ran.flicenter.activity.CollectActivity;
 import cn.ran.flicenter.activity.MainActivity;
 import cn.ran.flicenter.activity.SettingActivity;
+import cn.ran.flicenter.bean.MessageBean;
 import cn.ran.flicenter.bean.Result;
 import cn.ran.flicenter.bean.UserAvatarBean;
 import cn.ran.flicenter.dao.UserDao;
 import cn.ran.flicenter.net.NetDao;
 import cn.ran.flicenter.utils.ImageLoader;
+import cn.ran.flicenter.utils.L;
 import cn.ran.flicenter.utils.MFGT;
 import cn.ran.flicenter.utils.OkHttpUtils;
 import cn.ran.flicenter.utils.ResultUtils;
@@ -39,6 +43,11 @@ public class PersonFragment extends Fragment {
     @Bind(R.id.tvUserName)
     TextView tvUserName;
     UserAvatarBean user;
+    @Bind(R.id.tvCollectGoods)
+    TextView tvCollectGoods;
+    @Bind(R.id.lyCollectGoods)
+    LinearLayout lyCollectGoods;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,6 +84,7 @@ public class PersonFragment extends Fragment {
         if (user != null) {
             initData();
             findUserByUserName();
+            findCollectCount();
         }
     }
 
@@ -84,10 +94,6 @@ public class PersonFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick(R.id.tvSetting)
-    public void onClick() {
-        MFGT.startActivity(mContext, SettingActivity.class);
-    }
 
     public void findUserByUserName() {
         NetDao.syncUser(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<String>() {
@@ -114,5 +120,43 @@ public class PersonFragment extends Fragment {
 
             }
         });
+    }
+
+    public void findCollectCount() {
+        NetDao.downLoadCollectCount(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+            @Override
+            public void onSuccess(MessageBean result) {
+                L.i(result.toString());
+                if (result != null) {
+                    String msg = result.getMsg();
+                    if (result.isSuccess()) {
+                        tvCollectGoods.setText(msg);
+                        L.i("mgsg++++++++++" + msg);
+                    } else {
+                        tvCollectGoods.setText(0 + "");
+                        L.i("mgsg++++++++++" + msg);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+    }
+
+    @OnClick({R.id.tvSetting, R.id.lyCollectGoods})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tvSetting:
+                MFGT.startActivity(mContext, SettingActivity.class);
+                MFGT.finish(mContext);
+                break;
+            case R.id.lyCollectGoods:
+                MFGT.startActivity(mContext, CollectActivity.class);
+                break;
+        }
     }
 }
