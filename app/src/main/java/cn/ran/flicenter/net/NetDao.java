@@ -169,7 +169,12 @@ public class NetDao {
     }
 
     public static void deleteCollect(Context mContext, String userName, int goodsId, OkHttpUtils.OnCompleteListener<MessageBean> listener) {
-
+        OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(mContext);
+        utils.setRequestUrl(I.REQUEST_DELETE_COLLECT)
+                .addParam(I.Collect.GOODS_ID, goodsId + "")
+                .addParam(I.Collect.USER_NAME, userName)
+                .targetClass(MessageBean.class)
+                .execute(listener);
 
     }
 

@@ -152,7 +152,6 @@ public class PersonFragment extends Fragment {
         switch (view.getId()) {
             case R.id.tvSetting:
                 MFGT.startActivity(mContext, SettingActivity.class);
-                MFGT.finish(mContext);
                 break;
             case R.id.lyCollectGoods:
                 MFGT.startActivity(mContext, CollectActivity.class);

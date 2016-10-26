@@ -28,4 +28,5 @@
     <string name="update_avatar_fail">上传头像失败</string>
     <string name="update_avatar_error">上传头像错误</string>
     <string name="update_avatar_sucess">上传头像成功</string>
+    <string name="delete_collect_error">数据有误</string>
 </resources>
