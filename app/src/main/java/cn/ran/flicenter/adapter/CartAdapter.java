@@ -1,11 +1,13 @@
 package cn.ran.flicenter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +15,8 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import cn.ran.flicenter.I;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.activity.MainActivity;
 import cn.ran.flicenter.bean.CartBean;
@@ -31,8 +35,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     public CartAdapter(Context mContext, ArrayList<CartBean> mList) {
         this.mContext = (MainActivity) mContext;
-        this.mList = new ArrayList<>();
-        mList.addAll(mList);
+        this.mList = mList;
     }
 
     public String getTvTitle() {
@@ -65,15 +68,22 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     @Override
     public void onBindViewHolder(CartViewHolder holder, int position) {
-        CartBean cartBean = mList.get(position);
+        final CartBean cartBean = mList.get(position);
         GoodsDetailsBean goods = cartBean.getGoods();
         if (goods != null) {
             ImageLoader.downloadImg(mContext, holder.imGoodsImage, goods.getGoodsThumb());
             holder.chkGoods.setChecked(cartBean.isChecked());
             holder.tvGoodsName.setText(goods.getGoodsName());
+            holder.tvPrice.setText(goods.getCurrencyPrice());
         }
         holder.tvCount.setText("(" + cartBean.getCount() + ")");
-        holder.chkGoods.setChecked(false);
+        holder.chkGoods.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cartBean.setChecked(isChecked);
+                mContext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
+            }
+        });
 
     }
 
@@ -89,8 +99,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     public void initCart(ArrayList<CartBean> list) {
         this.mList.clear();
-        mList.addAll(list);
-        notifyDataSetChanged();
+        mList = list;
+    }
+
+    @OnClick(R.id.chkGoods)
+    public void onClick() {
     }
 
     class CartViewHolder extends RecyclerView.ViewHolder {
@@ -113,5 +126,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             super(view);
             ButterKnife.bind(this, view);
         }
+
     }
 }

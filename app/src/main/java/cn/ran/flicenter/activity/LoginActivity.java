@@ -108,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.btnLogin:
                 initData();
-                MFGT.gotoMainActivity(this);
+                finish();
                 break;
             case R.id.btnReg:
                 MFGT.gotoRegister(LoginActivity.this);

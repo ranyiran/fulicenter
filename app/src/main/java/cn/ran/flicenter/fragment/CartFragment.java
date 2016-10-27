@@ -1,6 +1,10 @@
 package cn.ran.flicenter.fragment;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -61,6 +65,9 @@ public class CartFragment extends Fragment {
     @Bind(R.id.rlPay)
     RelativeLayout rlPay;
 
+
+    updateCartReceiver mReceiver;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -90,6 +97,9 @@ public class CartFragment extends Fragment {
 
     public void setListener() {
         setOnPullDownListener();
+        IntentFilter filter = new IntentFilter(I.BROADCAST_UPDATA_CART);
+        mReceiver = new updateCartReceiver();
+        mContext.registerReceiver(mReceiver, filter);
     }
 
     private void setOnPullDownListener() {
@@ -132,15 +142,17 @@ public class CartFragment extends Fragment {
                         mBtqAdapter.setMore(true);
                         switch (actionDownload) {
                             case I.ACTION_DOWNLOAD:
-                                mBtqAdapter.initCart(list);
+                                mBtqAdapter.initCart(mList);
+                                mList.addAll(list);
                                 mBtqAdapter.setMore(true);
                                 setCartLayout(true);
                                 break;
                             case I.ACTION_PULL_DOWN:
+                                mBtqAdapter.initCart(mList);
+                                mList.addAll(list);
                                 newGoodsTvRefresh.setVisibility(View.GONE);
                                 setCartLayout(true);
                                 newGoodsSwipeRefresh.setRefreshing(false);
-                                mBtqAdapter.initCart(list);
                                 mBtqAdapter.setMore(true);
                                 ImageLoader.release();
                                 break;
@@ -176,20 +188,36 @@ public class CartFragment extends Fragment {
         if (mList != null && mList.size() > 0) {
             for (CartBean c : mList) {
                 if (c.isChecked()) {
-                    sumPrice += getPrice(c.getGoods().getCurrencyPrice());
-                    rankPrice += getPrice(c.getGoods().getRankPrice());
+                    sumPrice += getPrice(c.getGoods().getCurrencyPrice()) * c.getCount();
+                    rankPrice += getPrice(c.getGoods().getRankPrice()) * c.getCount();
                 }
             }
             currentPrice.setText("合计:￥" + Double.valueOf(sumPrice));
             savePrice.setText("节省：￥" + Double.valueOf(sumPrice - rankPrice));
         } else {
             currentPrice.setText("合计:￥0");
-            savePrice.setText("节省：￥0");
+            savePrice.setText("节省:￥0");
         }
     }
 
     private int getPrice(String price) {
         price = price.substring(price.indexOf("￥") + 1);
         return Integer.valueOf(price);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mReceiver != null) {
+            mContext.unregisterReceiver(mReceiver);
+        }
+    }
+
+    class updateCartReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            sumPrice();
+        }
     }
 }

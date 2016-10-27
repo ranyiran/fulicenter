@@ -21,7 +21,7 @@ public interface I {
      */
     int COLUM_NUM = 2;
 
-
+    String BROADCAST_UPDATA_CART = "cart";
     /**
      * 表示列表项布局的两种类型
      */
