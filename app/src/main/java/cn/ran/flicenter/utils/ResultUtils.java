@@ -13,10 +13,66 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.ran.flicenter.I;
+import cn.ran.flicenter.bean.CartBean;
+import cn.ran.flicenter.bean.GoodsDetailsBean;
 import cn.ran.flicenter.bean.Result;
 
 
 public class ResultUtils {
+
+    public static ArrayList<CartBean> getCartFromJson(String jsonStr) {
+        ArrayList<CartBean> list = null;
+        try {
+            if (jsonStr == null || jsonStr.isEmpty() || jsonStr.length() < 3) return null;
+            JSONArray array = new JSONArray(jsonStr);
+            if (array != null) {
+                list = new ArrayList<>();
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject jsonObject = array.getJSONObject(i);
+                    CartBean cart = new CartBean();
+                    if (!jsonObject.isNull("id")) {
+                        cart.setId(jsonObject.getInt("id"));
+                    }
+                    if (!jsonObject.isNull("userName")) {
+                        cart.setUserName(jsonObject.getString("userName"));
+                    }
+                    if (!jsonObject.isNull("goodsId")) {
+                        cart.setGoodsId(jsonObject.getInt("goodsId"));
+                    }
+                    if (!jsonObject.isNull("count")) {
+                        cart.setCount(jsonObject.getInt("count"));
+                    }
+                    if (!jsonObject.isNull("isChecked")) {
+                        cart.setChecked(false);
+                    }
+                    if (!jsonObject.isNull("goods")) {
+                        JSONObject jsonRetData = jsonObject.getJSONObject("goods");
+                        String date;
+                        try {
+                            date = URLDecoder.decode(jsonRetData.toString(), I.UTF_8);
+                            Log.e("Utils", "jsonRetData=" + date);
+                            GoodsDetailsBean t = new Gson().fromJson(date, GoodsDetailsBean.class);
+                            cart.setGoods(t);
+
+                        } catch (UnsupportedEncodingException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    list.add(cart);
+                }
+                return list;
+            }
+        } catch (
+                Exception e
+                ) {
+            e.printStackTrace();
+        }
+
+        return list;
+
+
+    }
+
     public static <T> Result getResultFromJson(String jsonStr, Class<T> clazz) {
         Result result = new Result();
         try {

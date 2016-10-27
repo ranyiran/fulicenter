@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -25,10 +26,10 @@ import cn.ran.flicenter.bean.CartBean;
 import cn.ran.flicenter.bean.UserAvatarBean;
 import cn.ran.flicenter.net.NetDao;
 import cn.ran.flicenter.utils.CommonUtils;
-import cn.ran.flicenter.utils.ConvertUtils;
 import cn.ran.flicenter.utils.ImageLoader;
 import cn.ran.flicenter.utils.L;
 import cn.ran.flicenter.utils.OkHttpUtils;
+import cn.ran.flicenter.utils.ResultUtils;
 import cn.ran.flicenter.views.SpaceItemDecoration;
 
 /**
@@ -57,6 +58,8 @@ public class CartFragment extends Fragment {
     TextView emptyCart;
     UserAvatarBean user;
     String userName;
+    @Bind(R.id.rlPay)
+    RelativeLayout rlPay;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,11 +73,19 @@ public class CartFragment extends Fragment {
         newGoodsRecycler.setLayoutManager(mManager);
         newGoodsRecycler.setAdapter(mBtqAdapter);
         downloadBoutique(I.ACTION_DOWNLOAD);
+        setCartLayout(false);
         initView();
         initData();
         setListener();
         super.onCreateView(inflater, container, savedInstanceState);
         return view;
+    }
+
+    private void setCartLayout(boolean isCart) {
+        rlPay.setVisibility(isCart ? View.VISIBLE : View.GONE);
+        emptyCart.setVisibility(isCart ? View.GONE : View.VISIBLE);
+        newGoodsRecycler.setVisibility(isCart ? View.VISIBLE : View.GONE);
+        sumPrice();
     }
 
     public void setListener() {
@@ -113,39 +124,43 @@ public class CartFragment extends Fragment {
         user = FuLiCenterApplication.getUser();
         if (user != null) {
             userName = user.getMuserName();
-            emptyCart.setVisibility(View.VISIBLE);
-            NetDao.downloadCarts(mContext, userName, new OkHttpUtils.OnCompleteListener<CartBean[]>() {
+            NetDao.downloadCarts(mContext, userName, new OkHttpUtils.OnCompleteListener<String>() {
                 @Override
-                public void onSuccess(CartBean[] result) {
-                    if (result != null && result.length > 0) {
+                public void onSuccess(String s) {
+                    ArrayList<CartBean> list = ResultUtils.getCartFromJson(s);
+                    if (list != null && list.size() > 0) {
                         mBtqAdapter.setMore(true);
-                        ArrayList<CartBean> list = ConvertUtils.array2List(result);
                         switch (actionDownload) {
                             case I.ACTION_DOWNLOAD:
                                 mBtqAdapter.initCart(list);
                                 mBtqAdapter.setMore(true);
+                                setCartLayout(true);
                                 break;
                             case I.ACTION_PULL_DOWN:
+                                newGoodsTvRefresh.setVisibility(View.GONE);
+                                setCartLayout(true);
+                                newGoodsSwipeRefresh.setRefreshing(false);
                                 mBtqAdapter.initCart(list);
                                 mBtqAdapter.setMore(true);
-                                newGoodsSwipeRefresh.setRefreshing(false);
-                                newGoodsTvRefresh.setVisibility(View.GONE);
                                 ImageLoader.release();
                                 break;
 
                         }
                         L.i(list.toString());
                     }
+                    //emptyCart.setVisibility(View.VISIBLE);
+
                 }
 
                 @Override
                 public void onError(String error) {
+                    setCartLayout(false);
                     newGoodsSwipeRefresh.setRefreshing(false);
+                    //  emptyCart.setVisibility(View.VISIBLE);
                     CommonUtils.showShortToast("出错");
                 }
             });
         }
-        emptyCart.setVisibility(View.GONE);
 
     }
 
@@ -153,5 +168,28 @@ public class CartFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    public void sumPrice() {
+        int sumPrice = 0;
+        int rankPrice = 0;
+        if (mList != null && mList.size() > 0) {
+            for (CartBean c : mList) {
+                if (c.isChecked()) {
+                    sumPrice += getPrice(c.getGoods().getCurrencyPrice());
+                    rankPrice += getPrice(c.getGoods().getRankPrice());
+                }
+            }
+            currentPrice.setText("合计:￥" + Double.valueOf(sumPrice));
+            savePrice.setText("节省：￥" + Double.valueOf(sumPrice - rankPrice));
+        } else {
+            currentPrice.setText("合计:￥0");
+            savePrice.setText("节省：￥0");
+        }
+    }
+
+    private int getPrice(String price) {
+        price = price.substring(price.indexOf("￥") + 1);
+        return Integer.valueOf(price);
     }
 }
