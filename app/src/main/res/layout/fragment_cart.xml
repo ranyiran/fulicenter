@@ -2,12 +2,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="cn.ran.flicenter.fragment.CartFragment">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <include layout="@layout/item_cart" />
     </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/emptyCart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:drawableTop="@drawable/empty_cart"
+        android:gravity="center"
+        android:text="购物车空空如也..."
+        android:visibility="gone" />
+
+    <include
+
+        layout="@layout/fragment_new_goods" />
 
 </LinearLayout>

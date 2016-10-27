@@ -31,6 +31,7 @@ public interface I {
     int REQUEST_CODE_REGISTER = 101;
     int REQUEST_CODE_LOGIN = 102;
     int REQUEST_CODE_NICK = 104;
+    int REQUEST_CODE_CART = 105;
     /**
      * BeeColud APP ID
      */

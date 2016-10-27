@@ -6,6 +6,7 @@ import java.io.File;
 
 import cn.ran.flicenter.I;
 import cn.ran.flicenter.bean.BoutiqueBean;
+import cn.ran.flicenter.bean.CartBean;
 import cn.ran.flicenter.bean.CartResultBean;
 import cn.ran.flicenter.bean.CategoryChildBean;
 import cn.ran.flicenter.bean.CategoryGroupBean;
@@ -196,12 +197,21 @@ public class NetDao {
                 .targetClass(MessageBean.class)
                 .execute(listener);
     }
+
     public static void is(Context mContext, String userName, int goodsId, OkHttpUtils.OnCompleteListener<MessageBean> listener) {
         OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(mContext);
         utils.setRequestUrl(I.REQUEST_ADD_COLLECT)
                 .addParam(I.Collect.GOODS_ID, String.valueOf(goodsId))
                 .addParam(I.Collect.USER_NAME, userName)
                 .targetClass(MessageBean.class)
+                .execute(listener);
+    }
+
+    public static void downloadCarts(Context mContext, String userName, OkHttpUtils.OnCompleteListener<CartBean[]> listener) {
+        OkHttpUtils<CartBean[]> utils = new OkHttpUtils<>(mContext);
+        utils.setRequestUrl(I.REQUEST_FIND_CARTS)
+                .addParam(I.Cart.USER_NAME, userName)
+                .targetClass(CartBean[].class)
                 .execute(listener);
     }
 

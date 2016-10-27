@@ -71,9 +71,16 @@ public class MFGT {
     }
 
     public static void gotoLoginActivity(Activity mContext) {
-        Intent intent = new Intent(mContext, LoginActivity.class);
-        mContext.startActivity(intent);
+        Intent intent = new Intent();
+        intent.setClass(mContext, LoginActivity.class);
         startActivityForResult(mContext, intent, I.REQUEST_CODE_LOGIN);
+        mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
+
+    public static void cartGotoLoginActivity(Activity mContext) {
+        Intent intent = new Intent();
+        intent.setClass(mContext, LoginActivity.class);
+        startActivityForResult(mContext, intent, I.REQUEST_CODE_CART);
         mContext.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 

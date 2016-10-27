@@ -16,6 +16,8 @@ import butterknife.ButterKnife;
 import cn.ran.flicenter.R;
 import cn.ran.flicenter.activity.MainActivity;
 import cn.ran.flicenter.bean.CartBean;
+import cn.ran.flicenter.bean.GoodsDetailsBean;
+import cn.ran.flicenter.utils.ImageLoader;
 
 /**
  * Created by Ran on 2016/10/23.
@@ -57,22 +59,39 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         View layout = null;
         LayoutInflater inflater = LayoutInflater.from(mContext);
         layout = inflater.inflate(R.layout.item_cart_good, parent, false);
+        holder = new CartViewHolder(layout);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(CartViewHolder holder, int position) {
         CartBean cartBean = mList.get(position);
-        holder.chkGoods.setChecked(cartBean.isChecked());
+        GoodsDetailsBean goods = cartBean.getGoods();
+        if (goods != null) {
+            ImageLoader.downloadImg(mContext, holder.imGoodsImage, goods.getGoodsThumb());
+            holder.chkGoods.setChecked(cartBean.isChecked());
+            holder.tvGoodsName.setText(goods.getGoodsName());
+        }
+        holder.tvCount.setText("(" + cartBean.getCount() + ")");
+        holder.chkGoods.setChecked(false);
 
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
 
     @Override
     public int getItemCount() {
         return mList != null ? mList.size() : 0;
     }
 
+    public void initCart(ArrayList<CartBean> list) {
+        this.mList.clear();
+        mList.addAll(list);
+        notifyDataSetChanged();
+    }
 
     class CartViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.chkGoods)
@@ -87,6 +106,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         ImageView imDel;
         @Bind(R.id.tvPrice)
         TextView tvPrice;
+        @Bind(R.id.tvCount)
+        TextView tvCount;
 
         CartViewHolder(View view) {
             super(view);

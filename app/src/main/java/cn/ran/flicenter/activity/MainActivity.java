@@ -136,7 +136,12 @@ public class MainActivity extends AppCompatActivity {
                 index = 2;
                 break;
             case R.id.mBtnCart:
-                index = 3;
+                if (FuLiCenterApplication.getUser() == null) {
+                    MFGT.cartGotoLoginActivity(this);
+                    finish();
+                } else {
+                    index = 3;
+                }
                 break;
             case R.id.mBtnPersonal:
                 if (FuLiCenterApplication.getUser() == null) {
@@ -182,15 +187,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         L.i("requestCode=" + requestCode);
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == I.REQUEST_CODE_LOGIN && FuLiCenterApplication.getUser() != null) {
+        if (requestCode == I.REQUEST_CODE_LOGIN && FuLiCenterApplication.getUser() != null) {
             index = 4;
-        } else {
-            if (currentIndex == 4) {
+        }
+        if (requestCode == I.REQUEST_CODE_CART) {
+            index = 3;
+        }
+        //else {
+            /*if (currentIndex == 4) {
                 index = 0;
             } else {
                 index = currentIndex;
-            }
-        }
+            }*/
+        //  }
         setFragment();
 
     }
