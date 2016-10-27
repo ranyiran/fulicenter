@@ -21,7 +21,12 @@ import cn.ran.flicenter.R;
 import cn.ran.flicenter.activity.MainActivity;
 import cn.ran.flicenter.bean.CartBean;
 import cn.ran.flicenter.bean.GoodsDetailsBean;
+import cn.ran.flicenter.bean.MessageBean;
+import cn.ran.flicenter.net.NetDao;
+import cn.ran.flicenter.utils.CommonUtils;
 import cn.ran.flicenter.utils.ImageLoader;
+import cn.ran.flicenter.utils.L;
+import cn.ran.flicenter.utils.OkHttpUtils;
 
 /**
  * Created by Ran on 2016/10/23.
@@ -84,6 +89,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 mContext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
             }
         });
+        holder.imAdd.setTag(position);
 
     }
 
@@ -100,6 +106,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     public void initCart(ArrayList<CartBean> list) {
         this.mList.clear();
         mList = list;
+        notifyDataSetChanged();
     }
 
     @OnClick(R.id.chkGoods)
@@ -127,5 +134,77 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             ButterKnife.bind(this, view);
         }
 
+        @OnClick(R.id.imAdd)
+        public void isAdd() {
+            final int position = (int) imAdd.getTag();
+            CartBean cartBean = mList.get(position);
+            NetDao.updateCart(mContext, cartBean.getCount(), cartBean.getId(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                @Override
+                public void onSuccess(MessageBean result) {
+                    if (result != null && result.isSuccess()) {
+                        mList.get(position).setCount(mList.get(position).getCount() + 1);
+                        mContext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
+                        tvCount.setText("(" + (mList.get(position).getCount()) + ")");
+                    }
+                }
+
+                @Override
+                public void onError(String error) {
+
+                }
+            });
+        }
+
+        @OnClick(R.id.imDel)
+        public void isDel() {
+            final int position = (int) imAdd.getTag();
+            CartBean cartBean = mList.get(position);
+            if (cartBean.getCount() > 1) {
+                NetDao.updateCart(mContext, cartBean.getCount() - 1, cartBean.getId(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                            @Override
+                            public void onSuccess(MessageBean result) {
+                                if (result != null && result.isSuccess()) {
+                                    mList.get(position).setCount(mList.get(position).getCount() - 1);
+                                    mContext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
+                                    tvCount.setText("(" + (mList.get(position).getCount()) + ")");
+                                }
+
+
+                            }
+
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+                        }
+
+                );
+            } else {
+                NetDao.deleteCart(mContext, cartBean.getId(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                    @Override
+                    public void onSuccess(MessageBean result) {
+                        if (result != null && result.isSuccess()) {
+                            L.i(result.toString());
+                            mList.remove(position);
+                            mContext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
+                            CommonUtils.showShortToast("商品删除成功");
+                            notifyDataSetChanged();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+            }
+
+            {
+
+            }
+
+        }
     }
 }

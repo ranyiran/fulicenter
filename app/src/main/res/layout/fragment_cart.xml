@@ -5,23 +5,25 @@
     android:orientation="vertical"
     tools:context="cn.ran.flicenter.fragment.CartFragment">
 
-    <TextView
-        android:id="@+id/emptyCart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="购物车空空如也..."
-        android:visibility="gone" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/rlPay">
+        android:layout_above="@+id/rlPay"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/emptyCart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="购物车空空如也..."
+            android:visibility="gone" />
 
         <include layout="@layout/fragment_new_goods" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/rlPay"

@@ -63,6 +63,7 @@ public interface I {
 
     String ACTION_TYPE_PERSONAL = "personal";
     String ACTION_TYPE_CART = "cart";
+    String BROADCAST_DELETE_CART = "delete_cart";
 
     /**
      * 添加收藏

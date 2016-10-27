@@ -214,4 +214,22 @@ public class NetDao {
                 .execute(listener);
     }
 
+    public static void updateCart(Context mContext, int count, int cartId, OkHttpUtils.OnCompleteListener<MessageBean> listener) {
+        OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(mContext);
+        utils.setRequestUrl(I.REQUEST_UPDATE_CART)
+                .addParam(I.Cart.ID, String.valueOf(cartId))
+                .addParam(I.Cart.COUNT, String.valueOf(count))
+                .targetClass(MessageBean.class)
+                .execute(listener);
+    }
+
+    public static void deleteCart(Context mContext, int cartId, OkHttpUtils.OnCompleteListener<MessageBean> listener) {
+        OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(mContext);
+        utils.setRequestUrl(I.REQUEST_DELETE_CART)
+                .addParam(I.Cart.ID, String.valueOf(cartId))
+                .targetClass(MessageBean.class)
+                .execute(listener);
+    }
+
+
 }

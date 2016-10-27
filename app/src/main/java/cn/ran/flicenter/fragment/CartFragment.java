@@ -29,9 +29,6 @@ import cn.ran.flicenter.adapter.CartAdapter;
 import cn.ran.flicenter.bean.CartBean;
 import cn.ran.flicenter.bean.UserAvatarBean;
 import cn.ran.flicenter.net.NetDao;
-import cn.ran.flicenter.utils.CommonUtils;
-import cn.ran.flicenter.utils.ImageLoader;
-import cn.ran.flicenter.utils.L;
 import cn.ran.flicenter.utils.OkHttpUtils;
 import cn.ran.flicenter.utils.ResultUtils;
 import cn.ran.flicenter.views.SpaceItemDecoration;
@@ -79,7 +76,7 @@ public class CartFragment extends Fragment {
         mManager = new LinearLayoutManager(mContext);
         newGoodsRecycler.setLayoutManager(mManager);
         newGoodsRecycler.setAdapter(mBtqAdapter);
-        downloadBoutique(I.ACTION_DOWNLOAD);
+        downloadCart();
         setCartLayout(false);
         initView();
         initData();
@@ -92,13 +89,15 @@ public class CartFragment extends Fragment {
         rlPay.setVisibility(isCart ? View.VISIBLE : View.GONE);
         emptyCart.setVisibility(isCart ? View.GONE : View.VISIBLE);
         newGoodsRecycler.setVisibility(isCart ? View.VISIBLE : View.GONE);
-        sumPrice();
+        //sumPrice();
     }
 
     public void setListener() {
         setOnPullDownListener();
         IntentFilter filter = new IntentFilter(I.BROADCAST_UPDATA_CART);
+        IntentFilter filterDelete = new IntentFilter(I.BROADCAST_DELETE_CART);
         mReceiver = new updateCartReceiver();
+        mContext.registerReceiver(mReceiver, filterDelete);
         mContext.registerReceiver(mReceiver, filter);
     }
 
@@ -109,7 +108,7 @@ public class CartFragment extends Fragment {
                 newGoodsSwipeRefresh.setEnabled(true);
                 newGoodsSwipeRefresh.setRefreshing(true);
                 newGoodsTvRefresh.setVisibility(View.VISIBLE);
-                downloadBoutique(I.ACTION_PULL_DOWN);
+                downloadCart();
             }
         });
     }
@@ -127,10 +126,10 @@ public class CartFragment extends Fragment {
 
 
     public void initData() {
-        downloadBoutique(I.ACTION_DOWNLOAD);
+        downloadCart();
     }
 
-    protected void downloadBoutique(final int actionDownload) {
+    protected void downloadCart() {
         user = FuLiCenterApplication.getUser();
         if (user != null) {
             userName = user.getMuserName();
@@ -138,39 +137,43 @@ public class CartFragment extends Fragment {
                 @Override
                 public void onSuccess(String s) {
                     ArrayList<CartBean> list = ResultUtils.getCartFromJson(s);
+                    newGoodsSwipeRefresh.setRefreshing(false);
+                    newGoodsTvRefresh.setVisibility(View.GONE);
                     if (list != null && list.size() > 0) {
+                        mBtqAdapter.initCart(mList);
+                        mList.addAll(list);
                         mBtqAdapter.setMore(true);
-                        switch (actionDownload) {
-                            case I.ACTION_DOWNLOAD:
-                                mBtqAdapter.initCart(mList);
+                        setCartLayout(true);
+                        sumPrice();
+                              /*  mBtqAdapter.initCart(mList);
                                 mList.addAll(list);
-                                mBtqAdapter.setMore(true);
-                                setCartLayout(true);
-                                break;
-                            case I.ACTION_PULL_DOWN:
-                                mBtqAdapter.initCart(mList);
-                                mList.addAll(list);
-                                newGoodsTvRefresh.setVisibility(View.GONE);
-                                setCartLayout(true);
-                                newGoodsSwipeRefresh.setRefreshing(false);
-                                mBtqAdapter.setMore(true);
-                                ImageLoader.release();
-                                break;
 
-                        }
-                        L.i(list.toString());
+
+                                mBtqAdapter.setMore(true);
+                                ImageLoader.release();*/
+
+                    } else {
+                        setCartLayout(false);
+
                     }
-                    //emptyCart.setVisibility(View.VISIBLE);
-
                 }
 
                 @Override
                 public void onError(String error) {
                     setCartLayout(false);
-                    newGoodsSwipeRefresh.setRefreshing(false);
-                    //  emptyCart.setVisibility(View.VISIBLE);
-                    CommonUtils.showShortToast("出错");
                 }
+
+             /*   //emptyCart.setVisibility(View.VISIBLE);
+                setCartLayout(false);
+            }
+
+            @Override
+            public void onError (String error){
+                setCartLayout(false);
+                newGoodsSwipeRefresh.setRefreshing(false);
+                //  emptyCart.setVisibility(View.VISIBLE);
+                CommonUtils.showShortToast("出错");
+            }*/
             });
         }
 
@@ -195,6 +198,7 @@ public class CartFragment extends Fragment {
             currentPrice.setText("合计:￥" + Double.valueOf(sumPrice));
             savePrice.setText("节省：￥" + Double.valueOf(sumPrice - rankPrice));
         } else {
+            setCartLayout(false);
             currentPrice.setText("合计:￥0");
             savePrice.setText("节省:￥0");
         }
@@ -213,11 +217,19 @@ public class CartFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
+    }
+
     class updateCartReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            setCartLayout(mList != null && mList.size() > 0);
             sumPrice();
         }
+
     }
 }
