@@ -118,8 +118,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        MFGT.gotoMainActivity(this);
         MFGT.finish(this);
+        MFGT.gotoMainActivity(this);
     }
 
     @Override
