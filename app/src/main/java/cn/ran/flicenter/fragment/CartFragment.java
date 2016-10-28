@@ -105,7 +105,6 @@ public class CartFragment extends Fragment {
         newGoodsSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                newGoodsSwipeRefresh.setEnabled(true);
                 newGoodsSwipeRefresh.setRefreshing(true);
                 newGoodsTvRefresh.setVisibility(View.VISIBLE);
                 downloadCart();
@@ -144,13 +143,6 @@ public class CartFragment extends Fragment {
                         mList.addAll(list);
                         mBtqAdapter.setMore(true);
                         setCartLayout(true);
-                        sumPrice();
-                              /*  mBtqAdapter.initCart(mList);
-                                mList.addAll(list);
-
-
-                                mBtqAdapter.setMore(true);
-                                ImageLoader.release();*/
 
                     } else {
                         setCartLayout(false);
@@ -232,4 +224,5 @@ public class CartFragment extends Fragment {
         }
 
     }
+
 }

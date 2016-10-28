@@ -138,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.mBtnCart:
                 if (FuLiCenterApplication.getUser() == null) {
                     MFGT.cartGotoLoginActivity(this);
-                    finish();
                 } else {
                     index = 3;
                 }
@@ -146,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.mBtnPersonal:
                 if (FuLiCenterApplication.getUser() == null) {
                     MFGT.gotoLoginActivity(this);
-                    finish();
                 } else {
                     index = 4;
                 }
@@ -172,8 +170,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         L.i("这是onResume" + index);
-/*
-        if (FuLiCenterApplication.getUser() != null && index == 4) {
+     /*   if (FuLiCenterApplication.getUser() != null && index == 4) {
             index = 4;
             Log.i("index", index + "");
         } else {
@@ -187,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         L.i("requestCode=" + requestCode);
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == I.REQUEST_CODE_LOGIN && FuLiCenterApplication.getUser() != null) {
+        if (resultCode == I.REQUEST_CODE_LOGIN && FuLiCenterApplication.getUser() != null) {
             index = 4;
         }
         if (requestCode == I.REQUEST_CODE_CART) {

@@ -79,8 +79,9 @@ public class LoginActivity extends AppCompatActivity {
                     if (isSuccess) {
                         FuLiCenterApplication.setUser(user);
                         SharePreferencesUtils.getInstance(mContext).saveUser(user.getMuserName());
-                        setResult(I.REQUEST_CODE_LOGIN);
-                        MFGT.gotoMainActivity(LoginActivity.this);
+                  //      MFGT.finish((Activity) mContext);
+//                        setResult(I.REQUEST_CODE_LOGIN);
+//                        MFGT.gotoMainActivity(LoginActivity.this);
                         Toast.makeText(LoginActivity.this, "欢迎用户:" + userNick, Toast.LENGTH_SHORT).show();
                     } else {
                         CommonUtils.showLongToast(R.string.user_database_error);
@@ -108,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.btnLogin:
                 initData();
-                finish();
+                MFGT.finish(this);
                 break;
             case R.id.btnReg:
                 MFGT.gotoRegister(LoginActivity.this);
@@ -118,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        MFGT.finish(this);
+
         MFGT.gotoMainActivity(this);
     }
 

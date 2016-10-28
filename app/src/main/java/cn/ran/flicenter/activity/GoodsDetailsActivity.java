@@ -1,6 +1,7 @@
 package cn.ran.flicenter.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -184,19 +185,23 @@ public class GoodsDetailsActivity extends BaseActivity {
                 MFGT.finish(this);
                 break;
             case R.id.iv_details_cart:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                View layout = getLayoutInflater().inflate(R.layout.item_dialog, null);
-                final EditText et = (EditText) layout.findViewById(R.id.etCount);
-                builder.setTitle("输入添加的商品个数")
-                        .setView(layout)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String count = et.getText().toString();
-                                initCartData(Integer.valueOf(count));
-                            }
-                        }).setNegativeButton("取消", null).create().show();
-
+                user = FuLiCenterApplication.getUser();
+                if (user != null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    View layout = getLayoutInflater().inflate(R.layout.item_dialog, null);
+                    final EditText et = (EditText) layout.findViewById(R.id.etCount);
+                    builder.setTitle("输入添加的商品个数")
+                            .setView(layout)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    String count = et.getText().toString();
+                                    initCartData(Integer.valueOf(count));
+                                }
+                            }).setNegativeButton("取消", null).create().show();
+                } else {
+                    MFGT.gotoLoginActivity(mContext);
+                }
                 break;
             case R.id.iv_details_collect:
                 user = FuLiCenterApplication.getUser();
@@ -301,5 +306,13 @@ public class GoodsDetailsActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == I.REQUEST_CODE_DETAIL) {
+
+        }
     }
 }

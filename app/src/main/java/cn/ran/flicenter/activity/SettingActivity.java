@@ -107,6 +107,7 @@ public class SettingActivity extends AppCompatActivity {
                 FuLiCenterApplication.setUser(null);
                 CommonUtils.showShortToast("退出成功");
                 MFGT.gotoLoginActivity(mContext);
+                finish();
                 break;
             case R.id.rvUpdateAvatar:
                 mOnSetAvatarListener = new OnSetAvatarListener(mContext, R.id.ryLayout,

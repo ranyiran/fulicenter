@@ -81,8 +81,8 @@ public class PersonFragment extends Fragment {
     public void onResume() {
         super.onResume();
         user = FuLiCenterApplication.getUser();
+        initData();
         if (user != null) {
-            initData();
             findUserByUserName();
             findCollectCount();
         }
@@ -158,5 +158,6 @@ public class PersonFragment extends Fragment {
                 break;
         }
     }
+
 
 }
