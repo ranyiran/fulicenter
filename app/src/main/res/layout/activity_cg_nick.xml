@@ -37,5 +37,4 @@
         android:background="@color/tab_bg"
         android:text="确定修改"
         android:textColor="@color/white" />
-
 </LinearLayout>

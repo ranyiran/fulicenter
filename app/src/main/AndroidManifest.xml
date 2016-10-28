@@ -58,6 +58,7 @@
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.UpdateNickActivity" />
         <activity android:name=".activity.CollectActivity"></activity>
+        <activity android:name=".activity.AddressActivity"></activity>
         <!--sdk begin-->
         <!--微信的-->
         <activity

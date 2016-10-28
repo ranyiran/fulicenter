@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ran.flicenter.FuLiCenterApplication;
 import cn.ran.flicenter.I;
 import cn.ran.flicenter.R;
@@ -29,6 +30,8 @@ import cn.ran.flicenter.adapter.CartAdapter;
 import cn.ran.flicenter.bean.CartBean;
 import cn.ran.flicenter.bean.UserAvatarBean;
 import cn.ran.flicenter.net.NetDao;
+import cn.ran.flicenter.utils.CommonUtils;
+import cn.ran.flicenter.utils.MFGT;
 import cn.ran.flicenter.utils.OkHttpUtils;
 import cn.ran.flicenter.utils.ResultUtils;
 import cn.ran.flicenter.views.SpaceItemDecoration;
@@ -65,6 +68,8 @@ public class CartFragment extends Fragment {
 
     updateCartReceiver mReceiver;
 
+    String cartId = "";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -86,9 +91,9 @@ public class CartFragment extends Fragment {
     }
 
     private void setCartLayout(boolean isCart) {
+        newGoodsRecycler.setVisibility(isCart ? View.VISIBLE : View.GONE);
         rlPay.setVisibility(isCart ? View.VISIBLE : View.GONE);
         emptyCart.setVisibility(isCart ? View.GONE : View.VISIBLE);
-        newGoodsRecycler.setVisibility(isCart ? View.VISIBLE : View.GONE);
         //sumPrice();
     }
 
@@ -178,18 +183,22 @@ public class CartFragment extends Fragment {
     }
 
     public void sumPrice() {
+        cartId = "";
         int sumPrice = 0;
         int rankPrice = 0;
         if (mList != null && mList.size() > 0) {
             for (CartBean c : mList) {
                 if (c.isChecked()) {
+                    cartId = c.getId() + ",";
                     sumPrice += getPrice(c.getGoods().getCurrencyPrice()) * c.getCount();
                     rankPrice += getPrice(c.getGoods().getRankPrice()) * c.getCount();
                 }
             }
+
             currentPrice.setText("合计:￥" + Double.valueOf(sumPrice));
             savePrice.setText("节省：￥" + Double.valueOf(sumPrice - rankPrice));
         } else {
+            cartId = "";
             setCartLayout(false);
             currentPrice.setText("合计:￥0");
             savePrice.setText("节省:￥0");
@@ -213,6 +222,15 @@ public class CartFragment extends Fragment {
     public void onResume() {
         super.onResume();
         initData();
+    }
+
+    @OnClick(R.id.btnBuy)
+    public void onClick() {
+        if (cartId != null &&cartId.length() > 0) {
+            MFGT.gotoBuy(mContext, cartId);
+        } else {
+            CommonUtils.showShortToast("购物车不能为空");
+        }
     }
 
     class updateCartReceiver extends BroadcastReceiver {

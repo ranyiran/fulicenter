@@ -103,11 +103,12 @@ public class SettingActivity extends AppCompatActivity {
                 MFGT.gotoUpdateNick(mContext);
                 break;
             case R.id.btnExitLogin:
+                MFGT.gotoLoginActivity(mContext);
+                finish();
                 SharePreferencesUtils.getInstance(mContext).removeUser();
                 FuLiCenterApplication.setUser(null);
                 CommonUtils.showShortToast("退出成功");
-                MFGT.gotoLoginActivity(mContext);
-                finish();
+
                 break;
             case R.id.rvUpdateAvatar:
                 mOnSetAvatarListener = new OnSetAvatarListener(mContext, R.id.ryLayout,

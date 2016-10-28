@@ -70,6 +70,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         LayoutInflater inflater = LayoutInflater.from(mContext);
         layout = inflater.inflate(R.layout.item_cart_good, parent, false);
         holder = new CartViewHolder(layout);
+        L.i("holder"+holder.toString());
         return holder;
     }
 

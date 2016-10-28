@@ -286,7 +286,7 @@ public class GoodsDetailsActivity extends BaseActivity {
     }
 
     private void initCartData(int count) {
-        NetDao.downloadCart(mContext, goodsId, userName, count, true, new OkHttpUtils.OnCompleteListener<CartResultBean>() {
+        NetDao.addCart(mContext, goodsId, userName, count, true, new OkHttpUtils.OnCompleteListener<CartResultBean>() {
             @Override
             public void onSuccess(CartResultBean result) {
                 if (result.getSuccess() == true) {

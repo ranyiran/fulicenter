@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == I.REQUEST_CODE_LOGIN && FuLiCenterApplication.getUser() != null) {
             index = 4;
         }
-        if (requestCode == I.REQUEST_CODE_CART) {
+        if (requestCode == I.REQUEST_CODE_CART && FuLiCenterApplication.getUser() != null) {
             index = 3;
         }
         //else {

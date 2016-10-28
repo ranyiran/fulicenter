@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import cn.ran.flicenter.I;
 import cn.ran.flicenter.R;
+import cn.ran.flicenter.activity.AddressActivity;
 import cn.ran.flicenter.activity.BouTiQueActivity;
 import cn.ran.flicenter.activity.CategoryChildActivity;
 import cn.ran.flicenter.activity.GoodsDetailsActivity;
@@ -119,6 +120,12 @@ public class MFGT {
     public static void gotoUpdateNick(Activity mContext) {
         startActivityForResult(mContext, new Intent(mContext, UpdateNickActivity.class
         ), I.REQUEST_CODE_NICK);
+
+    }
+
+    public static void gotoBuy(Activity mContext, String cartIds) {
+        Intent intent = new Intent(mContext, AddressActivity.class).putExtra(I.Cart.ID, cartIds);
+        startActivity(mContext, intent);
 
     }
 

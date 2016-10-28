@@ -106,7 +106,7 @@ public class NetDao {
                 .execute(listener);
     }
 
-    public static void downloadCart(Context mContext, int goodsId, String userName, int count, boolean isChecked
+    public static void addCart(Context mContext, int goodsId, String userName, int count, boolean isChecked
             , OkHttpUtils.OnCompleteListener<CartResultBean> listener) {
         OkHttpUtils<CartResultBean> utils = new OkHttpUtils(mContext);
         utils.setRequestUrl(I.REQUEST_ADD_CART)

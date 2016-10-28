@@ -1,5 +1,6 @@
 package cn.ran.flicenter.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -79,7 +80,8 @@ public class LoginActivity extends AppCompatActivity {
                     if (isSuccess) {
                         FuLiCenterApplication.setUser(user);
                         SharePreferencesUtils.getInstance(mContext).saveUser(user.getMuserName());
-                  //      MFGT.finish((Activity) mContext);
+
+                        MFGT.finish((Activity) mContext);
 //                        setResult(I.REQUEST_CODE_LOGIN);
 //                        MFGT.gotoMainActivity(LoginActivity.this);
                         Toast.makeText(LoginActivity.this, "欢迎用户:" + userNick, Toast.LENGTH_SHORT).show();
@@ -92,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (result.getRetCode() == I.MSG_LOGIN_ERROR_PASSWORD) {
                     Toast.makeText(LoginActivity.this, "账户密码错误", Toast.LENGTH_SHORT).show();
                 }
-                finish();
+                // finish();
 
             }
 
@@ -109,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.btnLogin:
                 initData();
-                MFGT.finish(this);
+
                 break;
             case R.id.btnReg:
                 MFGT.gotoRegister(LoginActivity.this);
@@ -117,11 +119,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-
-        MFGT.gotoMainActivity(this);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -131,6 +128,12 @@ public class LoginActivity extends AppCompatActivity {
             etLoginUserName.setText(name);
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        MFGT.gotoMainActivity(LoginActivity.this);
+        finish();
     }
 
     @Override
