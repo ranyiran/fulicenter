@@ -1,5 +1,6 @@
 package cn.ran.flicenter.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -8,7 +9,16 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.pingplusplus.android.PingppLog;
+import com.pingplusplus.libone.PaymentHandler;
+import com.pingplusplus.libone.PingppOne;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,8 +37,9 @@ import cn.ran.flicenter.utils.ResultUtils;
 /**
  * Created by Administrator on 2016/10/28.
  */
-public class AddressActivity extends AppCompatActivity {
+public class AddressActivity extends AppCompatActivity implements PaymentHandler {
 
+    private static String URL = "http://218.244.151.190/demo/charge";
     @Bind(R.id.backClickArea)
     ImageView backClickArea;
     @Bind(R.id.etName)
@@ -42,7 +53,6 @@ public class AddressActivity extends AppCompatActivity {
     @Bind(R.id.btnBuy)
     Button btnBuy;
     String cardId;
-
     String name;
     String address;
     String phone;
@@ -67,6 +77,15 @@ public class AddressActivity extends AppCompatActivity {
         mList = new ArrayList<>();
         initData();
         tvCommonTitle.setText("确认收货地址");
+
+        //设置需要使用的支付方式
+        PingppOne.enableChannels(new String[]{"wx", "alipay", "upacp", "bfb", "jdpay_wap"});
+
+        // 提交数据的格式，默认格式为json
+        // PingppOne.CONTENT_TYPE = "application/x-www-form-urlencoded";
+        PingppOne.CONTENT_TYPE = "application/json";
+
+        PingppLog.DEBUG = true;
     }
 
     private void initData() {
@@ -127,23 +146,97 @@ public class AddressActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnBuy)
     public void onClick() {
+        /*
+          if (userName.isEmpty()) {
+                    CommonUtils.showShortToast(R.string.user_name_connot_be_empty);
+                    etRegUserName.requestFocus();
+                    return;
+                } else if (!userName.matches("[a-zA-Z]\\w{5,15}")) {
+                    CommonUtils.showShortToast(R.string.illegal_user_name);
+                    etRegUserName.requestFocus();
+                    return;
+                } else if (userNick.isEmpty()) {
+                    CommonUtils.showShortToast(R.string.nick_name_connot_be_empty);
+                    etRegUserName.requestFocus();
+                    return;
+                } else if (TextUtils.isEmpty(userNick)) {
+                    CommonUtils.showShortToast(R.string.nick_name_connot_be_empty);
+                    etRegUserName.requestFocus();
+                    return;
+                } else if (password.isEmpty()) {
+                    CommonUtils.showShortToast(R.string.password_connot_be_empty);
+                    etRegUserName.requestFocus();
+                    return;
+                } else if (rePassword.isEmpty()) {
+                    CommonUtils.showShortToast(R.string.confirm_password_connot_be_empty);
+                    etRegUserName.requestFocus();
+                    return;
+                } else if (!rePassword.equals(password)) {
+                    CommonUtils.showShortToast(R.string.confirmpassword);
+                    etRegUserName.requestFocus();
+                    return;
+                }
+         */
         name = etName.getText().toString().trim();
         phone = etPhone.getText().toString().trim();
         address = etAddress.getText().toString().trim();
-        if (name == null && name.length() < 0) {
+        if (name.isEmpty()) {
             CommonUtils.showShortToast("姓名不能为空");
             etName.requestFocus();
             return;
-        } else if (address == null && address.length() < 0) {
+        } else if (phone.isEmpty()) {
             CommonUtils.showShortToast("地址不能为空");
             etAddress.requestFocus();
-        } else if (phone == null && phone.length() < 0) {
+            return;
+        } else if (address.isEmpty()) {
             CommonUtils.showShortToast("手机号码不能为空");
             etPhone.requestFocus();
-        } else {
-            L.i("提交订单");
+            return;
         }
+        gotoStatements();
+
     }
 
+    private void gotoStatements() {
+        // 产生个订单号
+        String orderNo = new SimpleDateFormat("yyyyMMddhhmmss")
+                .format(new Date());
 
+        // 构建账单json对象
+        JSONObject bill = new JSONObject();
+
+        // 自定义的额外信息 选填
+        JSONObject extras = new JSONObject();
+        try {
+            extras.put("extra1", "extra1");
+            extras.put("extra2", "extra2");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            bill.put("order_no", orderNo);
+            bill.put("amount", rankPrice * 100);
+            bill.put("extras", extras);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        //壹收款: 创建支付通道的对话框
+        PingppOne.showPaymentChannels(getSupportFragmentManager(), bill.toString(), URL, this);
+    }
+
+    @Override
+    public void handlePaymentResult(Intent data) {
+        if (data != null) {
+            /**
+             * code：支付结果码  -2:服务端错误、 -1：失败、 0：取消、1：成功
+             * error_msg：支付结果信息
+             */
+            int code = data.getExtras().getInt("code");
+            String errorMsg = data.getExtras().getString("error_msg");
+        }
+    }
 }
+
+
